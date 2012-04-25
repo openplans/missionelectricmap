@@ -1,3 +1,9 @@
+// subdomain XSF workaround
+document.domain = "openplans.org";
+
+// indicate to parent page when we're done loading
+window.mapLoaded = false;
+
 <% url_help = Shareabouts::Application.routes.url_helpers %>
 
 $(function() {
@@ -48,7 +54,7 @@ $(function() {
   };
 
   // Initialize shareabouts map
-  Map.shareabout({
+  window.embeddedMap = Map.shareabout({
     map : {
       maxZoom   : window.shareabouts.map_max_zoom,
       minZoom   : window.shareabouts.map_min_zoom,
@@ -165,4 +171,6 @@ $(function() {
 
     e.preventDefault();
   });
+  
+  window.mapLoaded = true;
 });
