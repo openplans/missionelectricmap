@@ -1,0 +1,65 @@
+<div class="feature show">
+
+  <% if admin_signed_in? %>
+    <div class="feature-admin">
+      <%= render "feature_points/admin.html", :feature_point => feature_point %>     
+    </div>
+  <% end %>
+  
+  <%= render "shared/flashes.html" -%>
+
+  <div class="feature-header">
+    <% if feature_point.name.present? %>
+      <h2 class="name"><%= feature_point.name %></h2>
+    <% end %>
+
+    <% if feature_point.user.present? %>
+      <div class="avatar">
+        <%= avatar_for(feature_point.user) %>
+      </div>
+    <% end %>
+
+    <% if feature_point.display_submitter.present? %>
+    <strong class="feature-submitter"><%= feature_point.display_submitter %></strong>
+    <% end %>
+
+    <span class="weak comment-date">
+      <%= t "feature.submitted_by", :in_region => ("in #{feature_point.region.name}" if feature_point.region) %>
+      <%= t "feature.when", :time => l(feature_point.created_at, :format => :just_time), :date => l(feature_point.created_at, :format => :date_long) %>
+    </span>
+  </div>
+
+  <% if feature_point.description.present? %>
+    <div class="description">
+      <%= feature_point.description %>
+    </div>
+  <% end %>
+
+  <% if feature_point.location_type.present? %>
+    <div class="type">
+      <%= image_tag feature_point.location_type.image.url(:icon) if feature_point.location_type.image.present? %>
+      <%= t "feature.purpose", :type => feature_point.location_type.name %>
+    </div>
+  <% end %>
+
+  <div class="discussion">
+    <%= render "shared/discussion.html", :commentable => feature_point %>
+  </div>
+
+</div><!-- end div.feature -->
+
+<div class="social">
+
+  <div class="support">
+    <% if vote = vote_for(feature_point) %>
+      <%= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
+    <% else %>
+      <%= render "votes/new.html", :supportable => feature_point %>
+    <% end %>
+  </div>
+
+  <div class="sharing">
+    <%= render "shared/share.html", :shareable => feature_point %>  
+  </div>
+
+</div><!-- end div.social -->

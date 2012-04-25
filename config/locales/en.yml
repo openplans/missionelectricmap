@@ -1,0 +1,66 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  app_name: Shareabouts
+  map_controls:
+    locate_feature: 'Add a location!'
+    finalize_feature: 'Confirm Location'
+    drag_hint: 'Drag me\! Then click confirm.'
+    drag_hint_long: 'Drag your location to the center of the map'
+  auth:
+    fb_signin: 'Sign in with Facebook'
+    twitter_signin: 'Sign in with Twitter'
+    sign_in: 'sign in with'
+  account:
+    my_points: 'My Points'
+    my_supports: 'Supported'
+  feature:
+    notice:
+      point_added: 'Thank you! Your point was added to the map. Please, share it with your friends.'
+      invalid: 'There are some errors with your point.'
+      out_of_bounds: "Point doesn't fall within the defined regions"
+    form:
+      header: 'Tell us more...'
+      title_label: Location Name
+      description_label: Description...
+      submitter_name_label: 'Your Name'
+      submit: 'Submit Location'
+    purpose: 'This location is a %{type}.'
+    submitted_by: 'added this point %{in_region}'
+    when: 'on %{date} at %{time}'
+    comment: 
+      label: comment
+      action: Comment
+    voter_description: supporter
+    vote_action: 'Support This!'
+    sharing:
+      email:
+        subject: 'I suggested a %{thing}'
+        body: 'Check out the %{thing} I suggested: %{url}'
+      twitter:
+        status: 'Check out this %{thing}! %{url}.'
+  activity:
+    vote:
+      action: supported
+    comment:
+      action: 'commented on'
+    point:
+      action: added
+      indefinite_article: a
+      by_name: "%{name}'s point"
+      in_region: "in %{region}"
+  # Model names and model attribute names
+  activerecord:
+    models:
+      feature_point: point
+      user: someone
+    attributes:
+      feature_point:
+        the_geom: location
+  # Display formats
+  time:
+    formats:
+      display: "%-m/%-d/%Y"
+      date_long: "%B %-d, %Y"
+      just_time: "%l:%M %p"

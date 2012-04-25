@@ -1,0 +1,12 @@
+development:
+  app_id: 176929012401318
+  app_secret: 02211bc2680573e8b80517c06d30b629
+test:
+  app_id: 176929012401318
+  app_secret: 02211bc2680573e8b80517c06d30b629
+staging:
+  app_id: 198920916855554
+  app_secret: 46bbe9740fd7740a7cec2bf36d9f1557
+production:
+  app_id: 226185174135980
+  app_secret: 7a0d4aef0756bebb41d7d2af134e110f

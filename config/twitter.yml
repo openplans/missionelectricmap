@@ -1,0 +1,12 @@
+development:
+  consumer_key: BaI7YYiMGjXzj2FS8z2LZw
+  consumer_secret: cMVWsjENGpoSOoEtSEVuJ5VVSuE90FpVNtP4XL1FYA
+test:
+  consumer_key: BaI7YYiMGjXzj2FS8z2LZw
+  consumer_secret: cMVWsjENGpoSOoEtSEVuJ5VVSuE90FpVNtP4XL1FYA
+staging:
+  consumer_key: V6cYAwCo5cR4uTqYziXg
+  consumer_secret: XaoDLLjO3Q44la5cSFgvY3PrQxLL5IH1gK1CG1UGBKU
+production:
+  consumer_key: rU1tr2BHCab4PQ3kNq4aA
+  consumer_secret: QPpTB9MoURsRiwG5n2aXjiDWTR5F4Cf53yqcEqHGWNs
