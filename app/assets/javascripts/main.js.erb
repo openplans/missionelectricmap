@@ -40,23 +40,6 @@ $(function() {
     shadowSize  : new L.Point(0,0) // no shadow
   });
 
-  // Init the slider for filtering the results by popularity
-  var initPopularitySlider = function(values) {
-    // Popularity Filter
-    $('#map-container').hiderslider({
-      title: 'Filter by Popularity',
-      slider: {
-        max: values.length-1,
-        slide: function(e, data) {
-          Map.shareabout('filterByPopularity', values[data.value]);
-        },
-        change: function(e, data) {
-          Map.shareabout('filterByPopularity', values[data.value]);
-        }
-      }
-    });
-  };
-
   /**
    * @param {L.LatLng} latlng The location to translate to query string
    */
@@ -93,30 +76,12 @@ $(function() {
         if (window.shareabouts && window.shareabouts.initialFeatureId) {
           Map.shareabout("viewFeature", window.shareabouts.initialFeatureId)
         }
-
-        // Popularity slider only shows up on the desktop
-        if ( !Map.shareabout("smallScreen") ) {
-          initPopularitySlider(Map.shareabout('getPopularityStats').uniqueVals);
-        }
       },
       onpopup : function() {
         locate_feature.hide();
         finalize_feature.hide();
-
-        // Hide mobile dropdown menu if visible
-        $('#pages ul').removeClass('active');
-
-        // Init the visibility indicator when the popup content loads
-        setPopupOverflowIndicatorVisibility($('.page, .feature'));
-        // Check to see if the visibility indicator should be shown on scroll
-        $('.page, .feature').scroll(function(e) {
-          var $popupContent = $(this);
-          setPopupOverflowIndicatorVisibility($popupContent);
-        });
       },
       locateNewFeature: function() {
-        // Hide mobile dropdown menu if visible
-        $('#pages ul').removeClass('active');
       }
     },
     // Intial feature to show
@@ -161,16 +126,12 @@ $(function() {
       }
     };
   })();
-  Map.shareabout("addClickEventListenerToPopup", "form[data-behavior=load_result_in_popup] :submit", throttledVoteCallback);
 
   // UI Elements that affect map state
   locate_feature.click( function(event) {
     Map.shareabout("locateNewFeature");
     $(this).hide();
     finalize_feature.show();
-
-    // Reset filtering
-    $('#map-container').hiderslider('reset');
   });
 
   finalize_feature.click( function(event) {
@@ -188,24 +149,6 @@ $(function() {
     });
   });
 
-  // Display static pages in the popup
-  var showPage = function(url) {
-    $.get(url, function(data){
-      Map.shareabout("openPopup", data.view);
-    }, "json");
-  };
-
-  // Display static pages in the popup when a link is clicked
-  pages.click(function(click){
-    click.preventDefault();
-    showPage($(click.target).attr("href"));
-  });
-
-  // Show the welcome page on page load ONLY if not starting with a feature visible
-  if (pages.is('[data-welcome-page]') && !window.shareabouts.feature) {
-    showPage(pages.filter('[data-welcome-page]').attr("href"));
-  }
-
   // Focus the permalink text on focus
   $(document).on('focus', '.copy-link', function(){
     this.select();
@@ -222,46 +165,4 @@ $(function() {
 
     e.preventDefault();
   });
-
-  // Desktop only
-  if ( !Map.shareabout("smallScreen") ) {
-    // Start the ticker
-    $("#ticker").activityticker({
-      url    : "<%= url_help.activity_index_path %>",
-      toggle : function(e){
-        $("#content").toggleClass("ticker_on");
-      },
-      click: function(e, ui) {
-        e.preventDefault();
-        Map.shareabout('viewFeature', ui.featureId);
-
-        // Reset filtering
-        $('#map-container').hiderslider('reset');
-      }
-    });
-  }
-
-  // Show the hidden comment form
-  $(".reply-link").live("click", function(e) {
-    $("#reply").removeClass("hide");
-  });
-
-  // Toggle the mobile nav menu
-  $('#pages').click(function(){
-    $('#pages ul').toggleClass('active');
-  });
-
-  // Sets the visibility of the overflow indicator in the popup
-  function setPopupOverflowIndicatorVisibility($popupContent) {
-    var el = $popupContent.get(0),
-        padding = 10;
-
-    // Only show the indicator if...
-    $('.information-panel').toggleClass('overflowing', (
-      // ...this is scrollable
-      el.clientHeight < el.scrollHeight &&
-      // ...and we are not at the bottom
-      ($popupContent.scrollTop() + padding) < el.scrollHeight - el.clientHeight
-    ));
-  }
 });

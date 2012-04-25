@@ -30,28 +30,6 @@
 </head>
 <body>
   <div id="wrapper">
-    <header id="header" role="banner">
-      <hgroup>
-        <h1 id="site-title"><span><%= link_to t("app_name"), root_path %></span></h1>
-      </hgroup>
-      <nav id="pages" role="navigation">
-        <ul>
-          <% for page in Page.published %>
-          <li>
-            <%= link_to page.title, page_path(page), page_link_attributes(page) %>
-          </li>
-          <% end %>
-        </ul>
-      </nav>
-      <nav id="access" role="navigation">
-        <% if current_user %>
-        <%= render "shared/account" %>
-        <% else %>
-          <span><%= t("auth.sign_in") %></span>
-          <%= render "shared/sign_in" %>
-        <% end %>
-      </nav>
-    </header>
     <div id="content">
       <%= yield %>  
     </div>

@@ -1,7 +1,7 @@
 # RVM bootstrap
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'rvm/capistrano'
-set :rvm_ruby_string, '1.9.2-p290'
+set :rvm_ruby_string, '1.9.2-p320'
 
 # bundler bootstrap
 require 'bundler/capistrano'
@@ -14,7 +14,7 @@ require 'capistrano/ext/multistage'
 require 'delayed/recipes'
 
 # main details
-set :application, "shareabouts"
+set :application, "missionelectricmap"
 
 set(:domain) { "#{domain}" }
 role(:web) { domain }
@@ -28,7 +28,7 @@ set :use_sudo, false
 
 # repo details
 set :scm, :git
-set :repository, "git@github.com:openplans/shareabouts.git"
+set :repository, "git@github.com:openplans/missionelectricmap.git"
 set :git_enable_submodules, 1
 set :deploy_via, :remote_cache
 
@@ -57,6 +57,15 @@ namespace :deploy do
   
   task :write_tag_file do
     put "#{branch}\n", File.join(release_path, 'TAG'), :roles => :app
+  end
+end
+
+namespace :db do
+  desc "Create Production Database"
+  task :create do
+    puts "\n\n=== Creating the #{default_stage} Database! ===\n\n"
+    run "cd #{current_path}; rake db:create RAILS_ENV=#{default_stage}"
+    system "cap deploy:set_permissions"
   end
 end
 
