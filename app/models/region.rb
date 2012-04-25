@@ -4,9 +4,9 @@
 
 class Region < ActiveRecord::Base
   
-  belongs_to :shapefile
   has_many   :feature_regions
   has_many   :feature_points, :through => :feature_regions, :source => :feature, :source_type => 'FeaturePoint'
+  belongs_to :shapefile, :inverse_of => :regions
   
   validates :shapefile, :presence => true
   validates :the_geom, :presence => true
@@ -17,6 +17,14 @@ class Region < ActiveRecord::Base
   
   def display_name
     "#{kind} - #{name}"
+  end
+  
+  def kind
+    shapefile.kind
+  end
+  
+  def name
+    metadata[shapefile.name_field]
   end
   
   def default?

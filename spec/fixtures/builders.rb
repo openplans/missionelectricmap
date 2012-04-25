@@ -112,8 +112,7 @@ Fixjour :verify => false do
     klass.new({
       :kind => Faker::Lorem.words,
       :name_field => Faker::Internet.domain_word,
-      :data => File.new(Rails.root + 'spec/fixtures/nybb_10cav.zip'),
-      :shape_type => Shapefile::ShapeTypes.first
+      :data => File.new(Rails.root + 'spec/fixtures/nybb_10cav.zip')
     })
   end
 end

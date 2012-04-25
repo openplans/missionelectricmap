@@ -1,11 +1,7 @@
 require 'spec_helper'
 
 describe FeaturePolygon do
-  it { should belong_to(:shapefile) }
   it { should belong_to(:profile) }
-  it { should have_one(:user) }
-  
-  it { should validate_presence_of(:shapefile) }
   
   describe "a feature_polygon" do
     context "when setting the_geom_from_points" do

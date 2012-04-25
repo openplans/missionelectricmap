@@ -9,11 +9,8 @@ class FeaturePolygon < ActiveRecord::Base
 
   scope :visible, where(:visible => true)
   
-  belongs_to :shapefile
   belongs_to :profile
   has_one    :user, :through => :profile
-  
-  validates :shapefile, :presence => true
   
   has_attached_file :shapefile # zip file
   validates_attachment_content_type :shapefile, :content_type => "application/zip", :if => :attachment_present?

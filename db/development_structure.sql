@@ -9950,7 +9950,6 @@ CREATE TABLE feature_polygons (
     workflow_state character varying(255),
     job_error text,
     profile_id integer,
-    shapefile_id integer,
     CONSTRAINT enforce_dims_the_geom CHECK ((st_ndims(the_geom) = 2)),
     CONSTRAINT enforce_geotype_the_geom CHECK (((geometrytype(the_geom) = 'MULTIPOLYGON'::text) OR (the_geom IS NULL))),
     CONSTRAINT enforce_srid_the_geom CHECK ((st_srid(the_geom) = 4326))
@@ -10249,8 +10248,6 @@ CREATE TABLE regions (
     the_geom geometry,
     shapefile_id integer,
     metadata text,
-    kind character varying(255),
-    name character varying(255),
     CONSTRAINT enforce_dims_the_geom CHECK ((st_ndims(the_geom) = 2)),
     CONSTRAINT enforce_geotype_the_geom CHECK (((geometrytype(the_geom) = 'MULTIPOLYGON'::text) OR (the_geom IS NULL))),
     CONSTRAINT enforce_srid_the_geom CHECK ((st_srid(the_geom) = 4326))
@@ -10301,8 +10298,7 @@ CREATE TABLE shapefiles (
     "default" boolean,
     name_field character varying(255),
     workflow_state character varying(255),
-    job_error text,
-    shape_type character varying(255)
+    job_error text
 );
 
 
@@ -10797,13 +10793,6 @@ CREATE INDEX index_feature_polygons_on_profile_id ON feature_polygons USING btre
 
 
 --
--- Name: index_feature_polygons_on_shapefile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_feature_polygons_on_shapefile_id ON feature_polygons USING btree (shapefile_id);
-
-
---
 -- Name: index_feature_polygons_on_the_geom; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -11022,11 +11011,3 @@ INSERT INTO schema_migrations (version) VALUES ('20120321180827');
 INSERT INTO schema_migrations (version) VALUES ('20120326172058');
 
 INSERT INTO schema_migrations (version) VALUES ('20120327195149');
-
-INSERT INTO schema_migrations (version) VALUES ('20120419154329');
-
-INSERT INTO schema_migrations (version) VALUES ('20120419161131');
-
-INSERT INTO schema_migrations (version) VALUES ('20120419181632');
-
-INSERT INTO schema_migrations (version) VALUES ('20120419211040');
