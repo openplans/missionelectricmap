@@ -5,7 +5,7 @@ if (window.console) window.console.log("hello from shareabouts");
 
 // marker click, show something in the popup
 
-$(function(){
+$(function() {
   $("#shareabouts iframe").ready(function(){
     console.log("iframe loaded")
     var intervalId = window.setInterval(function(){
@@ -19,6 +19,7 @@ $(function(){
         window.clearInterval(intervalId);
       }
     },500);
+  });
 });
 
 
