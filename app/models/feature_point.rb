@@ -18,6 +18,8 @@ class FeaturePoint < ActiveRecord::Base
   attr_accessor :found_regions
 
   scope :visible, where(:visible => true)
+  
+  has_attached_file :image, :styles => { :thumb => "120x90#" }
 
   has_many :votes, :as => :supportable, :dependent => :destroy
   has_many :comments, :as => :commentable, :dependent => :destroy, :inverse_of => :commentable

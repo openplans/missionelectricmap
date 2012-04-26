@@ -1,5 +1,4 @@
 <h6 class="discussion-header"><%= pluralize commentable.comments.count, t("feature.comment.label") %></h6>
-<a href="#reply" class="reply-link">Leave a Comment</a>
 <ul>
   <% for comment in commentable.comments %>
     <li class="clearfix">
@@ -18,8 +17,3 @@
     </li>
   <% end %>
 </ul>
-
-<div id="reply"<% if !commentable.comments.present? %>class="hide"<% end %>>
-  <h6 class="reply-header">Leave a Comment</h6>
-  <%= render "comments/new", :commentable => commentable %>
-</div>

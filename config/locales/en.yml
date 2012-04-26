@@ -2,19 +2,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  app_name: Shareabouts
+  app_name: Mission Electric
   map_controls:
     locate_feature: 'Add a location!'
-    finalize_feature: 'Confirm Location'
     drag_hint: 'Drag me\! Then click confirm.'
     drag_hint_long: 'Drag your location to the center of the map'
-  auth:
-    fb_signin: 'Sign in with Facebook'
-    twitter_signin: 'Sign in with Twitter'
-    sign_in: 'sign in with'
-  account:
-    my_points: 'My Points'
-    my_supports: 'Supported'
   feature:
     notice:
       point_added: 'Thank you! Your point was added to the map. Please, share it with your friends.'
@@ -33,7 +25,7 @@ en:
       label: comment
       action: Comment
     voter_description: supporter
-    vote_action: 'Support This!'
+    vote_action: 'Vote'
     sharing:
       email:
         subject: 'I suggested a %{thing}'
@@ -55,6 +47,7 @@ en:
     models:
       feature_point: point
       user: someone
+      vote: vote
     attributes:
       feature_point:
         the_geom: location

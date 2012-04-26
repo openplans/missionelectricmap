@@ -97,6 +97,8 @@ RailsAdmin.config do |config|
       field :location_type do
         searchable
       end
+      field :support_count
+      field :image
       field :profile do
         label 'Contributer'
         searchable [:id, :name]
@@ -105,7 +107,6 @@ RailsAdmin.config do |config|
         label 'Contributer name'
         searchable :submitter_name
       end
-      field :support_count
       field :regions
       field :display_the_geom do
         label 'Location'
@@ -115,9 +116,8 @@ RailsAdmin.config do |config|
     
     show do
       field :visible
-      field :name do
-        label 'Title'
-      end
+      field :name
+      field :image
       field :description
       field :location_type
       field :profile do
@@ -140,9 +140,7 @@ RailsAdmin.config do |config|
       field :id
       field :latitude
       field :longitude
-      field :name do
-        label 'Title'
-      end
+      field :name
       field :description
       field :support_count
       field :profile_id do

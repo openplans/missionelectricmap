@@ -6,60 +6,47 @@
     </div>
   <% end %>
   
-  <%= render "shared/flashes.html" -%>
-
-  <div class="feature-header">
-    <% if feature_point.name.present? %>
-      <h2 class="name"><%= feature_point.name %></h2>
-    <% end %>
-
-    <% if feature_point.user.present? %>
-      <div class="avatar">
-        <%= avatar_for(feature_point.user) %>
-      </div>
-    <% end %>
-
-    <% if feature_point.display_submitter.present? %>
-    <strong class="feature-submitter"><%= feature_point.display_submitter %></strong>
-    <% end %>
-
-    <span class="weak comment-date">
-      <%= t "feature.submitted_by", :in_region => ("in #{feature_point.region.name}" if feature_point.region) %>
-      <%= t "feature.when", :time => l(feature_point.created_at, :format => :just_time), :date => l(feature_point.created_at, :format => :date_long) %>
-    </span>
-  </div>
-
-  <% if feature_point.description.present? %>
-    <div class="description">
-      <%= feature_point.description %>
+  <div id="left">
+    <div class="location_image">
+      <%= image_tag feature_point.image.url(:thumb) if feature_point.image.present? %>
     </div>
-  <% end %>
-
-  <% if feature_point.location_type.present? %>
-    <div class="type">
-      <%= image_tag feature_point.location_type.image.url(:icon) if feature_point.location_type.image.present? %>
-      <%= t "feature.purpose", :type => feature_point.location_type.name %>
+    
+    <div class="support">
+      <% if vote = vote_for(feature_point) %>
+        <%#= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
+      <% else %>
+        <div id="vote_link">
+          <%= link_to t('feature.vote_action'), new_feature_point_vote_path(feature_point) %>
+        </div>
+        <%#= render "votes/new.html", :supportable => feature_point %>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="discussion">
-    <%= render "shared/discussion.html", :commentable => feature_point %>
   </div>
-
+  
+  <div id="center">
+    <h2>
+      <%= pluralize feature_point.votes.count, Vote.model_name.human -%>
+    </h2>
+    <h1>
+      <%= feature_point.name -%>
+    </h1>
+    <p>
+      <strong><%= feature_point.event_time -%></strong>
+    </p>
+    <p>
+      <strong><%= feature_point.address -%></strong>
+    </p>
+    <p>
+      <%= feature_point.description -%>
+    </p>
+    <p>
+      <%= link_to feature_point.event_link if feature_point.event_link.present? -%>
+    </p>
+  </div>
+  
+  <div id="right">
+    <div class="discussion">
+      <%= render "shared/discussion.html", :commentable => feature_point %>
+    </div>
+  </div>
 </div><!-- end div.feature -->
-
-<div class="social">
-
-  <div class="support">
-    <% if vote = vote_for(feature_point) %>
-      <%= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
-    <% else %>
-      <%= render "votes/new.html", :supportable => feature_point %>
-    <% end %>
-  </div>
-
-  <div class="sharing">
-    <%= render "shared/share.html", :shareable => feature_point %>  
-  </div>
-
-</div><!-- end div.social -->
