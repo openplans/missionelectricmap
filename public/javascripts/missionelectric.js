@@ -19,7 +19,6 @@ $(function(){
         window.clearInterval(intervalId);
       }
     },500);
-  });
 });
 
 

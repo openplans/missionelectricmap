@@ -45,11 +45,9 @@ $.widget("ui.shareabout", (function() {
       var self = this;
 
       layersOnMap = {};
-      map      = new L.Map( this.element.attr("id"), this.options.map );
-      popup    = new InformationPanel({
-        onRemove : function() { self._resetState(); },
-        onOpen   : self.options.callbacks.onpopup
-      });
+      map      = new L.Map( this.element.attr("id"), this.options.map );      
+      popup    = $("#popup", window.parent.document);
+      // parent.popupdiv = popup;
 
       this.hint       = new Hint(this.element, map);
       this.newFeature = new L.Marker(this.options.map.center, {
@@ -72,7 +70,7 @@ $.widget("ui.shareabout", (function() {
         if (e.layer == self.newFeature) self.newFeature._visible = false;
       });
       map.on('layeradd', function(e){ if (e.layer == self.newFeature) self.newFeature._visible = true; });
-      map.on('click', function(e){ self._removePopup(); });
+      map.on('click', function(e){ self._resetState(); });
       map.on('drag', function(drag) {
         self.hint.remove();
       } );
@@ -176,14 +174,14 @@ $.widget("ui.shareabout", (function() {
       }
     },
 
-    /**
-     * Add a click listener within the map popup.
-     * @param {String} selector CSS selector (within popup) to element(s) on which to add listener.
-     * @param {function} callback function to be called on click of selected element
-     */
-    addClickEventListenerToPopup : function(selector, callback) {
-      popup.addClickEventListener(selector, callback);
-    },
+    // /**
+    //      * Add a click listener within the map popup.
+    //      * @param {String} selector CSS selector (within popup) to element(s) on which to add listener.
+    //      * @param {function} callback function to be called on click of selected element
+    //      */
+    //     addClickEventListenerToPopup : function(selector, callback) {
+    //       popup.addClickEventListener(selector, callback);
+    //     },
 
     addMapFeature: function(feature){
       markerLayer = new L.Marker(
@@ -278,24 +276,15 @@ $.widget("ui.shareabout", (function() {
 
       // Internal helper function
       var openPopup = function(featureOnMap) {
-        var resource_path;
+        var resource_path = self.options.featureUrl.replace(/FEATURE_ID/, fId);
+        $.get( resource_path, function(data){
+          self._openPopupWith( featureOnMap, data.view);
 
-        // Does the marker have content already? Does this mean the current
-        // marker?
-        if (featureOnMap._html) {
-          self._openPopupWith( featureOnMap );
-        } else {
-          // No? Okay, go get it
-          resource_path = self.options.featureUrl.replace(/FEATURE_ID/, fId);
-          $.get( resource_path, function(data){
-            self._openPopupWith( featureOnMap, data.view);
-
-            // Update the url
-            if (window.history && window.history.pushState) {
-              window.history.pushState(null, null, resource_path);
-            }
-          }, "json");
-        }
+          // Update the url
+          if (window.history && window.history.pushState) {
+            window.history.pushState(null, null, resource_path);
+          }
+        }, "json");
       };
 
       // If the marker is on the map, then open the popup!
@@ -412,34 +401,34 @@ $.widget("ui.shareabout", (function() {
       }, ms);
     },
 
-    // Centers the map at a point that will center the actual point of interest in the visible view
-    _scrollViewTo : function(latLng) {
-      var mapWidth  = this.element[0].offsetWidth,
-          mapHeight = this.element[0].offsetHeight,
-          pos       = map.latLngToLayerPoint(latLng);
-
-      if (this.smallScreen()) {
-        var ratioY = -0.42; // percentage of map height between map center and focal point, hard coded bad
-        map.panTo(map.layerPointToLatLng( new L.Point(pos.x, pos.y + ratioY * mapHeight ) ));
-      } else {
-        var ratioX = 1/4; // percentage of map width between map center and focal point, hard coded bad
-        map.panTo(map.layerPointToLatLng( new L.Point(pos.x + ratioX * mapWidth, pos.y) ));
-      }
-    },
+    // // Centers the map at a point that will center the actual point of interest in the visible view
+    // _scrollViewTo : function(latLng) {
+    //   var mapWidth  = this.element[0].offsetWidth,
+    //       mapHeight = this.element[0].offsetHeight,
+    //       pos       = map.latLngToLayerPoint(latLng);
+    // 
+    //   if (this.smallScreen()) {
+    //     var ratioY = -0.42; // percentage of map height between map center and focal point, hard coded bad
+    //     map.panTo(map.layerPointToLatLng( new L.Point(pos.x, pos.y + ratioY * mapHeight ) ));
+    //   } else {
+    //     var ratioX = 1/4; // percentage of map width between map center and focal point, hard coded bad
+    //     map.panTo(map.layerPointToLatLng( new L.Point(pos.x + ratioX * mapWidth, pos.y) ));
+    //   }
+    // },
 
     // Opens the popup for the layer, populated with content.
     _openPopupWith : function(layer, content) {
-      popup.setContent(content || layer._html);
+      popup.html(content);
 
-      this._scrollViewTo( layer.getLatLng() );
+      map.panTo( layer.getLatLng() );
       if (layer._icon) {
         this._setFocusedIcon(layer);
       }
 
       var self = this;
       window.setTimeout(function(){ // the map takes time to pan
-        popup.positionFor(self.smallScreen(), $(layer._icon));
-        popup.open();
+        // popup.positionFor(self.smallScreen(), $(layer._icon));
+        popup.show();
       }, 400);
     },
 
@@ -463,15 +452,12 @@ $.widget("ui.shareabout", (function() {
     },
 
     _removePopup : function() {
-      if (popup._opened()) popup.remove();
+      popup.hide();
     },
 
     _setupMarker : function(marker, properties) {
       var shareabout = this,
           fId = properties.id;
-
-      if (this.options.featurePopupTemplate)
-        marker._html = $.mustache( this.options.featurePopupTemplate, properties );
 
       marker._id = fId;
       marker.on("click", function(click){
