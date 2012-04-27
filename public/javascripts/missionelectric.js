@@ -16,11 +16,11 @@ $(function() {
           data        : $form.serialize(), 
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true
-        }).complete(function(data) {   
-          var responseJSON = eval('(' + data.responseText + ')');      
-          done = true; 
-          $("#popup").html(responseJSON.view);
+          crossDomain : true,
+          success : function(data) {   
+            done = true; 
+            $("#popup").html(data.view);
+          }
         }); 
       }
     };
