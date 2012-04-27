@@ -1,4 +1,8 @@
 module ApplicationHelper
+  
+  def path_to_url(path)
+    request.protocol + request.host_with_port + path
+  end
 
   def vote_for(supportable)
     if current_user

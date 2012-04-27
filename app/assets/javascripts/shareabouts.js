@@ -428,7 +428,7 @@ $.widget("ui.shareabout", (function() {
       var self = this;
       window.setTimeout(function(){ // the map takes time to pan
         // popup.positionFor(self.smallScreen(), $(layer._icon));
-        popup.show();
+        popup.addClass("visible");
       }, 400);
     },
 
@@ -452,7 +452,7 @@ $.widget("ui.shareabout", (function() {
     },
 
     _removePopup : function() {
-      popup.hide();
+      popup.removeClass("visible");
     },
 
     _setupMarker : function(marker, properties) {
