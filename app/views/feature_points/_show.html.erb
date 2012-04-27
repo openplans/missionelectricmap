@@ -16,13 +16,7 @@
         <%#= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
       <% else %>
         <div id="vote_link">
-          <%= form_for [feature_point, feature_point.votes.new], :url => feature_point_votes_url(feature_point), :html => { :class => "vote", "data-behavior" => "load_result_in_popup" } do |form| %>
-            <button type="submit">
-              <div>
-                <%= t 'feature.vote_action' %>
-              </div>
-            </button>
-          <% end %>
+          <%= render "votes/new.html", :supportable => feature_point %>
         </div>
       <% end %>
     </div>

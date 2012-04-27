@@ -1,10 +1,6 @@
 // subdomain XSF workaround
 document.domain = "openplans.org";
 
-if (window.console) window.console.log("hello from shareabouts");
-
-// marker click, show something in the popup
-
 $(function() {
   var throttledVoteCallback = (function() {
     var done = true;
@@ -13,47 +9,19 @@ $(function() {
       
       if (done) {
         done = false;
-        var $form = $(submitEvent.target),
-            $button = $('button', $form),
-            $label = $('.vote-label', $form.closest(".feature")),
-            votes = parseInt($label.text(), 10);
+        var $form = $(submitEvent.target);
         
-        // Update the state of the button right away
-        votes++;
-        $button.toggleClass('supported');
-        $label.text(votes);
-        
-        
-        $.ajax({
-            url: $form.attr("action") + "?jsonpcallback=?" + $form.serialize(),
-            dataType: "jsonp",
-            type : 'post',
-            processData: false,
-            crossDomain: true,
-            // contentType: "application/json",
-            // jsonp: false,
-            success: function(data) {
-              done = true; 
-              $("#popup").html(data.view)
-            }
-        });
-        
-        // $.ajax( {
-        //   url : $form.attr("action"), 
-        //   data : , 
-        //   type : 'POST',
-        //   dataType : "jsonp",
-        //   beforeSend: function(xhr){
-        //     xhr.withCredentials = true;
-        //   },
-        //   xhrFields: {
-        //     withCredentials: true
-        //   },
-        //   crossDomain: true
-        // }).complete(function(data) { 
-        //   done = true; 
-        //   $("#popup").html(data.view)
-        // });
+        $.ajax( {
+          url         : $form.attr("action"), 
+          data        : $form.serialize(), 
+          type        : 'POST',
+          dataType    : "json",
+          crossDomain : true
+        }).complete(function(data) {   
+          var responseJSON = eval('(' + data.responseText + ')');      
+          done = true; 
+          $("#popup").html(responseJSON.view);
+        }); 
       }
     };
   })();
@@ -76,10 +44,6 @@ $(function() {
       }
     },500);
   });
-  
-  // Throttle vote click, load result in popup
-  // $("#popup #new_vote :submit").live("click",function(){alert("dfjhdkf")});
-  // $("#new_vote").live("submit", function(){ alert("Goodbye!"); });                // jQuery 1.3+
   
   $("#new_vote").live("submit", throttledVoteCallback);
   $("#popup .close").live("click", closePopup);

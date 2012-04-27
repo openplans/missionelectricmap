@@ -8,14 +8,17 @@ Shareabouts::Application.routes.draw do
   
   devise_for :admins, :path => "authmin" # silly path due to conflict with rails_admin path
 
+  match '/locations/:feature_point_id/votes', :controller => 'votes', :action => 'options', :constraints => {:method => 'OPTIONS'}
+  
   resources :feature_points, :path => 'locations', :only => [:new, :create, :index, :show, :update] do
     resources :votes, :only => [:create, :destroy]
+    
     resources :comments, :only => [:create]
     collection do
       get 'within_region'
     end
   end
-  
+    
   resources :feature_polygons, :path => 'areas', :only => [:index]
   
   resources :regions, :only => [:index] do
