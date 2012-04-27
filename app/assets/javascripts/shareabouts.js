@@ -70,7 +70,7 @@ $.widget("ui.shareabout", (function() {
         if (e.layer == self.newFeature) self.newFeature._visible = false;
       });
       map.on('layeradd', function(e){ if (e.layer == self.newFeature) self.newFeature._visible = true; });
-      map.on('click', function(e){ self.resetState(); });
+      // map.on('click', function(e){ self.resetState(); });
       map.on('drag', function(drag) {
         self.hint.remove();
       } );
