@@ -70,7 +70,7 @@ $.widget("ui.shareabout", (function() {
         if (e.layer == self.newFeature) self.newFeature._visible = false;
       });
       map.on('layeradd', function(e){ if (e.layer == self.newFeature) self.newFeature._visible = true; });
-      map.on('click', function(e){ self._resetState(); });
+      map.on('click', function(e){ self.resetState(); });
       map.on('drag', function(drag) {
         self.hint.remove();
       } );
@@ -445,7 +445,7 @@ $.widget("ui.shareabout", (function() {
       }
     },
 
-    _resetState : function() {
+    resetState : function() {
       if (fsm.is("ready")) this.options.callbacks.onready();
       else if (fsm.can("ready")) fsm.ready();
       else if (fsm.can("cancel")) fsm.cancel();

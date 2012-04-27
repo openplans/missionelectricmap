@@ -54,7 +54,7 @@ $(function() {
   };
 
   // Initialize shareabouts map
-  window.embeddedMap = Map.shareabout({
+  Map.shareabout({
     map : {
       maxZoom   : window.shareabouts.map_max_zoom,
       minZoom   : window.shareabouts.map_min_zoom,
@@ -149,5 +149,11 @@ $(function() {
     e.preventDefault();
   });
   
+  window.mapWrap = (function(){
+    return function(method){
+      Map.shareabout(method);
+    }
+  })();
+    
   window.mapLoaded = true;
 });
