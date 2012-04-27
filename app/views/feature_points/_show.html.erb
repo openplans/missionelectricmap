@@ -6,7 +6,7 @@
     </div>
   <% end %>
   
-  <div id="left">
+  <div id="left" class="column">
     <div class="location_image">
       <%= image_tag path_to_url(feature_point.image.url(:thumb)) if feature_point.image.present? %>
     </div>
@@ -28,7 +28,7 @@
     </div>
   </div>
   
-  <div id="center">
+  <div id="center" class="column">
     <h2>
       <span class="vote-label">
         <%= feature_point.votes.count -%>
@@ -52,7 +52,7 @@
     </p>
   </div>
   
-  <div id="right">
+  <div id="right" class="column">
     <div class="discussion">
       <%= render "shared/discussion.html", :commentable => feature_point %>
     </div>
