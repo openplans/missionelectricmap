@@ -4,10 +4,10 @@
     <input type="text" class="copy-link" value="<%= feature_point_url(shareable) %>"></input>
   </li>
   <li>
-    <%= tweet t("feature.sharing.twitter.status", :thing => shareable.class.model_name.human, :url => feature_point_url(shareable)) -%>
+    <%= tweet t("feature.sharing.twitter.status", :thing => FeaturePoint.model_name.human, :url => feature_point_url(shareable)) -%>
   </li>
   <li>
-    <%= mail_to "", "email", :subject => t("feature.sharing.email.subject", :thing => shareable.class.model_name.human), :body => t("feature.sharing.email.body", :thing => shareable.class.model_name.human, :url => feature_point_url(shareable)), :class => "email" -%>
+    <%= mail_to "", "email", :subject => t("feature.sharing.email.subject", :thing => FeaturePoint.model_name.human), :body => t("feature.sharing.email.body", :thing => FeaturePoint.model_name.human, :url => feature_point_url(shareable)), :class => "email" -%>
   </li>
   <li>
     <%= facebook_share_feature shareable -%>

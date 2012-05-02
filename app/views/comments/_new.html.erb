@@ -1,19 +1,24 @@
+<p class="message"><%= message %></p>
 <%= form_for @comment, :url => feature_point_comments_url(@comment.commentable), :html => { "data-behavior" => "load_result_in_popup" } do |form| %>
   <div class="clearfix">
-    <%= form.fields_for :profile, @comment.profile do |profile_fields| %>
-      <div class="name">
-        <%= profile_fields.label :name, t( "feature.comment.name_label"), :class => "required" %>
-        <%= profile_fields.text_field :name %>
-      </div>
-      <div class="email">
-        <%= profile_fields.label :email, t( "feature.comment.email_label"), :class => "required" %>
-        <%= profile_fields.text_field :email %>
-      </div>
-    <% end %>
+    <div class="name">
+      <%= form.label :submitter_name, t( "feature.comment.name_label"), :class => "required" %>
+      <%= form.text_field :submitter_name %>
+    </div>
+    <div class="email">
+      <%= form.label :submitter_email, t( "feature.comment.email_label"), :class => "required" %>
+      <%= form.text_field :submitter_email %>
+    </div>
   </div>
-  <div class="clearfix comment">
-    <%= form.label :comment, t( "feature.comment.comment_label" ) %>
-    <%= form.text_field :comment %>
+  <div class="clearfix">
+    <div class="comment">
+      <%= form.label :comment, t( "feature.comment.comment_label" ) %>
+      <%= form.text_field :comment %>
+    </div>
+    <p><span>140</span> character<span class="s">s</span> left.
   </div>
+  
   <%= form.submit t("feature.comment.submit_label") %>
 <% end %>
+
+<%= link_to "Skip to next step", share_feature_point_url(@comment.commentable), "data-behavior" => "load_result_in_popup" %>

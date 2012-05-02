@@ -32,6 +32,47 @@ $(function() {
     };
   })();
   
+  // Throttles an ajax post
+  var throttledCallback = (function() {
+    var perform = true;
+    return function(submitEvent, target){
+      submitEvent.preventDefault();
+      
+      if (perform) {
+        perform = false;
+        var $form = $(submitEvent.target);
+        
+        $.ajax( {
+          url         : $form.attr("action"), 
+          data        : $form.serialize(), 
+          type        : 'POST',
+          dataType    : "json",
+          crossDomain : true,
+          success : function(data) {   
+            perform = true; 
+            $("#popup #right").html(data.view);
+          }
+        });
+      }
+    };
+  })();
+  
+  var loadLinkInPopup = function(clickEvent) {
+    console.log(clickEvent)
+    clickEvent.preventDefault();
+    
+    $.ajax( {
+      url         : $(clickEvent.target).attr("href"), 
+      type        : 'GET',
+      dataType    : "json",
+      crossDomain : true,
+      success : function(data) {   
+        perform = true; 
+        $("#popup #right").html(data.view);
+      }
+    });
+  };
+  
   var closePopup = function(clickEvent) {
     clickEvent.preventDefault();
     $("#popup").removeClass("visible");
@@ -50,7 +91,9 @@ $(function() {
   });
   
   $("#new_vote").live("submit", throttledVoteCallback);
+  $("#new_comment").live("submit", throttledCallback);
   $("#popup .close").live("click", closePopup);
+  $("#popup a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
 });
 
 

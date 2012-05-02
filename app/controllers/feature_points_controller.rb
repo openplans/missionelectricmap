@@ -3,6 +3,13 @@ class FeaturePointsController < ApplicationController
   before_filter :ignore_feature_location_type_fields_if_empty, :find_or_create_profile, :only => :create  
   before_filter :set_cache_buster, :only => :show # for IE8
   
+  def share
+    authorize_for_domains
+    render :json => {
+      :view => render_to_string(:partial => "shared/share.html", :locals => {:shareable => @feature_point})
+    }
+  end
+  
   def index
     respond_to do |format|
       format.html

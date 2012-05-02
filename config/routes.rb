@@ -17,6 +17,9 @@ Shareabouts::Application.routes.draw do
     collection do
       get 'within_region'
     end
+    member do
+      get 'share'
+    end
   end
     
   resources :feature_polygons, :path => 'areas', :only => [:index]

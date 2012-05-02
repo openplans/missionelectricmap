@@ -26,6 +26,7 @@ en:
       email_label: 'Your Email' #
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
+      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
     voter_description: supporter
     vote_action: 'Vote'
     sharing:

@@ -7,19 +7,27 @@ class CommentsController < ApplicationController
     @comment = Comment.new :profile => (current_profile || Profile.new), :commentable => @commentable
     
     render :json => {
-      :view => render_to_string(:partial => "comments/new.html", :locals => { :commentable => @commentable }) 
+      :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote") }) 
     }
   end
   
   def create
-    @comment = @commentable.comments.create params[:comment].merge(:profile => @profile)    
+    authorize! :create, Comment
+    authorize_for_domains
+     
+    @comment = @commentable.comments.new params[:comment].merge(:profile_id => @profile.id)    
     
-    respond_to do |format|
-      format.json { 
-        render :json => {
-          :comment => @comment.as_json, 
-          :view => render_to_string(:partial => "#{commentable_class.tableize}/show.html", :locals => { commentable_class.underscore.to_sym => @commentable }) 
-        }
+    if @comment.valid?
+      @comment.save if @comment.comment.present?
+      # TODO sign up for mailing list
+      @profile.update_attributes :name => @comment.submitter_name, :email => @comment.submitter_email unless @profile.new_record?
+      
+      render :json => {
+        :view => render_to_string(:partial => "shared/share.html", :locals => { :shareable => @commentable }) 
+      }
+    else
+      render :json => {
+        :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote") }) 
       }
     end
   end

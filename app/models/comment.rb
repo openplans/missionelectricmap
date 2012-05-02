@@ -9,10 +9,12 @@ class Comment < ActiveRecord::Base
   has_many   :activity_items, :as => :subject, :inverse_of => :subject, :dependent => :destroy
   
   validates :commentable, :presence => true
-  validates :comment, :presence => true
+  # validates :comment, :presence => true #not required if registering for list, super hacky, we never actually save these
   
-  accepts_nested_attributes_for :profile
+  validates :submitter_name, :presence => true
+  validates :submitter_email, :presence => true, :email_format => true  
   
+    
   def display_submitter
     profile.try(:name) || submitter_name
   end
