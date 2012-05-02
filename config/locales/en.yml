@@ -16,14 +16,16 @@ en:
       header: 'Tell us more...'
       title_label: Location Name
       description_label: Description...
-      submitter_name_label: 'Your Name'
+
       submit: 'Submit Location'
     purpose: 'This location is a %{type}.'
     submitted_by: 'added this point %{in_region}'
     when: 'on %{date} at %{time}'
     comment: 
-      label: comment
-      action: Comment
+      name_label: 'Your Name' #
+      email_label: 'Your Email' #
+      comment_label: 'Why should others vote for this location? (optional)' #
+      submit_label: Submit #
     voter_description: supporter
     vote_action: 'Vote'
     sharing:

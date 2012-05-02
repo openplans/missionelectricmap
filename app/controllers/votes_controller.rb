@@ -5,6 +5,8 @@ class VotesController < ApplicationController
     
   def create
     
+    authorize! :create, Vote
+    
     if access_allowed?      
       set_access_control_headers
       head :created
@@ -13,11 +15,12 @@ class VotesController < ApplicationController
     end
     
     @vote = @supportable.votes.create :profile => @profile
-    
     store_vote_in_cookie @vote
     
+    @comment = @supportable.comments.create :profile => @profile
+    
     render :json => {
-      :view => render_to_string(:partial => "#{supportable_class.tableize}/show.html", :locals => { supportable_class.underscore.to_sym => @supportable }) 
+      :view => render_to_string(:partial => "comments/new.html") 
     }
   end
   

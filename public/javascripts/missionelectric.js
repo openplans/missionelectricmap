@@ -2,13 +2,14 @@
 document.domain = "openplans.org";
 
 $(function() {
+  // Throttles vote, and performs request, loads in popup
   var throttledVoteCallback = (function() {
-    var done = true;
+    var perform = true;
     return function(submitEvent, target){
       submitEvent.preventDefault();
       
-      if (done) {
-        done = false;
+      if (perform) {
+        perform = false;
         var $form = $(submitEvent.target);
         
         $.ajax( {
@@ -18,10 +19,15 @@ $(function() {
           dataType    : "json",
           crossDomain : true,
           success : function(data) {   
-            done = true; 
-            $("#popup").html(data.view);
+            perform = true; 
+            
+            // If new comment form has not yet been rendered, render returned form now
+            if ( $("#popup #right .new_comment").length == 0 ) $("#popup #right").html(data.view);
           }
-        }); 
+        });
+        
+        // if the new comment form has been loaded (after the location info was loaded), show it
+        if ( window.map.mapWrap("getNewCommentForm") ) window.map.mapWrap("showNewComment");
       }
     };
   })();
@@ -36,9 +42,7 @@ $(function() {
   $("#shareabouts iframe").ready(function(){
     var intervalId = window.setInterval(function(){
       try {
-        if (window.map.mapLoaded) {
-          window.clearInterval(intervalId);
-        };
+        if (window.map.mapLoaded) window.clearInterval(intervalId);
       } catch(err) {
         window.clearInterval(intervalId);
       }

@@ -1,15 +1,19 @@
-<%= form_for Comment.new(:commentable_id => commentable.id, :commentable_type => commentable.class.to_s), 
-  :url => commentable_comments_path(commentable), :html => { "data-behavior" => "load_result_in_popup" } do |form| %>
-  <%= render "shared/signed_in.html" if current_user %>
-  <div>
-    <%= form.label :comment %>
-    <%= form.text_area :comment, :rows => 4 %>
+<%= form_for @comment, :url => feature_point_comments_url(@comment.commentable), :html => { "data-behavior" => "load_result_in_popup" } do |form| %>
+  <div class="clearfix">
+    <%= form.fields_for :profile, @comment.profile do |profile_fields| %>
+      <div class="name">
+        <%= profile_fields.label :name, t( "feature.comment.name_label"), :class => "required" %>
+        <%= profile_fields.text_field :name %>
+      </div>
+      <div class="email">
+        <%= profile_fields.label :email, t( "feature.comment.email_label"), :class => "required" %>
+        <%= profile_fields.text_field :email %>
+      </div>
+    <% end %>
   </div>
-  <% if !current_user %>
-    <div>
-      <%= form.label :submitter_name, t("feature.form.submitter_name_label") %>
-      <%= form.text_field :submitter_name, :placeholder => t("feature.form.submitter_name_label") %>
-    </div>
-  <% end %>
-  <%= form.submit t("feature.comment.action") %>
+  <div class="clearfix comment">
+    <%= form.label :comment, t( "feature.comment.comment_label" ) %>
+    <%= form.text_field :comment %>
+  </div>
+  <%= form.submit t("feature.comment.submit_label") %>
 <% end %>

@@ -1,3 +1,4 @@
+<% if commentable.comments.count > 0 %>
 <h6 class="discussion-header"><%= pluralize commentable.comments.count, t("feature.comment.label") %></h6>
 <ul>
   <% for comment in commentable.comments %>
@@ -17,3 +18,4 @@
     </li>
   <% end %>
 </ul>
+<% end %>

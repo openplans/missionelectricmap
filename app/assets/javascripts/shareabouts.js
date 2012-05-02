@@ -262,11 +262,37 @@ $.widget("ui.shareabout", (function() {
     smallScreen : function() {
       return this.element[0].offsetWidth <= 480;
     },
+    
+    showNewComment: function(){
+      popup.find("#right").html(this.newCommentForm);
+      popup.addClass("visible");
+      
+      this.newCommentForm = null;
+    },
+    
+    getNewCommentForm : function () {
+      return this.newCommentForm;
+    },
+    
+    setNewCommentForm : function(html){
+      this.newCommentForm = html;
+    },
 
     /*
      * Private
      */
-
+     
+     _loadNewComment: function(fId) {
+       var self = this;
+       
+       if (self.newCommentForm) return;
+       
+       var resource_path = [self.options.featureUrl.replace(/FEATURE_ID/, fId), "/comments/new"].join("") ;
+       $.get( resource_path, function(data){
+         self.setNewCommentForm(data.view);
+       }, "json");
+     },
+     
     _viewFeature: function(fId) {
       var self = this,
           onMap = !!layersOnMap[fId],
@@ -604,6 +630,7 @@ $.widget("ui.shareabout", (function() {
        */
       fsm.onviewFeature = function(eventName, from, to, fId) {
         shareabout._viewFeature(fId);
+        shareabout._loadNewComment(fId);
       };
 
       fsm.onleaveviewingFeature = function(eventName, from, to) {

@@ -11,6 +11,8 @@ class Comment < ActiveRecord::Base
   validates :commentable, :presence => true
   validates :comment, :presence => true
   
+  accepts_nested_attributes_for :profile
+  
   def display_submitter
     profile.try(:name) || submitter_name
   end

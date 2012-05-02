@@ -23,27 +23,7 @@
   </div>
   
   <div id="center" class="column">
-    <h2>
-      <span class="vote-label">
-        <%= feature_point.votes.count -%>
-      </span> 
-      <%= "#{Vote.model_name.human}#{"s" if feature_point.votes.count != 1}" -%>
-    </h2>
-    <h1>
-      <%= feature_point.name -%>
-    </h1>
-    <p>
-      <strong><%= feature_point.event_time -%></strong>
-    </p>
-    <p>
-      <strong><%= feature_point.address -%></strong>
-    </p>
-    <p>
-      <%= feature_point.description -%>
-    </p>
-    <p>
-      <%= link_to feature_point.event_link if feature_point.event_link.present? -%>
-    </p>
+    <%= render "info.html", :feature_point => feature_point %>
   </div>
   
   <div id="right" class="column">

@@ -1,5 +1,15 @@
 class CommentsController < ApplicationController
-  before_filter :get_commentable, :find_or_create_profile, :only => :create
+  before_filter :get_commentable, :find_or_create_profile
+  
+  def new
+    authorize! :new, Comment
+    
+    @comment = Comment.new :profile => (current_profile || Profile.new), :commentable => @commentable
+    
+    render :json => {
+      :view => render_to_string(:partial => "comments/new.html", :locals => { :commentable => @commentable }) 
+    }
+  end
   
   def create
     @comment = @commentable.comments.create params[:comment].merge(:profile => @profile)    

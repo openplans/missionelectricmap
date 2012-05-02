@@ -13,7 +13,7 @@ Shareabouts::Application.routes.draw do
   resources :feature_points, :path => 'locations', :only => [:new, :create, :index, :show, :update] do
     resources :votes, :only => [:create, :destroy]
     
-    resources :comments, :only => [:create]
+    resources :comments, :only => [:create, :new]
     collection do
       get 'within_region'
     end
