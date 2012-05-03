@@ -10,8 +10,8 @@ $(function() {
       
       if (perform) {
         perform = false;
-        var $form = $(submitEvent.target);
-        
+        var $form = $(submitEvent.target).hide();
+                
         $.ajax( {
           url         : $form.attr("action"), 
           data        : $form.serialize(), 
