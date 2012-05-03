@@ -7,6 +7,7 @@ class MailChimpJob < Struct.new(:opts)
   rescue EOFError => e
     if attempts < 3
       Rails.logger.error("Hominid EOFError, retrying: #{e.message}")
+      sleep(1)
       run_hominid(attempts, &block)
     else
       Rails.logger.error("Give up on EOFError due to more than 3 attempts failed. Opts: #{opts.inspect}")
