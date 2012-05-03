@@ -2,6 +2,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  # consolidating app config to one location
+  config:
+    mailchimp:
+      api_key: "a1b1de964c110fafe7fd09e872c1a0f6-us5" #
+      list_name: "Acme Company Newsletter" #
   app_name: Mission Electric
   map_controls:
     locate_feature: 'Add a location!'

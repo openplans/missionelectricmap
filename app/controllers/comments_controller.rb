@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
     
     if @comment.valid?
       @comment.save if @comment.comment.present?
-      # TODO sign up for mailing list
+      subscribe_to_list(@comment.submitter_name, @comment.submitter_email)
       @profile.update_attributes :name => @comment.submitter_name, :email => @comment.submitter_email unless @profile.new_record?
       
       render :json => {

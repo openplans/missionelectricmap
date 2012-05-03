@@ -4,6 +4,8 @@ gem 'rails', '3.1.4'
 gem 'capistrano'
 gem 'capistrano-ext'
 
+gem 'hominid'
+
 gem 'devise'
 gem 'cancan'
 gem "omniauth-facebook"

@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def subscribe_to_list(name, email)
+    Delayed::Job.enqueue MailChimpJob.new( :action => :subscribe, :name => name, :email => email)
+  end
+  
   def set_access_control_headers 
     headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
     headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
