@@ -32,7 +32,7 @@ module Shareabouts
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
     # Activate observers that should always be running.
-    config.active_record.observers = :activity_observer
+    # config.active_record.observers = :activity_observer
     
     # Dump the schema as sql, not ruby
     config.active_record.schema_format = :sql

@@ -47,17 +47,19 @@ $.widget("ui.activityticker", (function() {
     refresh : function(activity_id) {
       var self = this;
 
-      $.getJSON( this.options.url, function(data) {
-        self.list.prepend(data.responseText);
-        self.vote_count.html(data.vote_count);
-        self.header.show();
+      $.getJSON( this.options.url, 
+        {after:activity_id, limit:this.options.limit},
+        function(data) {
+          self.list.prepend(data.view);
+          self.vote_count.html(data.vote_count);
+          self.header.show();
         
-        var after_id = self.list.find("li:first").data("id");
+          var after_id = self.list.find("li:first").data("id");
 
-        self.timeout = window.setTimeout(function(){
-          self.refresh(after_id);
-        }, self.options.frequency);
-      });
+          self.timeout = window.setTimeout(function(){
+            self.refresh(after_id);
+          }, self.options.frequency);
+        });
     }
   };
 })());

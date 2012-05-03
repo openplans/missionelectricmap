@@ -41,8 +41,7 @@ en:
       twitter:
         status: "Help me electrify this event! %{url}." #
   activity:
-    vote:
-      action: supported
+    vote: 'just voted for %{location}' #
     comment:
       action: 'commented on'
     point:
