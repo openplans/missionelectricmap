@@ -5,6 +5,9 @@ class FeaturePointsController < ApplicationController
   
   def share
     authorize_for_domains
+    
+    @feature_point = FeaturePoint.find params[:id]
+    
     render :json => {
       :view => render_to_string(:partial => "shared/share.html", :locals => {:shareable => @feature_point})
     }

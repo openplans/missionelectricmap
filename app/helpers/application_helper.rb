@@ -36,15 +36,6 @@ module ApplicationHelper
     end
   end
   
-  def tweet(message)
-    link_to "tweet", "https://twitter.com/intent/tweet?source=webclient&text=#{message}", :class => "twitter"
-  end
-  
-  # message is irrelevant for this
-  def facebook_share_feature(feature)
-    link_to "recommend on fb", "https://www.facebook.com/sharer/sharer.php?u=#{feature_point_url(feature)}", :class => "facebook"
-  end
-  
   def page_link_attributes(page)
     page.welcome_page? ? {'data-welcome-page' => true} : {}
   end

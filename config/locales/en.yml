@@ -36,10 +36,10 @@ en:
     vote_action: 'Vote'
     sharing:
       email:
-        subject: 'I suggested a %{thing}'
-        body: 'Check out the %{thing} I suggested: %{url}'
+        subject: 'Help me electrify this event!' #
+        body: 'Please support this event so that it will be electrified! %{url}' #
       twitter:
-        status: 'Check out this %{thing}! %{url}.'
+        status: "Help me electrify this event! %{url}." #
   activity:
     vote:
       action: supported

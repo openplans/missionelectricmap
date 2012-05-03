@@ -1,16 +1,27 @@
-<ul>
-  <li class="copy-link-container">
-    <%= link_to "permalink", feature_point_url(shareable), :class => "link" %>
-    <input type="text" class="copy-link" value="<%= feature_point_url(shareable) %>"></input>
+<ul class="share_links">
+  <li class="facebook">
+    <%= link_to "recommend on facebook", "https://www.facebook.com/sharer/sharer.php?u=UPDATE_URL", 
+      :class => "facebook", 
+      :target => "_blank" -%>
   </li>
-  <li>
-    <%= tweet t("feature.sharing.twitter.status", :thing => FeaturePoint.model_name.human, :url => feature_point_url(shareable)) -%>
+  <li class="twitter">
+    <%= link_to "tweet it", 
+      "https://twitter.com/intent/tweet?source=webclient&text=#{ t("feature.sharing.twitter.status", :url => "UPDATE_URL") }", 
+      :class => "twitter", 
+      :target => "_blank" -%>
   </li>
-  <li>
-    <%= mail_to "", "email", :subject => t("feature.sharing.email.subject", :thing => FeaturePoint.model_name.human), :body => t("feature.sharing.email.body", :thing => FeaturePoint.model_name.human, :url => feature_point_url(shareable)), :class => "email" -%>
+  <li class="email">
+    <%= mail_to "", "email", 
+      :subject => t("feature.sharing.email.subject"), 
+      :body => t("feature.sharing.email.body", :url => "UPDATE_URL"), 
+      :class => "email" -%>
   </li>
-  <li>
-    <%= facebook_share_feature shareable -%>
-  </li>
-
 </ul>
+
+<script type="text/javascript" charset="utf-8">
+  var share_url = [ window.parent.location.href.split("#")[0], "#locations/<%= shareable.id %>"].join("");
+  $(".share_links a").each(function(){
+    var link = $(this);
+    link.attr("href", link.attr("href").replace("UPDATE_URL", share_url));
+  });
+</script>
