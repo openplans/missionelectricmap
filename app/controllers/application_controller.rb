@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
 
 
   def access_allowed?
-    Rails.logger.info "Attempted vote post from #{request.env['HTTP_ORIGIN']}"
+    Rails.logger.info "Attempted access from #{request.env['HTTP_ORIGIN']}"
     
     allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
     
