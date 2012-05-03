@@ -1,9 +1,6 @@
 // subdomain XSF workaround
 document.domain = "openplans.org";
 
-// indicate to parent page when we're done loading
-window.mapLoaded = false;
-
 <% url_help = Shareabouts::Application.routes.url_helpers %>
 
 $(function() {
@@ -150,10 +147,12 @@ $(function() {
   });
   
   window.mapWrap = (function(){
-    return function(method){
-      return Map.shareabout(method);
+    return function(){
+      if (arguments.length == 1) return Map.shareabout(arguments[0]);
+      else Map.shareabout(arguments[0], arguments[1]);
     }
   })();
-    
-  window.mapLoaded = true;
+  
+  // indicate to parent page when we're done loading
+  $("iframe[name=map]", top.document).attr("loaded", true);
 });

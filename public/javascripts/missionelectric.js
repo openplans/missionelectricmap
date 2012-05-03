@@ -57,6 +57,7 @@ $(function() {
     };
   })();
   
+  // Loads the resulting data.view in the popup
   var loadLinkInPopup = function(clickEvent) {
     console.log(clickEvent)
     clickEvent.preventDefault();
@@ -73,17 +74,33 @@ $(function() {
     });
   };
   
+  // Closes the popup and resets the map state
   var closePopup = function(clickEvent) {
     clickEvent.preventDefault();
     $("#popup").removeClass("visible");
     window.map.mapWrap("resetState");
   };
   
-  // When map has been loaded, save shareabouts map to local window var
+  // Callback for when map has loaded
+  // Fires place open if location is specified
+  var afterMapLoad = function() {
+    var hrefParts = window.location.href.split("#");
+    if (hrefParts.length < 2) return;
+    
+    var locationParts = hrefParts[1].split("/");
+    if (locationParts.length < 2) return;
+    
+    window.map.mapWrap("viewFeature", parseInt(locationParts[1], 10)); 
+  };
+  
+  // Calls afterMapLoad when map is ready
   $("#shareabouts iframe").ready(function(){
     var intervalId = window.setInterval(function(){
       try {
-        if (window.map.mapLoaded) window.clearInterval(intervalId);
+        if ( $("iframe[name=map]").attr("loaded") ) { 
+          window.clearInterval(intervalId);
+          afterMapLoad();
+        }
       } catch(err) {
         window.clearInterval(intervalId);
       }
