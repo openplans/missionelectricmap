@@ -19,9 +19,11 @@
 </ul>
 
 <script type="text/javascript" charset="utf-8">
-  var share_url = [ window.parent.location.href.split("#")[0], "%23locations/<%= shareable.id %>"].join("");
-  $(".share_links a").each(function(){
-    var link = $(this);
-    link.attr("href", link.attr("href").replace("UPDATE_URL", share_url));
-  });
+ jQuery(function($){
+   var share_url = [ window.parent.location.href.split("#")[0], "%23locations/<%= shareable.id %>"].join("");
+   $(".share_links a").each(function(){
+     var link = $(this);
+     link.attr("href", link.attr("href").replace("UPDATE_URL", share_url));
+   });
+ });
 </script>

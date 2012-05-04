@@ -1,24 +1,24 @@
 // subdomain XSF workaround
 document.domain = "openplans.org";
 
-$(function() {
-  
+jQuery(function($) {
+
+  if(typeof String.prototype.trim !== 'function') {
+    String.prototype.trim = function() {
+      return this.replace(/^\s+|\s+$/g, ''); 
+    }
+  }
+
   var iframeSrc = $("iframe[name=map]").attr("src");
-  
-  // temp for dev, pull in the two scripts with getScript
-  $.getScript([iframeSrc, "/javascripts/jquery-ui-1.8.18.custom.min.js"].join(""), function(data, textStatus, jqxhr) {
-     $.getScript([iframeSrc, "/javascripts/jquery.activityticker.js"].join(""), function(data, textStatus, jqxhr) {
-       $("#ticker").activityticker({
-         url   : [iframeSrc, "/activity"].join(""),
-         limit : 5, 
-         click : function(e, ui) {
-           e.preventDefault();
-           window.map.mapWrap("viewFeature", ui.featureId);
-         }
-       });
-     });
+  $("#ticker").activityticker({
+    url   : [iframeSrc, "/activity"].join(""),
+    limit : 5, 
+    click : function(e, ui) {
+      e.preventDefault();
+      window.map.mapWrap("viewFeature", ui.featureId);
+    }
   });
-  
+
   
   // Throttles vote, and performs request, loads in popup
   var throttledVoteCallback = (function() {

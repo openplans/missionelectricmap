@@ -1,10 +1,10 @@
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g, ''); 
+    return this.replace(/^\s+|\s+jQuery/g, ''); 
   }
 }
 
-$.widget("ui.activityticker", (function() {
+jQuery.widget("ui.activityticker", (function() {
   return {
     options : {
       url          : "",    // should return HTML of lis, like "<li>thing</li><li>thing2</li>"
@@ -21,22 +21,22 @@ $.widget("ui.activityticker", (function() {
       
       var daysToGo = this.element.find("p.days-to-go").remove().html();
       
-      this.vote_count = $("<li>").addClass("actions");
-      this.header = $("<div>").addClass("head")
-        .append( $("<h3>").text("Recent Votes") )
-        .append( $("<ul>")
+      this.vote_count = jQuery("<li>").addClass("actions");
+      this.header = jQuery("<div>").addClass("head")
+        .append( jQuery("<h3>").text("Recent Votes") )
+        .append( jQuery("<ul>")
           .append( this.vote_count )
-          .append( $("<li>").addClass("days-to-go").html(daysToGo) ) )
+          .append( jQuery("<li>").addClass("days-to-go").html(daysToGo) ) )
         .appendTo(this.element).hide();
       
-      this.list = $( "<ul>" ).addClass("activity_items").appendTo( this.element );
+      this.list = jQuery( "<ul>" ).addClass("activity_items").appendTo( this.element );
       this.refresh();
       this._trigger("toggle"); // Display the ticker
 
       // Bind click event for the ticker links
       this.list.on('click', 'li > a', function(e) {
         self._trigger('click', e, {
-          featureId: parseInt($(this).parent('li').attr('data-feature-id'), 10)
+          featureId: parseInt(jQuery(this).parent('li').attr('data-feature-id'), 10)
         });
       });
     },
@@ -47,19 +47,20 @@ $.widget("ui.activityticker", (function() {
     refresh : function(activity_id) {
       var self = this;
 
-      $.getJSON( this.options.url, 
-        {after:activity_id, limit:this.options.limit},
-        function(data) {
+      jQuery.getJSON( 
+        this.options.url, {
+          after : activity_id, 
+          limit : this.options.limit
+        },function(data) {
           self.list.prepend(data.view);
           self.vote_count.html(data.vote_count);
           self.header.show();
         
-          var after_id = self.list.find("li:first").data("id");
-
           self.timeout = window.setTimeout(function(){
-            self.refresh(after_id);
+            self.refresh(self.list.find("li:first").data("id"));
           }, self.options.frequency);
-        });
+        }
+      );
     }
   };
 })());
