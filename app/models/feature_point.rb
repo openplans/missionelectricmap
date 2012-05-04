@@ -50,6 +50,10 @@ class FeaturePoint < ActiveRecord::Base
       corners[0][0], corners[0][1], corners[1][0], corners[0][1], corners[1][0], corners[1][1], corners[0][0], corners[1][1], corners[0][0], corners[0][1]]
     )
   end
+  
+  def display_event_time
+    "#{event_date} #{event_start_time}"
+  end
 
   def latitude
     return the_geom.y if the_geom

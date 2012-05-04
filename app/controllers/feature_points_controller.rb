@@ -33,6 +33,8 @@ class FeaturePointsController < ApplicationController
   
   def create
     @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile})
+      
+    @feature_point.location_type = LocationType.where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted"))
     
     if @feature_point.save
       find_and_store_vote @feature_point

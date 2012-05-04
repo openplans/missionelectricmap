@@ -111,7 +111,14 @@ $(function() {
   locate_feature.click( function(event) {
     Map.shareabout("locateNewFeature");
     $(this).hide();
-    finalize_feature.show();
+    
+    Map.shareabout("loadNewFeatureForm", {
+      url : '<%= url_help.new_feature_point_path %>'
+    });
+    
+    
+    
+    // finalize_feature.show();
   });
 
   finalize_feature.click( function(event) {

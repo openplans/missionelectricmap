@@ -21,8 +21,8 @@ html, body, #wrapper {
 #footer {
   color: #fff;
   position: absolute;
-  bottom: 50px;
-  left: 40px;
+  top: 200px;
+  right: 200px;
   z-index: 200;
 }
 

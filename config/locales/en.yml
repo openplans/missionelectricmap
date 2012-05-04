@@ -3,30 +3,25 @@
 
 en:
   # consolidating app config to one location
-  config:
-    mailchimp:
+  config: #
+    mailchimp: #
       api_key: "a1b1de964c110fafe7fd09e872c1a0f6-us5" #
       list_name: "Acme Company Newsletter" #
   app_name: Mission Electric
-  map_controls:
-    locate_feature: 'Add a location!'
-    drag_hint: 'Drag me\! Then click confirm.'
-    drag_hint_long: 'Drag your location to the center of the map'
-  feature:
-    notice:
-      point_added: 'Thank you! Your point was added to the map. Please, share it with your friends.'
-      invalid: 'There are some errors with your point.'
-      out_of_bounds: "Point doesn't fall within the defined regions"
-    form:
-      header: 'Tell us more...'
-      title_label: Location Name
-      description_label: Description...
-
-      submit: 'Submit Location'
-    purpose: 'This location is a %{type}.'
-    submitted_by: 'added this point %{in_region}'
-    when: 'on %{date} at %{time}'
-    comment: 
+  feature: #
+    form: #
+      description: "Have a festival, concert, sports event, or other spectacular event you want to see electric vehicles at? Tell us more about it, and why other people should vote for it. Remember that events must be public and you won't be able to edit them after submitting, so craft your pitch carefully." #
+      header: Submit an event to electrify! #
+      title_label: Event Name #
+      address_label: Address #
+      description_label: Event Description #
+      event_link_label: Event url (optional) #
+      image_label: Select an image to add to your event (optional) #
+      day_label: When?
+      start_time_label: Starts
+      end_time_label: Ends
+      submit: Add Event #
+    comment: #
       header: Why people voted for this location #
       label: Comment #
       name_label: 'Your Name' #
@@ -34,23 +29,18 @@ en:
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
       after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
-    voter_description: supporter
-    vote_action: 'Vote'
-    sharing:
-      email:
+    sharing: #
+      email: #
         subject: 'Help me electrify this event!' #
         body: 'Please support this event so that it will be electrified! %{url}' #
-      twitter:
+      twitter: #
         status: "Help me electrify this event! %{url}." #
-  activity:
+    map_controls:
+      locate_feature: 'Add a location!'
+      drag_hint: 'Drag me\! Then click confirm.'
+      drag_hint_long: 'Drag your location to the center of the map'
+  activity: #
     vote: 'just voted for %{location}' #
-    comment:
-      action: 'commented on'
-    point:
-      action: added
-      indefinite_article: a
-      by_name: "%{name}'s point"
-      in_region: "in %{region}"
   # Model names and model attribute names
   activerecord:
     models:

@@ -1,48 +1,70 @@
 <div class="feature new">
-  <h2><%= t("feature.form.header") %></h2>
 
-  <% if @feature_point.errors.present? %>
-    <ul>
-      <% @feature_point.errors.each do | field, message | %>
-        <li><%= "#{"#{field} " unless field == :base }#{message}" %></li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <%= form_for @feature_point do |form| %>
-    <% if !current_user %>
-    <fieldset>
-      <div>
-        <%= form.label :submitter_name, t("feature.form.submitter_name_label") %>
-        <%= form.text_field :submitter_name, :placeholder => t("feature.form.submitter_name_label") %>
-        <p>
-          <span class="sign-in-text">Or <%= t("auth.sign_in") %></span>
-          <%= render "shared/sign_in" %>
-        </p>
-      </div>
-    </fieldset>
-    <% end %>
-    <fieldset>
-      <div>
-        <%= form.label :name, t("feature.form.title_label") %>
-        <%= form.text_field :name, :placeholder => t("feature.form.title_label") %>
-      </div>
-      <% if LocationType.any? %>
-        <div>
-          <%= form.fields_for :feature_location_type, @feature_point.build_feature_location_type do |fields| %>
-            <%= fields.label :location_type_id %>
-            <%= fields.collection_select :location_type_id, LocationType.all, :id, :name, :include_blank => true %>
-          <% end %>
-        </div>
-      <% end %>
-      <div>
-        <%= form.label :description, t("feature.form.description_label") %>
-        <%= form.text_area :description, :placeholder => t("feature.form.description_label"), :cols => 1, :rows => 4 %>
-      </div>
-    </fieldset>
-    <div>
-    <%= form.submit t("feature.form.submit")%>  
+  <% if admin_signed_in? %>
+    <div class="feature-admin">
+      You're logged in as an admin. This location will be a Mission-Electric location.  
     </div>
-    </li>
   <% end %>
-</div>
+  
+  <div id="left" class="column">
+    <div class="description">
+      <%= t "feature.form.description" %>
+    </div>
+  </div>
+  
+  <%= form_for @feature_point, :html => { :multipart => true } do |form| %>
+    <div id="center" class="column">
+      <fieldset>
+        <div class="name">
+          <%= form.label :name, t("feature.form.title_label"), :class => "required" %>
+          <%= form.text_field :name %>
+        </div>
+        <div class="address">
+          <%= form.label :address, t("feature.form.address_label"), :class => "required" %>
+          <%= form.text_field :address %>
+        </div>
+        <div class="description">
+          <%= form.label :description, t("feature.form.description_label"), :class => "required" %>
+          <%= form.text_field :description %>
+        </div>
+        <p class="count"><span>100</span> char. left.</p>
+        <div class="event_link">
+          <%= form.label :event_link, t("feature.form.event_link_label") %>
+          <%= form.text_field :event_link %>
+        </div>
+      </fieldset>
+    </div>
+  
+    <div id="right" class="column">
+      <fieldset>
+        <div class="image">
+          <%= form.label :image, t("feature.form.image_label") %>
+          <%= form.file_field :image %>
+        </div>
+        <div class="event_date_time">
+          <div class="event_date">
+            <%= form.label :event_date, t("feature.form.day_label") %>
+            <%= form.date_select :event_date, :discard_year => true, :order => [:day, :month], :prompt => true %>
+          </div>
+          <div class="event_times">
+            <div class="event_start_time">
+              <%= form.label :event_start_time, t("feature.form.start_time_label") %>
+              <%= form.time_select :event_start_time, :ampm => true, :discard_minute => true, :prompt => true %>
+            </div>
+            <div class="event_end_time">
+              <%= form.label :event_end_time, t("feature.form.end_time_label") %>
+              <%= form.time_select :event_end_time, :ampm => true, :discard_minute => true, :prompt => true %>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div>
+        <%= form.submit t("feature.form.submit")%>  
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="close">
+    <%= link_to "Close", "#" %>
+  </div>
+</div><!-- end div.feature -->
