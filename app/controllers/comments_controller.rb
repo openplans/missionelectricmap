@@ -16,21 +16,23 @@ class CommentsController < ApplicationController
     authorize_for_domains
      
     @comment = @commentable.comments.new params[:comment].merge(:profile_id => @profile.id)    
-    
+
     if @comment.valid?
-      @comment.save if @comment.comment.present?
-      subscribe_commenter
-      update_profile unless @profile.new_record?
-      create_activity_item
-      
-      render :json => {
-        :view => render_to_string(:partial => "shared/share.html", :locals => { :shareable => @commentable }) 
-      }
-    else
-      render :json => {
-        :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote") }) 
-      }
+      @comment.save
+    else 
+      if @comment.errors[:submitter_name].any? || @comment.errors[:submitter_email].any?
+        return render :json => {
+          :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote") }) 
+        }
+      end      
     end
+    
+    subscribe_commenter
+    create_activity_item
+    
+    render :json => {
+      :view => render_to_string(:partial => "shared/share.html", :locals => { :shareable => @commentable }) 
+    }
   end
   
   private
@@ -39,13 +41,11 @@ class CommentsController < ApplicationController
     subscribe_to_list(@comment.submitter_name, @comment.submitter_email)
   end
   
-  def update_profile
-    @profile.update_attributes :name => @comment.submitter_name, :email => @comment.submitter_email
-  end
-  
   def create_activity_item
+    # We have to save activity item for vote here because 
+    # we don't yet have visitor info until commenting step
     ActivityItem.create({
-      :subject        => @comment,
+      :subject_type   => "Vote", # just for reference
       :profile        => @comment.profile, 
       :user_name      => @comment.submitter_name,
       :subject_parent => @comment.commentable

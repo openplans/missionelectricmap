@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   has_many   :activity_items, :as => :subject, :inverse_of => :subject, :dependent => :destroy
   
   validates :commentable, :presence => true
-  # validates :comment, :presence => true #not required if registering for list, super hacky, we never actually save these
+  validates :comment, :presence => true 
   
   validates :submitter_name, :presence => true
   validates :submitter_email, :presence => true, :email_format => true  

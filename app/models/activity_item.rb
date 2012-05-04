@@ -1,14 +1,11 @@
-# ActivityItems are created after certain actions are taken on the site, such 
-# as a new location was added or a comment was made. ActivityItems appear in
-# the activity ticker. 
-# The ActivityObserver handles the creation of ActivityItems.
+# Only votes. Not tied to actual vote object.
 
 class ActivityItem < ActiveRecord::Base
   belongs_to :subject, :polymorphic => true, :inverse_of => :activity_items
   belongs_to :subject_parent, :polymorphic => true
   belongs_to :profile
   
-  validates :subject, :presence => true
+  validates :subject_parent, :presence => true
   
   def user
     profile.user if profile.present?
