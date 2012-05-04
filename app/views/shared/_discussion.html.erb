@@ -1,21 +1,26 @@
 <% if commentable.comments.count > 0 %>
-<h6 class="discussion-header"><%= pluralize commentable.comments.count, t("feature.comment.label") %></h6>
-<ul>
-  <% for comment in commentable.comments %>
-    <li class="clearfix">
-      <div class="comment-header">
-        <div class="avatar"><%= avatar_for(comment.user) if comment.user.present? %></div>
-        <div>
-          <% if comment.display_submitter.present? %>
-          <strong class="comment-submitter"><%= comment.display_submitter %></strong>
-          <% end %>
-          <span class="weak comment-date">
-            <%= t "feature.when", :time => l(comment.created_at, :format => :just_time), :date => l(comment.created_at, :format => :date_long) %>
-          </span> 
+<div class="comments">
+  <div class="discussion-header">
+    <h3><%= t "feature.comment.header" %></h3>
+    <div class="comment-count">
+      <%= pluralize commentable.comments.count, t("feature.comment.label") %>
+    </div>
+  </div>
+  <ul>
+    <% for comment in commentable.comments %>
+      <li class="clearfix">
+        <div class="comment">
+          <p class="meta">
+            <%= comment.submitter_name %>, 
+            on <%= comment.created_at.strftime("%B %-d, %Y") %> 
+            at <%= comment.created_at.strftime("%l:%M %P") %>
+          </p>
+          <p class="body">
+            <%= comment.comment %>
+          </p>
         </div>
-      </div>
-      <div class="comment-body"><%= comment.comment %></div>
-    </li>
-  <% end %>
-</ul>
+      </li>
+    <% end %>
+  </ul>
+</div>
 <% end %>

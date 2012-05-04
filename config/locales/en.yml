@@ -27,6 +27,8 @@ en:
     submitted_by: 'added this point %{in_region}'
     when: 'on %{date} at %{time}'
     comment: 
+      header: Why people voted for this location #
+      label: Comment #
       name_label: 'Your Name' #
       email_label: 'Your Email' #
       comment_label: 'Why should others vote for this location? (optional)' #
