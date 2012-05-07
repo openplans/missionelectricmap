@@ -33,10 +33,10 @@ class FeaturePoint < ActiveRecord::Base
   has_one :location_type, :through => :feature_location_type
   has_one :marker, :through => :location_type
   
+  before_save :set_visible
   before_create :find_regions
   after_create :add_to_regions
   after_create :create_vote
-  after_initialize :set_defaults
   after_update :maybe_remove_activity_items
 
   accepts_nested_attributes_for :feature_location_type
@@ -122,9 +122,8 @@ class FeaturePoint < ActiveRecord::Base
     votes.create :profile => profile
   end
 
-  def set_defaults
-    return unless new_record?
-    self.visible = true
+  def set_visible
+    self.visible = false if !visible
   end
   
   def maybe_remove_activity_items

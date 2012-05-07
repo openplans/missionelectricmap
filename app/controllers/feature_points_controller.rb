@@ -32,29 +32,24 @@ class FeaturePointsController < ApplicationController
   end
   
   def create
+    authorize! :create, FeaturePoint
+    authorize_for_domains
+    
     @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile})
       
-    @feature_point.location_type = LocationType.where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted"))
+    @feature_point.location_type = LocationType.where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
     
     if @feature_point.save
       find_and_store_vote @feature_point
-      
-      respond_to do |format|
-        format.json do
-          flash[:notice] = I18n.t( "feature.notice.point_added")
-          render :json => { :feature_point => @feature_point.as_json, :status => "success" }
-        end
-      end
+      render :json => { 
+        :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_point_added") }) 
+      }
     else
-      respond_to do |format|
-        format.json do
-          flash[:error] = I18n.t( "feature.notice.invalid" )
-          render :json => { 
-            :status => "error", 
-            :view => render_to_string(:partial => "form.html.erb" ) 
-          }
-        end
-      end
+      flash[:error] = I18n.t( "feature.notice.invalid" )
+      render :json => { 
+        :status => "error", 
+        :view => render_to_string(:partial => "form.html.erb" ) 
+      }
     end
   end
   

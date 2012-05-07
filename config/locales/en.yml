@@ -29,14 +29,15 @@ en:
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
       after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
+      after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
     sharing: #
       email: #
         subject: 'Help me electrify this event!' #
         body: 'Please support this event so that it will be electrified! %{url}' #
       twitter: #
         status: "Help me electrify this event! %{url}." #
-    map_controls:
-      locate_feature: 'Add a location!'
+    map_controls: #
+      locate_feature: 'Submit your own event' #
       drag_hint: 'Drag me\! Then click confirm.'
       drag_hint_long: 'Drag your location to the center of the map'
   activity: #

@@ -12,7 +12,7 @@
     </div>
   </div>
   
-  <%= form_for @feature_point, :html => { :multipart => true } do |form| %>
+  <%= form_for @feature_point, :url => feature_points_url, :html => { :multipart => true } do |form| %>
     <div id="center" class="column">
       <fieldset>
         <div class="name">

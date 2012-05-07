@@ -18,6 +18,44 @@ jQuery(function($) {
       window.map.mapWrap("viewFeature", ui.featureId);
     }
   });
+  
+  var latLngToQueryString = function(latlng) {
+    return "latitude=" + latlng.lat + "&longitude=" + latlng.lng;
+  };
+  
+  // TODO dry all these submit callbacks up  
+  var throttledPointCallback = (function() {    
+    var perform = true;
+    return function(submitEvent, target){
+      submitEvent.preventDefault();
+
+      if (perform) {
+        perform = false;
+        var newFeature = window.map.mapWrap("getNewFeatureMarker"),
+            latlng     = newFeature._visible ? newFeature.getLatLng() : window.map.mapWrap("getMap").getCenter(),
+            latLngStr  = latLngToQueryString(latlng);
+
+        // $.getJSON([iframeSrc, "/locations/within_region"].join(""), latLngStr, function(data){
+        //   if (!data || data.status != "error") { // Location is good
+           // submit new feature
+        var $form = $(submitEvent.target);
+         
+        $.ajax({
+          url         : $form.attr("action"), 
+          data        : $form.serialize() + "&" + latLngStr, 
+          type        : 'POST',
+          dataType    : "json",
+          crossDomain : true,
+          success : function(data) {   
+            perform = true; 
+            $("#popup").html(data.view);
+          }
+        });
+        //   } else window.map.mapWrap("showHint", data.message, newFeature);
+        // })
+      }
+    };
+  })();
 
   
   // Throttles vote, and performs request, loads in popup
@@ -126,6 +164,7 @@ jQuery(function($) {
   });
   
   $("#new_vote").live("submit", throttledVoteCallback);
+  $("#new_feature_point").live("submit", throttledPointCallback);
   $("#new_comment").live("submit", throttledCallback);
   $("#popup .close").live("click", closePopup);
   $("#popup a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);

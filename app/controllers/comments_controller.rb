@@ -30,6 +30,9 @@ class CommentsController < ApplicationController
     subscribe_commenter
     create_activity_item
     
+    # now that we're here, the point has been finalized
+    @commentable.update_attribute :visible, :true if !@commentable.visible?
+    
     render :json => {
       :view => render_to_string(:partial => "shared/share.html", :locals => { :shareable => @commentable }) 
     }
