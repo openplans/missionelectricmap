@@ -109,17 +109,8 @@ $.widget("ui.shareabout", (function() {
      * Can be called from ready state.
      * @param {L.LatLng} latLng the optional location to place the locating marker.
      */
-    locateNewFeature : function(latLng) {
-      fsm.locateNewFeature(latLng);
-    },
-
-    /**
-     * Gets the form via the ajax options passes in.
-     * Unless otherwise specified via success callback, loads form into popup for this.newFeature marker.
-     * @param {Object} ajaxOptions options for jQuery.ajax(). By default, success loads responseData.view into popup.
-     */
-    loadNewFeatureForm : function(ajaxOptions) {
-      fsm.loadNewFeatureForm(ajaxOptions);
+    locateNewFeature : function(latLng, ajaxOptions) {
+      fsm.locateNewFeature(latLng, ajaxOptions);
     },
 
     finalizeNewFeature : function() {
@@ -153,11 +144,13 @@ $.widget("ui.shareabout", (function() {
      * Returns the new Feature marker
      */
     getNewFeatureMarker : function () { return this.newFeature || null; },
-
+    
     /**
      * Opens the popup for a feature
      */
     viewFeature : function(fId) {
+      if ( !fId ) return fsm.viewFeature();
+      
       if (fsm.is("viewingFeature")) {
         // Don't reset everything if I'm already showing a feature
         // No state change is triggered.
@@ -444,11 +437,11 @@ $.widget("ui.shareabout", (function() {
     // },
 
     // Opens the popup for the layer, populated with content.
-    _openPopupWith : function(layer, content) {
+    _openPopupWith : function(layer, content, nofocus) {
       popup.html(content);
 
       map.panTo( layer.getLatLng() );
-      if (layer._icon) {
+      if (!nofocus && layer._icon) {
         this._setFocusedIcon(layer);
       }
 
@@ -505,15 +498,12 @@ $.widget("ui.shareabout", (function() {
         events  : [
           // UI triggered. drops a marker onto the map. if passed L.LatLng, drops marker there.
           { name: 'locateNewFeature', from: ['ready', 'viewingFeature'], to: 'locatingNewFeature'},
-          // UI triggered. can move from ready to loadingNewFeatureForm without first locating if location not required, chosen later, etc
-          // if feature is already located, pass geoJSON representation of feature to loadNewFeatureForm
-          { name: 'loadNewFeatureForm', from: ['ready', 'locatingNewFeature'], to: 'loadingNewFeatureForm'},
           // called internally after form has been loaded
-          { name: 'finalizeNewFeature', from: 'loadingNewFeatureForm', to: 'finalizingNewFeature'},
+          { name: 'finalizeNewFeature', from: 'locatingNewFeature', to: 'finalizingNewFeature'},
           // UI triggered. pass geoJSON representation to transition and callback on success
-          { name: 'submitNewFeature', from: ['finalizingNewFeature', 'locatingNewFeature'], to: 'submittingNewFeature'},
+          // { name: 'submitNewFeature', from: ['finalizingNewFeature', 'locatingNewFeature'], to: 'submittingNewFeature'},
           // called internally after response from submit, if data status is error
-          { name: 'errorNewFeature', from: 'submittingNewFeature', to: 'finalizingNewFeature'},
+          // { name: 'errorNewFeature', from: 'submittingNewFeature', to: 'finalizingNewFeature'},
           // UI triggered. Pass ID of feature to view.
           { name: 'viewFeature', from: ['ready', 'locatingNewFeature', 'finalizingNewFeature', 'submittingNewFeature', 'viewingFeature'], to: 'viewingFeature'},
           // Ways to get back to ready
@@ -523,7 +513,7 @@ $.widget("ui.shareabout", (function() {
       });
 
       fsm.onchangestate = function(eventName, from, to) {
-        // if (window.console) window.console.info("Transitioning from " + from + " to " + to + " via " + eventName);
+        if (window.console) window.console.info("Transitioning from " + from + " to " + to + " via " + eventName);
 
         // Allow callbacks for state change events
         if (shareabout.options.callbacks[eventName]) {
@@ -535,7 +525,19 @@ $.widget("ui.shareabout", (function() {
        * If touch screen, displays crosshair, else
        * Drops a marker on the map at the center
        */
-      fsm.onlocateNewFeature = function (eventName, from, to) {
+      fsm.onlocateNewFeature = function (eventName, from, to, ajaxOptions) {
+        // load the form
+        var ajaxCfg = {
+          type : 'GET',
+          success: function(data){
+            shareabout._openPopupWith(shareabout.newFeature, data.view, true);
+            // popup.html(data.view).addClass("visible");
+          },
+          dataType : 'json'
+        };
+        if ( typeof ajaxOptions == "object" ) $.extend(true, ajaxCfg, ajaxOptions);
+        $.ajax(ajaxCfg);
+        
         // Make sure the map is sized for its container correctly
         map.invalidateSize();
 
@@ -551,88 +553,70 @@ $.widget("ui.shareabout", (function() {
           shareabout.newFeature.setLatLng(map.getCenter());
 
           // Reset the icon when adding since we set it to the "focused" icon when confirming
-          shareabout.newFeature.setIcon(shareabout.options.newMarkerIcon);
+          // shareabout.newFeature.setIcon(shareabout.options.newMarkerIcon);
 
           map.addLayer(shareabout.newFeature);
-          shareabout.newFeature.dragging.enable();
+          // shareabout.newFeature.dragging.enable();
           // shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
         }
       };
 
       /*
-       * Performs an ajax request.
-       * By default, if the json response contains a view property, that will be displayed in the marker popup.
-       */
-      fsm.onloadNewFeatureForm = function (eventName, from, to, ajaxOptions) {
-        // if (!shareabout.newFeature._visible) { // Touch screen, we located with crosshair
-        //   shareabout.newFeature.setLatLng(map.getCenter());
-        //   map.addLayer(shareabout.newFeature);
-        //   $("#crosshair").remove();
-        // }
-        // 
-        // shareabout.hint.remove();
-
-        var ajaxCfg = {
-          type : 'GET',
-          success: function(data){
-            // shareabout._openPopupWith(shareabout.newFeature, data.view);
-            popup.html(data.view).addClass("visible");
-            // shareabout.finalizeNewFeature();
-          },
-          dataType : 'json'
-        };
-
-        if ( typeof ajaxOptions == "object" ) $.extend(true, ajaxCfg, ajaxOptions);
-        $.ajax(ajaxCfg);
-      };
-
-      /*
        * Submits new feature form.
        */
-       fsm.onsubmitNewFeature = function (eventName, from, to, ajaxOptions) {
-         var ajaxCfg = {
-           type : 'POST',
-           success : function(data) {
-             if (data.status && data.status == "error")
-               fsm.errorNewFeature(null, data);
-             else
-               fsm.viewFeature(data.feature_point.id, data);
-           }
-         };
-         if ( typeof ajaxOptions == "object" ) $.extend(true, ajaxCfg, ajaxOptions);
-         $.ajax(ajaxCfg);
-      };
+      //  fsm.onsubmitNewFeature = function (eventName, from, to, ajaxOptions) {
+      //    var ajaxCfg = {
+      //      type : 'POST',
+      //      success : function(data) {
+      //        if (data.status && data.status == "error")
+      //          fsm.errorNewFeature(null, data);
+      //        else
+      //          fsm.viewFeature(data.feature_point.id, data);
+      //      }
+      //    };
+      //    if ( typeof ajaxOptions == "object" ) $.extend(true, ajaxCfg, ajaxOptions);
+      //    $.ajax(ajaxCfg);
+      // };
 
       /*
        * Creates a marker for the new feature using the properties in responseData.geoJSON.
        */
-      fsm.onleavesubmittingNewFeature = function (eventName, from, to, id, responseData) {
-        if (to === "viewingFeature") {
-          // Set up focused marker
-          var marker = new L.Marker(shareabout.newFeature.getLatLng(), { icon: shareabout.options.focusedMarkerIcon });
-          shareabout._setupMarker(marker, responseData.feature_point);
-          
-          // Remove new feature marker
-          map.removeLayer(shareabout.newFeature);
-
-          // Indicate that the new marker is on the map
-          layersOnMap[id] = marker;
-          map.addLayer(marker);
-          
-          // Add to cache
-          featurePointsCache = featurePointsCache.concat(responseData.feature_point);
-          popularityStats    = shareabout._getPopularityStats();
-        } else if (to === "finalizingNewFeature") {
-          $(".shareabouts-side-popup-content").html(responseData.view);
-        }
-      };
+      // fsm.onleavesubmittingNewFeature = function (eventName, from, to, id, responseData) {
+      //   if (to === "viewingFeature") {
+      //     // Set up focused marker
+      //     var marker = new L.Marker(shareabout.newFeature.getLatLng(), { icon: shareabout.options.focusedMarkerIcon });
+      //     shareabout._setupMarker(marker, responseData.feature_point);
+      //     
+      //     // Remove new feature marker
+      //     map.removeLayer(shareabout.newFeature);
+      // 
+      //     // Indicate that the new marker is on the map
+      //     layersOnMap[id] = marker;
+      //     map.addLayer(marker);
+      //     
+      //     // Add to cache
+      //     featurePointsCache = featurePointsCache.concat(responseData.feature_point);
+      //     popularityStats    = shareabout._getPopularityStats();
+      //   } else if (to === "finalizingNewFeature") {
+      //     $(".shareabouts-side-popup-content").html(responseData.view);
+      //   }
+      // };
 
       /*
        *
        */
       fsm.onviewFeature = function(eventName, from, to, fId) {
-        shareabout._viewFeature(fId);
-        shareabout._loadNewComment(fId);
+        if (fId){
+          shareabout._viewFeature(fId);
+          shareabout._loadNewComment(fId);
+        }
+        if (from == "finalizingNewFeature") {
+          map.removeLayer(shareabout.newFeature);
+        }
+      };
+      
+      fsm.onfinalizeNewFeature = function(eventName, from, to) {
+        shareabout.newFeature.dragging.disable();
       };
 
       fsm.onleaveviewingFeature = function(eventName, from, to) {
@@ -642,10 +626,10 @@ $.widget("ui.shareabout", (function() {
 
       fsm.onleavelocatingNewFeature = function(eventName, from, to) {
         shareabout.hint.remove();
-        if (to != "loadingNewFeatureForm"){
-          $("#crosshair").remove();
-          map.removeLayer(shareabout.newFeature);
-        }
+        // if (to != "loadingNewFeatureForm"){
+          // $("#crosshair").remove();
+          // map.removeLayer(shareabout.newFeature);
+        // }
       };
 
       /*

@@ -48,7 +48,10 @@ jQuery(function($) {
           crossDomain : true,
           success : function(data) {   
             perform = true; 
-            $("#popup").html(data.view);
+            $("#popup").html(data.view); // replacing entire popup contents here
+            if (data.status != "error") {
+              window.map.mapWrap("finalizeNewFeature");
+            }
           }
         });
         //   } else window.map.mapWrap("showHint", data.message, newFeature);
@@ -88,7 +91,8 @@ jQuery(function($) {
     };
   })();
   
-  // Throttles an ajax post
+  // Throttles an ajax post, 
+  // currently for comment form submit
   var throttledCallback = (function() {
     var perform = true;
     return function(submitEvent, target){
@@ -107,6 +111,9 @@ jQuery(function($) {
           success : function(data) {   
             perform = true; 
             $("#popup #right").html(data.view);
+            if (data.status != "error") {
+              window.map.mapWrap("viewFeature");
+            }
           }
         });
       }

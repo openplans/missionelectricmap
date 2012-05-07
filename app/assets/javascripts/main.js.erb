@@ -104,13 +104,10 @@ $(function() {
 
   // UI Elements that affect map state
   locate_feature.click( function(event) {
-    Map.shareabout("locateNewFeature");
-    $(this).hide();
-    
-    Map.shareabout("loadNewFeatureForm", {
+    Map.shareabout("locateNewFeature", {
       url : '<%= url_help.new_feature_point_path %>'
     });
-    
+    $(this).hide();    
   });
 
   // Focus the permalink text on focus

@@ -22,6 +22,7 @@ class CommentsController < ApplicationController
     else 
       if @comment.errors[:submitter_name].any? || @comment.errors[:submitter_email].any?
         return render :json => {
+          :status => "error",
           :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote"), :from => params[:from].to_sym }) 
         }
       end      
