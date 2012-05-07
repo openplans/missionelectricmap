@@ -1,0 +1,21 @@
+<div class="feature show">  
+  <div id="left" class="column">
+    <div class="location_image">
+      <%= image_tag path_to_url(@feature_point.image.url(:thumb)) if @feature_point.image.present? %>
+    </div>
+    
+    <div class="next"><%= link_to "Go back and edit", edit_feature_point_url(@feature_point) %></div>
+  </div>
+  
+  <div id="center" class="column">
+    <%= render "info.html", :feature_point => @feature_point %>
+  </div>
+  
+  <div id="right" class="column">
+    <%= render "comments/new.html", :message => I18n.t("feature.comment.after_point_added"), :from => :feature_point %>
+  </div>
+  
+  <div class="close">
+    <%= link_to "Close", "#" %>
+  </div>
+</div><!-- end div.feature -->

@@ -20,6 +20,10 @@
   <div id="submit_new_comment">
     <%= form.submit t("feature.comment.submit_label") %>    
   </div>
+  
+  <%= hidden_field_tag "from", from %>
 <% end %>
 
-<%= link_to "Skip to next step", share_feature_point_url(@comment.commentable), :class => "next", "data-behavior" => "load_result_in_popup" %>
+<% if from != :feature_point %>
+  <%= link_to "Skip to next step", share_feature_point_url(@comment.commentable), :class => "next", "data-behavior" => "load_result_in_popup" %>
+<% end %>

@@ -10,7 +10,7 @@ Shareabouts::Application.routes.draw do
 
   match '/locations/:feature_point_id/votes', :controller => 'votes', :action => 'options', :constraints => {:method => 'OPTIONS'}
   
-  resources :feature_points, :path => 'locations', :only => [:new, :create, :index, :show, :update] do
+  resources :feature_points, :path => 'locations', :only => [:new, :create, :edit, :update, :index, :show, :update] do
     resources :votes, :only => [:create, :destroy]
     
     resources :comments, :only => [:create, :new]
