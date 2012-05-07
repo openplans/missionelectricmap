@@ -10,7 +10,7 @@ class VotesController < ApplicationController
     @vote = @supportable.votes.create :profile => @profile
     store_vote_in_cookie @vote
     
-    @comment = @supportable.comments.create :profile => @profile
+    @comment = @supportable.comments.new :profile => @profile
     
     render :json => {
       :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote"), :from => :vote }) 

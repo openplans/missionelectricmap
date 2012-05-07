@@ -41,7 +41,7 @@ class FeaturePointsController < ApplicationController
     
     if @feature_point.save
       find_and_store_vote @feature_point
-      @comment = @feature_point.comments.create :profile => @profile
+      @comment = @feature_point.comments.new :profile => @profile
       render :json => { 
         :view => render_to_string(:partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } ) 
       }
