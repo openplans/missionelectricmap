@@ -124,6 +124,7 @@ class FeaturePoint < ActiveRecord::Base
 
   def set_visible
     self.visible = false if !visible
+    true
   end
   
   def maybe_remove_activity_items
