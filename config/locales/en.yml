@@ -30,6 +30,7 @@ en:
       submit_label: Submit #
       after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
       after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
+      error: "Please correct the fields below." #
     sharing: #
       email: #
         subject: 'Help me electrify this event!' #
