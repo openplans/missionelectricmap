@@ -27,6 +27,11 @@ class CommentsController < ApplicationController
       end      
     end
     
+    # Updating point to be visible and complete if we're coming here from the new point form
+    if params[:from].to_sym == :feature_point
+      @commentable.update_attribute :visible, true
+    end
+    
     subscribe_commenter
     create_activity_item
     
