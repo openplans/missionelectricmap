@@ -5,7 +5,6 @@ document.domain = "openplans.org";
 
 $(function() {
   var locate_feature   = $("#locate_feature"),
-      finalize_feature = $("#finalize_feature"),
       pages            = $("#pages a"),
       Map              = $("#map");
 
@@ -71,7 +70,6 @@ $(function() {
     callbacks : {
       onready : function(something) {
         locate_feature.show();
-        finalize_feature.hide();
       },
       onload : function() {
         // See views/feature_points/index.html.erb
@@ -83,9 +81,6 @@ $(function() {
       },
       onpopup : function() {
         locate_feature.hide();
-        finalize_feature.hide();
-      },
-      locateNewFeature: function() {
       }
     },
     // Intial feature to show
@@ -98,14 +93,14 @@ $(function() {
   });
 
   // Register click event within InformationPanel
-  Map.shareabout("addClickEventListenerToPopup", "form#new_feature_point input:submit", function(mouseEvent, target){
-    var form = $(mouseEvent.target).closest("form");
-
-    Map.shareabout("submitNewFeature", {
-      data : form.serialize() + "&" + latLngToQueryString( Map.shareabout("getNewFeatureMarker").getLatLng() ),
-      url : form.attr("action")
-    });
-  });
+  // Map.shareabout("addClickEventListenerToPopup", "form#new_feature_point input:submit", function(mouseEvent, target){
+  //   var form = $(mouseEvent.target).closest("form");
+  // 
+  //   Map.shareabout("submitNewFeature", {
+  //     data : form.serialize() + "&" + latLngToQueryString( Map.shareabout("getNewFeatureMarker").getLatLng() ),
+  //     url : form.attr("action")
+  //   });
+  // });
 
   // UI Elements that affect map state
   locate_feature.click( function(event) {
@@ -116,24 +111,6 @@ $(function() {
       url : '<%= url_help.new_feature_point_path %>'
     });
     
-    
-    
-    // finalize_feature.show();
-  });
-
-  finalize_feature.click( function(event) {
-    var newFeature = Map.shareabout("getNewFeatureMarker"),
-        latlng     = newFeature._visible ? newFeature.getLatLng() : Map.shareabout("getMap").getCenter(),
-        data       = latLngToQueryString(latlng);
-
-    $.getJSON("<%= url_help.within_region_feature_points_path %>", data, function(data){
-      if (!data || data.status != "error") { // Location is good
-        Map.shareabout("loadNewFeatureForm", {
-          url : '<%= url_help.new_feature_point_path %>'
-        });
-        $(this).hide();
-      } else Map.shareabout("showHint", data.message, newFeature);
-    });
   });
 
   // Focus the permalink text on focus

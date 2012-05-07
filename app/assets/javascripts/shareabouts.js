@@ -54,6 +54,7 @@ $.widget("ui.shareabout", (function() {
         icon: self.options.newMarkerIcon,
         draggable: true
       });
+
       this.newFeature.on("drag", function(drag) {
         self.hint.remove();
       } );
@@ -548,13 +549,13 @@ $.widget("ui.shareabout", (function() {
           shareabout.showHint(shareabout.options.dragHintLong);
         } else {
           shareabout.newFeature.setLatLng(map.getCenter());
-          if (shareabout.newFeature.dragging) { shareabout.newFeature.dragging.enable(); }
 
           // Reset the icon when adding since we set it to the "focused" icon when confirming
           shareabout.newFeature.setIcon(shareabout.options.newMarkerIcon);
 
           map.addLayer(shareabout.newFeature);
-          shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
+          shareabout.newFeature.dragging.enable();
+          // shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
         }
       };
 
@@ -563,19 +564,20 @@ $.widget("ui.shareabout", (function() {
        * By default, if the json response contains a view property, that will be displayed in the marker popup.
        */
       fsm.onloadNewFeatureForm = function (eventName, from, to, ajaxOptions) {
-        if (!shareabout.newFeature._visible) { // Touch screen, we located with crosshair
-          shareabout.newFeature.setLatLng(map.getCenter());
-          map.addLayer(shareabout.newFeature);
-          $("#crosshair").remove();
-        }
-
-        shareabout.hint.remove();
+        // if (!shareabout.newFeature._visible) { // Touch screen, we located with crosshair
+        //   shareabout.newFeature.setLatLng(map.getCenter());
+        //   map.addLayer(shareabout.newFeature);
+        //   $("#crosshair").remove();
+        // }
+        // 
+        // shareabout.hint.remove();
 
         var ajaxCfg = {
           type : 'GET',
           success: function(data){
-            shareabout._openPopupWith(shareabout.newFeature, data.view);
-            shareabout.finalizeNewFeature();
+            // shareabout._openPopupWith(shareabout.newFeature, data.view);
+            popup.html(data.view).addClass("visible");
+            // shareabout.finalizeNewFeature();
           },
           dataType : 'json'
         };

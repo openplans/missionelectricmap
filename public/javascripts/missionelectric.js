@@ -115,7 +115,7 @@ jQuery(function($) {
   
   // Loads the resulting data.view in the popup
   var loadLinkInPopup = function(clickEvent) {
-    console.log(clickEvent)
+
     clickEvent.preventDefault();
     
     $.ajax( {
