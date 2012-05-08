@@ -87,7 +87,8 @@ jQuery(function($) {
         });
         
         // if the new comment form has been loaded (after the location info was loaded), show it
-        if ( window.map.mapWrap("getNewCommentForm") ) window.map.mapWrap("showNewComment");
+        // currently disabling so that we can pass the vote id to comment form to update agent name in ticker
+        // if ( window.map.mapWrap("getNewCommentForm") ) window.map.mapWrap("showNewComment");
       }
     };
   })();

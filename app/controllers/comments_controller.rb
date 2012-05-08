@@ -23,7 +23,7 @@ class CommentsController < ApplicationController
       if @comment.errors[:submitter_name].any? || @comment.errors[:submitter_email].any?
         return render :json => {
           :status => "error",
-          :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.error"), :from => params[:from].to_sym }) 
+          :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.error"), :from => params[:from].to_sym, :vote_id => params[:vote_id] }) 
         }
       end      
     end
@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
     end
     
     subscribe_commenter
-    create_activity_item
+    update_activity_item
     
     # now that we're here, the point has been finalized
     @commentable.update_attribute :visible, :true if !@commentable.visible?
@@ -50,15 +50,12 @@ class CommentsController < ApplicationController
     subscribe_to_list(@comment.submitter_name, @comment.submitter_email)
   end
   
-  def create_activity_item
-    # We have to save activity item for vote here because 
-    # we don't yet have visitor info until commenting step
-    ActivityItem.create({
-      :subject_type   => "Vote", # just for reference
-      :profile        => @comment.profile, 
-      :user_name      => @comment.submitter_name,
-      :subject_parent => @comment.commentable
-    })
+  def update_activity_item
+    return true unless Vote.exists?(params[:vote_id])
+    
+    vote = Vote.find params[:vote_id]
+    activity_item = vote.activity_items.where(:profile_id => @profile.try(:id)).first
+    activity_item.update_attribute :user_name, @comment.submitter_name if activity_item
   end
   
   def get_commentable

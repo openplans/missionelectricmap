@@ -13,7 +13,11 @@ class VotesController < ApplicationController
     @comment = @supportable.comments.new :profile => @profile
     
     render :json => {
-      :view => render_to_string(:partial => "comments/new.html", :locals => { :message => I18n.t("feature.comment.after_vote"), :from => :vote }) 
+      :view => render_to_string(:partial => "comments/new.html", :locals => { 
+        :message => I18n.t("feature.comment.after_vote"), 
+        :from => :vote, 
+        :vote_id => @vote.id 
+      }) 
     }
   end
   

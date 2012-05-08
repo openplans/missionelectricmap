@@ -44,11 +44,12 @@ en:
       drag_hint_long: 'Drag your location to the center of the map'
   activity: #
     vote: 'just voted for %{location}' #
+    anonymous_voter: Agent X
   # Model names and model attribute names
   activerecord:
     models:
       feature_point: point
-      user: someone
+      user: Agent X
       vote: vote
     attributes:
       feature_point:
