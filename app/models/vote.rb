@@ -4,6 +4,8 @@
 
 class Vote < ActiveRecord::Base
   
+  scope :visible, joins(", feature_points").where("votes.supportable_type = 'FeaturePoint' AND votes.supportable_id = feature_points.id AND feature_points.visible = true")
+  
   belongs_to :supportable, :polymorphic => true
   belongs_to :profile
   has_one    :user, :through => :profile
