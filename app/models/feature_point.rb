@@ -40,7 +40,19 @@ class FeaturePoint < ActiveRecord::Base
   after_update :maybe_remove_activity_items
 
   accepts_nested_attributes_for :feature_location_type
+  
+  before_validation :set_event_date_year
 
+  validates :name, :presence => true
+  validates :address, :presence => true
+  validates :description, :presence => true
+  validates :event_date, :presence => true, :weekend => {:allow_blank => true}
+  validates :event_start_time, :presence => true
+  validates :event_end_time, :presence => true
+  validates :event_link, :format => {:with => URI::regexp(%w(http https)), :message => "should be a valid URL", :allow_blank => true }
+  
+  validates_with TimeOrderValidator
+  
   validates :the_geom,  :presence => true
   validates_with InRegionValidator, :if => lambda { Region.any? }
 
@@ -51,8 +63,12 @@ class FeaturePoint < ActiveRecord::Base
     )
   end
   
+  def set_event_date_year
+    self.event_date = Date.new Date.today.year, event_date.month, event_date.day
+  end
+  
   def display_event_time
-    "#{event_date} #{event_start_time}"
+    "#{event_date.strftime "%A %B %-d, %Y"}, #{event_start_time.strftime "%-l%P"}-#{event_end_time.strftime "%-l%P"}"
   end
 
   def latitude
