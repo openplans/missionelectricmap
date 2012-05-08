@@ -16,6 +16,7 @@ jQuery(function($) {
     click : function(e, ui) {
       e.preventDefault();
       window.map.mapWrap("viewFeature", ui.featureId);
+      $('html, body').animate({scrollTop:150}, 'slow');
     }
   });
   
@@ -187,6 +188,7 @@ jQuery(function($) {
         container.find("a[data-feature-id]").click(function(e){
           e.preventDefault();
           window.map.mapWrap("viewFeature", $(this).data("feature-id"));
+          $('html, body').animate({scrollTop:150}, 'slow');
         });
       }
     });
