@@ -207,13 +207,16 @@ jQuery(function($) {
       type        : 'GET',
       dataType    : "json",
       crossDomain : true,
-      success : function(data) {   
-        container.html(data.view);
-        container.find("a[data-feature-id]").click(function(e){
-          e.preventDefault();
-          window.map.mapWrap("viewFeature", $(this).data("feature-id"));
-          $('html, body').animate({scrollTop:150}, 'slow');
-        });
+      success : function(data) {
+        if (data.view) {
+          container.append( $("<h5>").html("Event List"));
+          container.append(data.view);
+          container.find("a[data-feature-id]").click(function(e){
+            e.preventDefault();
+            window.map.mapWrap("viewFeature", $(this).data("feature-id"));
+            $('html, body').animate({scrollTop:150}, 'slow');
+          });
+        }
       }
     });
   });
