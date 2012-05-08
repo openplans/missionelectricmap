@@ -439,6 +439,8 @@ $.widget("ui.shareabout", (function() {
     // Opens the popup for the layer, populated with content.
     _openPopupWith : function(layer, content, nofocus) {
       popup.html(content);
+      
+      popup.find("label.required").append( $("<span>").addClass("required").html("*") );
 
       map.panTo( layer.getLatLng() );
       if (!nofocus && layer._icon) {
@@ -531,7 +533,6 @@ $.widget("ui.shareabout", (function() {
           type : 'GET',
           success: function(data){
             shareabout._openPopupWith(shareabout.newFeature, data.view, true);
-            // popup.html(data.view).addClass("visible");
           },
           dataType : 'json'
         };

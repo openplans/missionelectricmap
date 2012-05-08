@@ -43,16 +43,16 @@
         </div>
         <div class="event_date_time">
           <div class="event_date">
-            <%= form.label :event_date, t("feature.form.day_label") %>
+            <%= form.label :event_date, t("feature.form.day_label"), :class => "required"  %>
             <%= form.date_select :event_date, :discard_year => true, :order => [:day, :month], :prompt => true %>
           </div>
           <div class="event_times">
             <div class="event_start_time">
-              <%= form.label :event_start_time, t("feature.form.start_time_label") %>
+              <%= form.label :event_start_time, t("feature.form.start_time_label"), :class => "required"  %>
               <%= form.time_select :event_start_time, :ampm => true, :discard_minute => true, :prompt => true %>
             </div>
             <div class="event_end_time">
-              <%= form.label :event_end_time, t("feature.form.end_time_label") %>
+              <%= form.label :event_end_time, t("feature.form.end_time_label"), :class => "required"  %>
               <%= form.time_select :event_end_time, :ampm => true, :discard_minute => true, :prompt => true %>
             </div>
           </div>

@@ -3,6 +3,8 @@ document.domain = "openplans.org";
 
 jQuery(function($) {
 
+  var popup = $("#popup");
+
   if(typeof String.prototype.trim !== 'function') {
     String.prototype.trim = function() {
       return this.replace(/^\s+|\s+$/g, ''); 
@@ -22,6 +24,14 @@ jQuery(function($) {
   
   var latLngToQueryString = function(latlng) {
     return "latitude=" + latlng.lat + "&longitude=" + latlng.lng;
+  };
+  
+  var popupContent = function(content, section) {
+    var target = popup;
+    if (section) target = popup.find(section);
+
+    target.html(content);
+    target.find("label.required").append( $("<span>").addClass("required").html("*") );
   };
   
   // TODO dry all these submit callbacks up  
@@ -49,7 +59,8 @@ jQuery(function($) {
           crossDomain : true,
           success : function(data) {   
             perform = true; 
-            $("#popup").html(data.view); // replacing entire popup contents here
+            popupContent(data.view); // replacing entire popup contents here
+
             if (data.status != "error") {
               window.map.mapWrap("finalizeNewFeature");
             }
@@ -82,7 +93,7 @@ jQuery(function($) {
             perform = true; 
             
             // If new comment form has not yet been rendered, render returned form now
-            if ( $("#popup #right .new_comment").length == 0 ) $("#popup #right").html(data.view);
+            if ( popup.find("#right .new_comment").length == 0 ) popupContent(data.view, "#right");
           }
         });
         
@@ -112,7 +123,8 @@ jQuery(function($) {
           crossDomain : true,
           success : function(data) {   
             perform = true; 
-            $("#popup #right").html(data.view);
+            popupContent(data.view, "#right");
+            
             if (data.status != "error") {
               window.map.mapWrap("viewFeature");
             }
@@ -134,7 +146,7 @@ jQuery(function($) {
       crossDomain : true,
       success : function(data) {   
         perform = true; 
-        $("#popup #right").html(data.view);
+        popupContent(data.view, "#right");
       }
     });
   };
@@ -142,7 +154,7 @@ jQuery(function($) {
   // Closes the popup and resets the map state
   var closePopup = function(clickEvent) {
     clickEvent.preventDefault();
-    $("#popup").removeClass("visible");
+    popup.removeClass("visible");
     window.map.mapWrap("resetState");
   };
   
@@ -175,8 +187,8 @@ jQuery(function($) {
   $("#new_vote").live("submit", throttledVoteCallback);
   $("#new_feature_point").live("submit", throttledPointCallback);
   $("#new_comment").live("submit", throttledCallback);
-  $("#popup .close").live("click", closePopup);
-  $("#popup a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
+  popup.find(".close").live("click", closePopup);
+  popup.find("a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
   $("#eventfeed").each(function(){
     var container = $(this);
     $.ajax( {
