@@ -184,6 +184,10 @@ jQuery(function($) {
       crossDomain : true,
       success : function(data) {   
         container.html(data.view);
+        container.find("a[data-feature-id]").click(function(e){
+          e.preventDefault();
+          window.map.mapWrap("viewFeature", $(this).data("feature-id"));
+        });
       }
     });
   });
