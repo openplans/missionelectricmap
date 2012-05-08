@@ -21,7 +21,7 @@ button {
   margin: 0 0 0.667em;
   padding: 0.4em 0.9em;
   color: #444;
-  font-weight: bold;
+  font-weight: normal;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
@@ -31,7 +31,7 @@ button {
   -webkit-box-shadow: 4px -4px 0 rgba(0, 0, 0, 0.199219);
   box-shadow: 4px -4px 0 rgba(0, 0, 0, 0.199219);
   
-  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: "atrament-web",Impact,sans-serif;
   border-radius: 2px;
   border-color: #CCC;
 
