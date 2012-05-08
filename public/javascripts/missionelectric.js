@@ -32,6 +32,9 @@ jQuery(function($) {
 
     target.html(content);
     target.find("label.required").append( $("<span>").addClass("required").html("*") );
+    target.find("input:text, textarea").each(function(){
+      if (this.value.trim().length > 0) popup.find("label[for=" + $(this).attr("id") + "]").hide();
+    });
   };
   
   // TODO dry all these submit callbacks up  
@@ -184,11 +187,19 @@ jQuery(function($) {
     },500);
   });
   
+  $("#popup input:text, #popup textarea").live("input propertychange", function(){
+    var label = popup.find("label[for=" + $(this).attr("id") + "]");
+    if (this.value.trim().length > 0) label.hide();
+    else label.show();
+  });
+  
   $("#new_vote").live("submit", throttledVoteCallback);
   $("#new_feature_point").live("submit", throttledPointCallback);
   $("#new_comment").live("submit", throttledCallback);
   popup.find(".close").live("click", closePopup);
   popup.find("a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
+  
+  
   $("#eventfeed").each(function(){
     var container = $(this);
     $.ajax( {
