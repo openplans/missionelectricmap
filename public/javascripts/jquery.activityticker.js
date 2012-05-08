@@ -53,6 +53,7 @@ jQuery.widget("ui.activityticker", (function() {
           limit : this.options.limit
         },function(data) {
           self.list.prepend(data.view);
+          self.list.find("li").slice(5).remove(); // limit to 5
           self.vote_count.html(data.vote_count);
           self.header.show();
         
