@@ -16,6 +16,7 @@ Shareabouts::Application.routes.draw do
     resources :comments, :only => [:create, :new]
     collection do
       get 'within_region'
+      get 'events'
     end
     member do
       get 'share'

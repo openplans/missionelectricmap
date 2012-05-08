@@ -22,7 +22,7 @@ en:
       end_time_label: Ends
       submit: Add Event #
     comment: #
-      vote_label: Vote #
+      vote_label: vote #
       header: Why people voted for this location #
       label: Comment #
       name_label: 'Your Name' #

@@ -1,0 +1,29 @@
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Name</th>
+    <th>Where?</th>
+    <th>When?</th>
+    <th></th>
+  </tr>
+  
+  <% for feature_point in @feature_points %>
+    <tr>
+      <td>
+        <p><%= link_to feature_point.name, "#", "data-feature-id" => feature_point.id %></p>
+        <p><%= pluralize feature_point.votes.count, t("feature.comment.vote_label") %></p>
+      </td>
+      <td>
+        <p><%= feature_point.address %></p>
+      </td>
+      <td>
+        <p><%= feature_point.event_date.strftime "%A %B %-d, %Y" %></p>
+      </td>
+      <td>
+        <div class="vote-link">
+          <%= link_to t("feature.comment.vote_label"), "#", "data-feature-id" => feature_point.id  %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

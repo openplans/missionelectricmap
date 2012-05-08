@@ -175,6 +175,18 @@ jQuery(function($) {
   $("#new_comment").live("submit", throttledCallback);
   $("#popup .close").live("click", closePopup);
   $("#popup a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
+  $("#eventfeed").each(function(){
+    var container = $(this);
+    $.ajax( {
+      url         : [iframeSrc, "/locations/events"].join(""), 
+      type        : 'GET',
+      dataType    : "json",
+      crossDomain : true,
+      success : function(data) {   
+        container.html(data.view);
+      }
+    });
+  });
 });
 
 

@@ -23,6 +23,16 @@ class FeaturePointsController < ApplicationController
     end
   end
   
+  def events
+    authorize_for_domains
+    
+    @feature_points = FeaturePoint.visible
+    
+    render :json => {
+      :view => render_to_string(:partial => "events.html")
+    }
+  end
+  
   def new
     @feature_point = FeaturePoint.new
 
