@@ -64,7 +64,7 @@ class FeaturePoint < ActiveRecord::Base
   end
   
   def set_event_date_year
-    self.event_date = Date.new Date.today.year, event_date.month, event_date.day
+    self.event_date = Date.new Date.today.year, event_date.month, event_date.day if event_date.present?
   end
   
   def display_event_time
