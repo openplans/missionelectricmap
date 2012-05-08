@@ -24,8 +24,8 @@ html, body, #wrapper {
   z-index: 200;
   width: 940px;
   margin: 0 auto;
-  padding: 0;
-  top: 420px;
+  padding: 0 5px 0 0;
+  top: 445px;
 }
 
 /*

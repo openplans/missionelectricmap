@@ -19,7 +19,7 @@ button {
   display: block;
   background-color: white;
   margin: 0 0 0.667em;
-  padding: 0.4em 0.9em;
+  padding: 0.1em 0.3em 0.1em 0.6em;
   color: #444;
   font-weight: normal;
   text-align: center;
@@ -52,11 +52,15 @@ button:active {
   -webkit-box-shadow: -3px 3px 0 rgba(0, 102, 170, 0.75);
           box-shadow: -3px 3px 0 rgba(0, 102, 170, 0.75);*/
 }
-#locate_feature,
-#finalize_feature {
+#locate_feature {
   margin-bottom: 0;
   float: right;
-  font-size: 1.2em;
+  font-size: 1.4em;
+}
+
+#locate_feature img {
+  vertical-align: -20%;
+  margin-left: 0.5em;
 }
 
 /* Tables */

@@ -38,10 +38,10 @@ en:
         body: 'Please support this event so that it will be electrified! %{url}' #
       twitter: #
         status: "Help me electrify this event! %{url}." #
-    map_controls: #
-      locate_feature: 'Submit your own event' #
-      drag_hint: 'Drag me\! Then click confirm.'
-      drag_hint_long: 'Drag your location to the center of the map'
+  map_controls: #
+    locate_feature: 'Submit your own event' #
+    drag_hint: 'Drag me\! Then click confirm.'
+    drag_hint_long: 'Drag your location to the center of the map'
   activity: #
     vote: 'just voted for %{location}' #
     anonymous_voter: Agent X
