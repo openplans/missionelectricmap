@@ -31,7 +31,8 @@
       	iconSize    : new L.Point(#{location_type.marker.icon_width}, #{location_type.marker.icon_height}),
       	iconAnchor  : new L.Point(#{location_type.marker.icon_anchor_x}, #{location_type.marker.icon_anchor_y}),
       	popupAnchor : new L.Point(#{location_type.marker.popup_anchor_x}, #{location_type.marker.popup_anchor_y}),
-      	shadowSize  : new L.Point(0, 0)
+        shadowSize  : new L.Point(36, 34),
+        shadowUrl   : '#{ image_path("marker-shadow.png") }'
       })
       js
     end.map(&:strip).join(",\n") %>

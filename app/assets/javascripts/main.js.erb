@@ -10,27 +10,27 @@ $(function() {
 
   var MarkerIcon = L.Icon.extend({
     iconUrl     : '<%= image_path("feature-point.png") %>',
-    iconSize    : new L.Point(17, 18),
-    iconAnchor  : new L.Point(9, 11),
+    iconSize    : new L.Point(25, 34),
+    iconAnchor  : new L.Point(12, 34),
     popupAnchor : new L.Point(0, 0),
-    shadowSize  : new L.Point(0, 0)
+    shadowSize  : new L.Point(36, 34),
   });
 
   var FocusedMarkerIcon = L.Icon.extend({
     iconUrl     : '<%= image_path("marker-focused.png") %>',
-    iconSize    : new L.Point(25, 41),
-    iconAnchor  : new L.Point(13, 41),
-    popupAnchor : new L.Point(0, -33),
-    shadowSize  : new L.Point(41, 41),
+    iconSize    : new L.Point(25, 34),
+    iconAnchor  : new L.Point(12, 34),
+    popupAnchor : new L.Point(0, 0),
+    shadowSize  : new L.Point(36, 34),
     shadowUrl   : '<%= image_path("marker-shadow.png") %>'
   });
 
   var NewMarkerIcon = L.Icon.extend({
     iconUrl     : '<%= image_path("marker-plus.png") %>',
-    iconSize    : new L.Point(25, 41),
-    iconAnchor  : new L.Point(13, 41),
-    popupAnchor : new L.Point(0, -33),
-    shadowSize  : new L.Point(41, 41),
+    iconSize    : new L.Point(25, 34),
+    iconAnchor  : new L.Point(12, 34),
+    popupAnchor : new L.Point(0, 0),
+    shadowSize  : new L.Point(36, 34),
     shadowUrl   : '<%= image_path("marker-shadow.png") %>'
   });
 
