@@ -617,6 +617,11 @@ $.widget("ui.shareabout", (function() {
       
       fsm.onfinalizeNewFeature = function(eventName, from, to) {
         shareabout.newFeature.dragging.disable();
+        popup.find(".close").hide();
+      };
+      
+      fsm.onleavefinalizingNewFeature = function(eventName, from, to) {
+        popup.find(".close").show();
       };
 
       fsm.onleaveviewingFeature = function(eventName, from, to) {

@@ -15,8 +15,7 @@
     <%= render "comments/new.html", :message => I18n.t("feature.comment.after_point_added"), :from => :feature_point %>
   </div>
   
-  <%# hiding this for now because this is a terrible place to close the popup %>
-  <!-- <div class="close">
-      <%#= link_to "Close", "#" %>
-    </div> -->
+  <div class="close">
+    <%= link_to "Close", "#" %>
+  </div>
 </div><!-- end div.feature -->
