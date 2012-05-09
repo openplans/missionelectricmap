@@ -74,7 +74,7 @@ a.leaflet-active {
 	position: absolute;
 	}
 .leaflet-top {
-	top: 0;
+	top: 150px;
 	}
 .leaflet-right {
 	right: 0;
