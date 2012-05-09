@@ -7,7 +7,7 @@ set :rvm_ruby_string, '1.9.2-p320'
 require 'bundler/capistrano'
 
 # multistage deployment
-set :stages, %w(staging production)
+set :stages, %w(staging production nyc boston philadelphia)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
