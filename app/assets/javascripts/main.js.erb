@@ -1,7 +1,6 @@
 // subdomain XSF workaround
 document.domain = "missionelectric.org";
 
-<% url_help = Shareabouts::Application.routes.url_helpers %>
 
 $(function() {
   var locate_feature   = $("#locate_feature"),
@@ -9,7 +8,7 @@ $(function() {
       Map              = $("#map");
 
   var MarkerIcon = L.Icon.extend({
-    iconUrl     : '<%= image_path("feature-point.png") %>',
+    iconUrl     : window.shareabouts.urls.marker_icon,
     iconSize    : new L.Point(25, 34),
     iconAnchor  : new L.Point(12, 34),
     popupAnchor : new L.Point(0, 0),
@@ -17,25 +16,25 @@ $(function() {
   });
 
   var FocusedMarkerIcon = L.Icon.extend({
-    iconUrl     : '<%= image_path("marker-focused.png") %>',
+    iconUrl     : window.shareabouts.urls.focused_marker_icon,
     iconSize    : new L.Point(25, 34),
     iconAnchor  : new L.Point(12, 34),
     popupAnchor : new L.Point(0, 0),
     shadowSize  : new L.Point(36, 34),
-    shadowUrl   : '<%= image_path("marker-shadow.png") %>'
+    shadowUrl   : window.shareabouts.urls.shadow_icon
   });
 
   var NewMarkerIcon = L.Icon.extend({
-    iconUrl     : '<%= image_path("marker-plus.png") %>',
+    iconUrl     : window.shareabouts.urls.new_marker_icon,
     iconSize    : new L.Point(25, 34),
     iconAnchor  : new L.Point(12, 34),
     popupAnchor : new L.Point(0, 0),
     shadowSize  : new L.Point(36, 34),
-    shadowUrl   : '<%= image_path("marker-shadow.png") %>'
+    shadowUrl   : window.shareabouts.urls.shadow_icon
   });
 
   var CrosshairIcon = L.Icon.extend({
-    iconUrl     : '<%= image_path("crosshair.png") %>',
+    iconUrl     : window.shareabouts.urls.crosshair_icon,
     iconSize    : new L.Point(63, 64),
     iconAnchor  : new L.Point(33,32),
     popupAnchor : new L.Point(0,0),
@@ -83,11 +82,12 @@ $(function() {
         locate_feature.hide();
       }
     },
+    
     // Intial feature to show
     initialFeatureId : window.shareabouts.initialFeatureId,
-    featuresUrl      : '<%= url_help.feature_points_path %>',
-    featureUrl       : '<%= url_help.feature_point_path("FEATURE_ID") %>',
-    polygonsUrl      : '<%= url_help.feature_polygons_path %>', // json of coordinates for multipolygon areas
+    featuresUrl      : window.shareabouts.urls.feature_points_url,
+    featureUrl       : window.shareabouts.urls.feature_point_url,
+    // polygonsUrl      : '<%#= url_help.feature_polygons_path %>', // json of coordinates for multipolygon areas
     dragHint         : '<%= I18n.t "map_controls.drag_hint" %>',
     dragHintLong     : '<%= I18n.t "map_controls.drag_hint_long" %>'
   });
@@ -105,7 +105,7 @@ $(function() {
   // UI Elements that affect map state
   locate_feature.click( function(event) {
     Map.shareabout("locateNewFeature", {
-      url : '<%= url_help.new_feature_point_path %>'
+      url : window.shareabouts.urls.new_feature_point_url
     });
     $(this).hide();    
   });
