@@ -92,43 +92,21 @@ RailsAdmin.config do |config|
 
     list do
       items_per_page 100
-      field :visible
-      field :name
+      fields :visible, :name      
       field :location_type do
         searchable
       end
       field :support_count
-      field :image
-      field :profile do
-        label 'Contributer'
-        searchable [:id, :name]
-      end
-      field :display_submitter do
-        label 'Contributer name'
-        searchable :submitter_name
-      end
-      field :regions
-      field :display_the_geom do
-        label 'Location'
-      end
+      fields :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
       field :created_at
     end
     
+    edit do
+      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
+    end
+    
     show do
-      field :visible
-      field :name
-      field :image
-      field :description
-      field :location_type
-      field :profile do
-        label 'Contributer'
-      end
-      field :display_submitter do
-        label 'Contributer name'
-        searchable
-      end
-      field :regions
-      field :comments
+      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
       field :support_count
       field :display_the_geom do
         label 'Location'
@@ -140,18 +118,11 @@ RailsAdmin.config do |config|
       field :id
       field :latitude
       field :longitude
-      field :name
-      field :description
       field :support_count
       field :profile_id do
         label 'Contributer id'
       end
-      field :display_submitter do
-        label 'Sumbitter name'
-      end
-      field :location_type
-      field :regions
-      field :created_at
+      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :created_at
     end
   end
   
