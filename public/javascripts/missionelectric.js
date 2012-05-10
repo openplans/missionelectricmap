@@ -35,6 +35,7 @@ jQuery(function($) {
     target.find("input:text, textarea").each(function(){
       if (this.value.trim().length > 0) popup.find("label[for=" + $(this).attr("id") + "]").hide();
     });
+    popup.addClass("visible");
   };
   
   // TODO dry all these submit callbacks up  
