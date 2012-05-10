@@ -3,7 +3,7 @@ for option_name in SiteOption::Names
   SiteOption.find_or_create_by_option_name option_name
 end
 
-["Mission Electric", "User-submitted"].each do |type|
+["Mission Electric", "User-submitted", "Mission Electric Winner", "User-submitted Winner"].each do |type|
   LocationType.find_or_create_by_name type
 end
 

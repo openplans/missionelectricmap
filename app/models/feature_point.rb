@@ -29,9 +29,11 @@ class FeaturePoint < ActiveRecord::Base
   has_many :children_activity_items, :as => :subject_parent, :class_name => "ActivityItem", :dependent => :destroy
   belongs_to :profile
   has_one :user, :through => :profile
-  has_one :feature_location_type, :as => :feature, :dependent => :destroy, :inverse_of => :feature
-  has_one :location_type, :through => :feature_location_type
+  belongs_to :location_type
   has_one :marker, :through => :location_type
+  
+  # deprecated
+  has_one :feature_location_type, :as => :feature, :dependent => :destroy, :inverse_of => :feature
   
   before_save :set_visible
   before_create :find_regions
@@ -61,6 +63,10 @@ class FeaturePoint < ActiveRecord::Base
     visible.where( ["ST_Contains(ST_GeomFromText('POLYGON((? ?,? ?,? ?,? ?,? ?))',4326), feature_points.the_geom)",
       corners[0][0], corners[0][1], corners[1][0], corners[0][1], corners[1][0], corners[1][1], corners[0][0], corners[1][1], corners[0][0], corners[0][1]]
     )
+  end
+  
+  def winner?
+    location_type.name.match(/Winner/).present?
   end
   
   def set_event_date_year
