@@ -1,5 +1,5 @@
 // subdomain XSF workaround
-document.domain = "missionelectric.org";
+document.domain = "openplans.org";
 
 jQuery(function($) {
 
