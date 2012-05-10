@@ -52,14 +52,12 @@ class FeaturePointsController < ApplicationController
     if @feature_point.save
       find_and_store_vote @feature_point
       @comment = @feature_point.comments.new :profile => @profile
-      render :json => { 
-        :view => render_to_string(:partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } ) 
-      }
+      
+      response = render_to_string( :partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } )
+      render :text => upload_response(response)
     else
-      render :json => { 
-        :status => "error", 
-        :view => render_to_string(:partial => "form.html.erb" ) 
-      }
+      response = render_to_string( :partial => "form.html.erb" )
+      render :text => upload_response(response)
     end
   end
   
@@ -122,4 +120,11 @@ class FeaturePointsController < ApplicationController
       params[:feature_point][:feature_location_type_attributes][:location_type_id].blank?
   end
   
+  def upload_response(view)
+    <<-HTML
+    <textarea data-type="application/json">
+       {view:"#{escape_json(view)}"}
+    </textarea>
+    HTML
+  end  
 end

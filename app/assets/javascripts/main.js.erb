@@ -92,24 +92,6 @@ $(function() {
     dragHintLong     : '<%= I18n.t "map_controls.drag_hint_long" %>'
   });
 
-  // Register click event within InformationPanel
-  // Map.shareabout("addClickEventListenerToPopup", "form#new_feature_point input:submit", function(mouseEvent, target){
-  //   var form = $(mouseEvent.target).closest("form");
-  // 
-  //   Map.shareabout("submitNewFeature", {
-  //     data : form.serialize() + "&" + latLngToQueryString( Map.shareabout("getNewFeatureMarker").getLatLng() ),
-  //     url : form.attr("action")
-  //   });
-  // });
-
-  // UI Elements that affect map state
-  locate_feature.click( function(event) {
-    Map.shareabout("locateNewFeature", {
-      url : window.shareabouts.urls.new_feature_point_url
-    });
-    $(this).hide();    
-  });
-
   // Focus the permalink text on focus
   $(document).on('focus', '.copy-link', function(){
     this.select();
