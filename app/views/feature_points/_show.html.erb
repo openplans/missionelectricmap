@@ -7,8 +7,9 @@
   <% end %>
   
   <div id="left" class="column">
-    <div class="location_image <%= "winner" if feature_point.winner? %>">
+    <div class="location_image">
       <%= image_tag path_to_url(feature_point.image.url(:thumb)) if feature_point.image.present? %>
+      <% if feature_point.winner? %><span class="winner">Winner<span/><% end %>
     </div>
     
     <div class="support">
