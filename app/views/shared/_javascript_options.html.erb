@@ -32,11 +32,23 @@
       	iconAnchor  : new L.Point(#{location_type.marker.icon_anchor_x}, #{location_type.marker.icon_anchor_y}),
       	popupAnchor : new L.Point(#{location_type.marker.popup_anchor_x}, #{location_type.marker.popup_anchor_y}),
         shadowSize  : new L.Point(36, 34),
-        shadowUrl   : '#{ image_path("marker-shadow.png") }'
+        shadowUrl   : '#{ image_url("marker-shadow.png") }'
       })
       js
     end.map(&:strip).join(",\n") %>
   };
+  
+  // full paths to things
+  window.shareabouts.urls = {
+    marker_icon :        '<%= image_url("feature-point.png") %>',
+    focused_marker_icon : '<%= image_url("marker-focused.png") %>',
+    shadow_icon :         '<%= image_url("marker-shadow.png") %>',
+    new_marker_icon :     '<%= image_url("marker-plus.png") %>',
+    crosshair_icon :      '<%= image_url("crosshair.png") %>',
+    feature_points_url :       '<%= feature_points_url %>',
+    feature_point_url :        '<%= feature_point_url("FEATURE_ID") %>',
+    new_feature_point_url :    '<%= new_feature_point_url %>'
+  }
   
 </script>
 
