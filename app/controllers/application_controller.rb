@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
     
     allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
     
-    return allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
+    return request.env['HTTP_ORIGIN'].nil? || allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
   end
   
   def current_profile
