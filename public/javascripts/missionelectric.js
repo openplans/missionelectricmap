@@ -1,6 +1,3 @@
-// subdomain XSF workaround
-document.domain = "missionelectric.org";
-
 jQuery(function($) {
 
   var popup = $("#popup");
