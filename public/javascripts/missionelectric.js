@@ -11,7 +11,7 @@ jQuery(function($) {
     }
   }
 
-  var iframeSrc = $("iframe[name=map]").attr("src");
+  var iframeSrc = $("iframe[name=map]").attr("src").split("/?")[0];
   $("#ticker").activityticker({
     url   : [iframeSrc, "/activity"].join(""),
     limit : 5, 
