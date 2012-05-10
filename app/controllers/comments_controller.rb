@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
   
   def create
     authorize! :create, Comment
-    authorize_for_domains
+    # authorize_for_domains
      
     @comment = @commentable.comments.new params[:comment].merge(:profile_id => @profile.id)    
 

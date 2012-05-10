@@ -4,7 +4,7 @@ class FeaturePointsController < ApplicationController
   before_filter :set_cache_buster, :only => :show # for IE8
   
   def share
-    authorize_for_domains
+    # authorize_for_domains
     
     @feature_point = FeaturePoint.find params[:id]
     
@@ -24,7 +24,7 @@ class FeaturePointsController < ApplicationController
   end
   
   def events
-    authorize_for_domains
+    # authorize_for_domains
     
     @feature_points = FeaturePoint.visible
     
@@ -43,7 +43,7 @@ class FeaturePointsController < ApplicationController
   
   def create
     authorize! :create, FeaturePoint
-    authorize_for_domains
+    # authorize_for_domains
 
     @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile})
       

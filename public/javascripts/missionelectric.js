@@ -56,7 +56,7 @@ jQuery(function($) {
           data        : $form.serialize() + "&" + latLngStr, 
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
+          // crossDomain : true,
           success : function(data) {   
             perform = true; 
             popupContent(data.view); // replacing entire popup contents here
@@ -88,7 +88,7 @@ jQuery(function($) {
           data        : $form.serialize(), 
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
+          // crossDomain : true,
           success : function(data) {   
             perform = true; 
             
@@ -120,7 +120,7 @@ jQuery(function($) {
           data        : $form.serialize(), 
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
+          // crossDomain : true,
           success : function(data) {   
             perform = true; 
             popupContent(data.view, "#right");
@@ -143,7 +143,7 @@ jQuery(function($) {
       url         : $(clickEvent.target).attr("href"), 
       type        : 'GET',
       dataType    : "json",
-      crossDomain : true,
+      // crossDomain : true,
       success : function(data) {   
         perform = true; 
         popupContent(data.view, "#right");
@@ -203,7 +203,7 @@ jQuery(function($) {
       url         : [iframeSrc, "/locations/events"].join(""), 
       type        : 'GET',
       dataType    : "json",
-      crossDomain : true,
+      // crossDomain : true,
       success : function(data) {
         if (data.view) {
           container.append( $("<h5>").html("Event List"));

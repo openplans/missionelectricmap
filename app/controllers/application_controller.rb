@@ -30,35 +30,35 @@ class ApplicationController < ActionController::Base
     @profile = current_profile || set_profile_cookie(Profile.create_by_request_fingerprint(request))
   end
   
-  def authorize_for_domains
-    if access_allowed?      
-      set_access_control_headers
-      head :created
-    else
-      head :forbidden
-    end
-  end
+  # def authorize_for_domains
+  #   if access_allowed?      
+  #     set_access_control_headers
+  #     head :created
+  #   else
+  #     head :forbidden
+  #   end
+  # end
   
   def subscribe_to_list(name, email)
     Delayed::Job.enqueue MailChimpJob.new( :action => :subscribe, :name => name, :email => email)
   end
   
-  def set_access_control_headers 
-    headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    headers['Access-Control-Max-Age'] = '1000'
-    headers['Access-Control-Allow-Headers'] = '*,x-requested-with'
-  end
+  # def set_access_control_headers 
+  #   headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
+  #   headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  #   headers['Access-Control-Max-Age'] = '1000'
+  #   headers['Access-Control-Allow-Headers'] = '*,x-requested-with'
+  # end
 
 
-  def access_allowed?
-    Rails.logger.info "Attempted access from #{request.env['HTTP_ORIGIN']}"
-    
-    allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
-    
-    return request.env['HTTP_ORIGIN'].nil? || allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
-  end
-  
+  # def access_allowed?
+  #   Rails.logger.info "Attempted access from #{request.env['HTTP_ORIGIN']}"
+  #   
+  #   allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
+  #   
+  #   return request.env['HTTP_ORIGIN'].nil? || allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
+  # end
+  # 
   def current_profile
     @current_profile ||= if current_user.present?
       current_user.profile
