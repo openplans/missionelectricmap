@@ -50,22 +50,33 @@ jQuery(function($) {
         //   if (!data || data.status != "error") { // Location is good
            // submit new feature
         var $form = $(submitEvent.target);
-         
-        $.ajax({
+    
+        ajaxOptions = {
           url         : $form.attr("action"), 
-          data        : $form.serialize() + "&" + latLngStr, 
           type        : 'POST',
           dataType    : "json",
-          // crossDomain : true,
-          success : function(data) {   
+          complete : function(data) { 
             perform = true; 
-            popupContent(data.view); // replacing entire popup contents here
-
-            if (data.status != "error") {
+            var responseJSON = eval('(' + data.responseText + ')');
+            
+            popupContent(responseJSON.view); // replacing entire popup contents here
+            if (data.responseText.search(/field_with_error/) == -1) {
               window.map.mapWrap("finalizeNewFeature");
             }
           }
-        });
+        };
+        
+        var data = $(":text, textarea, select, :hidden", $form).serializeArray();        
+        data.push({name: "latitude", value: latlng.lat})
+        data.push({name: "longitude", value: latlng.lng})
+        
+        ajaxOptions.iframe=  true;
+        ajaxOptions.processData =false;
+        ajaxOptions.files =$(":file", $form);
+        ajaxOptions.data = data;
+          
+        $.ajax(ajaxOptions);
+        
         //   } else window.map.mapWrap("showHint", data.message, newFeature);
         // })
       }
@@ -158,16 +169,31 @@ jQuery(function($) {
     window.map.mapWrap("resetState");
   };
   
-  // Callback for when map has loaded
-  // Fires place open if location is specified
-  var afterMapLoad = function() {
+  var loadFeatureFromParams= function(){
     var hrefParts = window.location.href.split("#");
     if (hrefParts.length < 2) return;
     
     var locationParts = hrefParts[1].split("/");
     if (locationParts.length < 2) return;
     
-    window.map.mapWrap("viewFeature", parseInt(locationParts[1], 10)); 
+    window.map.mapWrap("viewFeature", parseInt(locationParts[1], 10));
+  };
+  
+  // Callback for when map has loaded
+  // Fires place open if location is specified
+  var afterMapLoad = function() {
+    loadFeatureFromParams();
+    
+    var locate_feature = $("#locate_feature", frames["map"].document);
+    locate_feature.click( function(event) {
+      window.map.mapWrap("locateNewFeature", {
+        url :  [iframeSrc, "/locations/new"].join(""),
+        success: function(data){
+          popupContent(data.view)
+        }
+      });
+      $(this).hide();    
+    });
   };
   
   // Calls afterMapLoad when map is ready

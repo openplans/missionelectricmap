@@ -531,9 +531,9 @@ $.widget("ui.shareabout", (function() {
         // load the form
         var ajaxCfg = {
           type : 'GET',
-          success: function(data){
-            shareabout._openPopupWith(shareabout.newFeature, data.view, true);
-          },
+          // success: function(data){
+          //   shareabout._openPopupWith(shareabout.newFeature, data.view, true);
+          // },
           dataType : 'json'
         };
         if ( typeof ajaxOptions == "object" ) $.extend(true, ajaxCfg, ajaxOptions);

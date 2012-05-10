@@ -59,6 +59,19 @@ class ApplicationController < ActionController::Base
   #   return request.env['HTTP_ORIGIN'].nil? || allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
   # end
   # 
+
+  JSON_ESCAPE_MAP = {
+      '\\'    => '\\\\',
+      '</'    => '<\/',
+      "\r\n"  => '\n',
+      "\n"    => '\n',
+      "\r"    => '\n',
+      '"'     => '\\"' }
+
+  def escape_json(json)
+    json.gsub(/(\\|<\/|\r\n|[\n\r"])/) { JSON_ESCAPE_MAP[$1] }
+  end
+
   def current_profile
     @current_profile ||= if current_user.present?
       current_user.profile
