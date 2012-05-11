@@ -8,7 +8,11 @@ class ApplicationController < ActionController::Base
   before_filter :set_admin_current_admin
   
   def set_campaign
-    @campaign = Campaign.find_by_slug( ActiveSupport::Inflector.transliterate( params[:c] ).downcase.gsub(/[^a-z0-9]/,'') )
+    if  params[:c]
+      @campaign = Campaign.find_by_slug( ActiveSupport::Inflector.transliterate( params[:c] ).downcase.gsub(/[^a-z0-9]/,'') )
+    else
+      @campaign = Campaign.where("expiry_date > now()").first
+    end
   end
   
   def set_locale
