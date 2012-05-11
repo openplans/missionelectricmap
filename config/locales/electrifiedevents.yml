@@ -1,7 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
+electrifiedevents:
   app_name: Mission Electric
   feature: #
     form: #
@@ -12,9 +12,9 @@ en:
       description_label: Event Description #
       event_link_label: Event url (optional) #
       image_label: Select an image to add to your event (optional) #
-      day_label: When?
-      start_time_label: Starts
-      end_time_label: Ends
+      day_label: When? #
+      start_time_label: Starts #
+      end_time_label: Ends #
       submit: Add Event #
     comment: #
       vote_label: vote #

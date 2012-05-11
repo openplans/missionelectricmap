@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
   end
   
   def set_locale
-    I18n.locale = env['rack.locale'] || I18n.default_locale
+    I18n.locale = @campaign.slug
+  end
+  
+  def default_url_options(options={})
+    { :c => @campaign.slug, :e => params[:e] }
   end
   
   def authenticate_user!
