@@ -8,6 +8,8 @@ class ActivityItem < ActiveRecord::Base
   
   validates :subject_parent, :presence => true
   validates :campaign, :presence => true
+
+  scope :for_campaign, lambda { |campaign| where(:campaign_id => campaign.id) }
   
   def user
     profile.user if profile.present?

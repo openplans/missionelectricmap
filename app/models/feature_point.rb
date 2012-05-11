@@ -18,6 +18,7 @@ class FeaturePoint < ActiveRecord::Base
   attr_accessor :found_regions
 
   scope :visible, where(:visible => true)
+  scope :for_campaign, lambda { |campaign| where(:campaign_id => campaign.id) }
   
   has_attached_file :image, :styles => { :thumb => "120x90#" }
 

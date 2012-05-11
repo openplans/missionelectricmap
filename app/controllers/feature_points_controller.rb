@@ -4,6 +4,7 @@ class FeaturePointsController < ApplicationController
   before_filter :set_cache_buster, :only => :show # for IE8
   
   def share
+    # past campaigns?
     authorize_for_domains
     
     @feature_point = FeaturePoint.find params[:id]
@@ -17,7 +18,7 @@ class FeaturePointsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        @feature_points = FeaturePoint.visible.where [ "id > ?", params[:after].to_i ]
+        @feature_points = FeaturePoint.for_campaign(@campaign).visible.where [ "id > ?", params[:after].to_i ]
         render :json => @feature_points.map(&:as_json)
       end
     end
@@ -28,7 +29,7 @@ class FeaturePointsController < ApplicationController
     
     return render :status => :ok unless @campaign.enable_events?
     
-    @feature_points = FeaturePoint.visible
+    @feature_points = FeaturePoint.for_campaign(@campaign).visible
     
     render :json => {
       :view => render_to_string(:partial => "events.html")
@@ -47,9 +48,9 @@ class FeaturePointsController < ApplicationController
     authorize! :create, FeaturePoint
     authorize_for_domains
 
-    @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile})
-      
-    @feature_point.location_type = LocationType.where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
+    @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile, :campaign => @campaign})
+    
+    @feature_point.location_type = LocationType.for_campaign(@campaign).where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
     
     if @feature_point.save
       find_and_store_vote @feature_point
@@ -68,7 +69,7 @@ class FeaturePointsController < ApplicationController
   end
   
   def update
-    @feature_point = FeaturePoint.find params[:id]
+    @feature_point = FeaturePoint.for_campaign(@campaign).find params[:id]
     authorize! :update, @feature_point
     
     @feature_point.update_attributes params[:feature_point]
@@ -81,6 +82,7 @@ class FeaturePointsController < ApplicationController
   end
   
   def show
+    # past campaigns?
     @feature_point = FeaturePoint.visible.find params[:id], :include => :comments
     respond_to do |format|
       format.html do
