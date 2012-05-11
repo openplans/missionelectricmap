@@ -11,6 +11,8 @@ class CommentsController < ApplicationController
     }
   end
   
+  # Most of what this action does is not actually creating comments.
+  # We're using the comment object as a container to handle the user name submissions
   def create
     authorize! :create, Comment
     authorize_for_domains
@@ -29,7 +31,7 @@ class CommentsController < ApplicationController
             :from => from, :vote_id => params[:vote_id] 
           }) 
         }
-      end      
+      end
     end
     
     # Updating point to be visible and complete if we're coming here from the new point form
@@ -44,7 +46,10 @@ class CommentsController < ApplicationController
     @commentable.update_attribute :visible, :true if !@commentable.visible?
     
     render :json => {
-      :view => render_to_string(:partial => "shared/share.html", :locals => { :shareable => @commentable }) 
+      :view => render_to_string(:partial => "shared/share.html", :locals => { 
+        :shareable => @commentable,
+        :message   => params[:from].to_sym == :feature_point ? I18n.t("feature.sharing.after_point_added") : I18n.t("feature.sharing.after_vote")
+      }) 
     }
   end
   

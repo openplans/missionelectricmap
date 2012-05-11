@@ -33,6 +33,8 @@ en:
         body: 'Please support this event so that it will be electrified! %{url}' #
       twitter: #
         status: "Help me electrify this event! %{url}." #
+      after_vote: "Awesome! We've counted your vote. Now to complete this mission, share with your friends to make sure your favorite locations win!"#
+      after_point_added: "We'll keep you posted! Now share this mission with your friends so thar your spectacular event wins."#
   map_controls: #
     locate_feature: 'Submit your own event' #
     drag_hint: 'Drag me\! Then click confirm.'

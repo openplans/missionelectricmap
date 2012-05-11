@@ -10,7 +10,10 @@ class FeaturePointsController < ApplicationController
     @feature_point = FeaturePoint.find params[:id]
     
     render :json => {
-      :view => render_to_string(:partial => "shared/share.html", :locals => {:shareable => @feature_point})
+      :view => render_to_string(:partial => "shared/share.html", :locals => {
+        :shareable => @feature_point,
+        :message => I18n.t("feature.sharing.after_vote") # we can only get here directly after voting
+      })
     }
   end
   
