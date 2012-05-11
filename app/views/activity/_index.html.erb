@@ -1,8 +1,10 @@
 <% @activity_items.each do |activity_item| %>
-<li class="clearfix <%= activity_item.subject_parent.location_type.name.gsub(/ /, "").downcase %>" data-id="<%= activity_item.id %>" data-feature-id="<%= activity_item.feature.id %>">
-  <a href="#">
-    <strong><%= activity_item.user_name %></strong> 
-    <%= t "activity.vote", :location => activity_item.subject_parent.name %>
-  </a>
-</li>
+  <% if activity_item.subject_parent.visible? %>
+    <li class="clearfix <%= activity_item.subject_parent.location_type.name.gsub(/ /, "").downcase %>" data-id="<%= activity_item.id %>" data-feature-id="<%= activity_item.feature.id %>">
+      <a href="#">
+        <strong><%= activity_item.user_name %></strong> 
+        <%= t "activity.vote", :location => activity_item.subject_parent.name %>
+      </a>
+    </li>
+  <% end %>
 <% end %>
