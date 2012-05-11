@@ -55,8 +55,9 @@ class FeaturePointsController < ApplicationController
     if @feature_point.save
       find_and_store_vote @feature_point
       @comment = @feature_point.comments.new :profile => @profile
-      
-      response = render_to_string( :partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } )
+      response = render_to_string( :partial => "confirm.html", :locals => { 
+        :message => I18n.t("feature.comment.after_point_added"), :vote_id => @feature_point.votes.first.id 
+      } )
       render upload_response(response)
     else
       response = render_to_string( :partial => "form.html.erb" )
