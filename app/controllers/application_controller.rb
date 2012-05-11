@@ -10,17 +10,15 @@ class ApplicationController < ActionController::Base
   def set_campaign
     if  params[:c]
       @campaign = Campaign.find_by_slug( ActiveSupport::Inflector.transliterate( params[:c] ).downcase.gsub(/[^a-z0-9]/,'') )
-    else
-      @campaign = Campaign.where("expiry_date > now()").first
     end
   end
   
   def set_locale
-    I18n.locale = @campaign.slug
+    I18n.locale = @campaign.present? ? @campaign.slug : I18n.default_locale
   end
   
   def default_url_options(options={})
-    { :c => @campaign.slug, :e => params[:e] }
+    @campaign ? { :c => @campaign.slug, :e => params[:e] } : {}
   end
   
   def authenticate_user!
