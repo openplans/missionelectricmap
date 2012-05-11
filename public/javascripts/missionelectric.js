@@ -5,6 +5,7 @@ jQuery(function($) {
 
   var popup = $("#popup");
   
+  // Parses the iframe's src (map URL) for campaign and expiry flags, stores in urlParams
   var urlParams = {};
   (function () {
       var e,
@@ -17,40 +18,40 @@ jQuery(function($) {
          urlParams[d(e[1])] = d(e[2]);
   })();
 
+  // We always want to be sure our requests are going to the right campaign (& expiry)
   $.ajaxSetup({
     data : urlParams
   });
-
+  
+  // Monkeypatching String to add trim() for browsers that lack
   if(typeof String.prototype.trim !== 'function') {
     String.prototype.trim = function() {
       return this.replace(/^\s+|\s+$/g, ''); 
     }
   }
-
+  
+  // URL for sharabouts map
   var iframeSrc = $("iframe[name=map]").attr("src").split("/?")[0];
-  $("#ticker").activityticker({
-    url   : [iframeSrc, "/activity"].join(""),
-    limit : 5, 
-    click : function(e, ui) {
-      e.preventDefault();
-      window.map.mapWrap("viewFeature", ui.featureId);
-      $('html, body').animate({scrollTop:150}, 'slow');
-    }
-  });
   
-  var latLngToQueryString = function(latlng) {
-    return "latitude=" + latlng.lat + "&longitude=" + latlng.lng;
-  };
-  
+  // Loads the passed content into the popup, 
+  // optionally into a particular column
+  // Applies fixes to form elements and whatnot.
+  // Shows the popup.
   var popupContent = function(content, section) {
     var target = popup;
     if (section) target = popup.find(section);
 
     target.html(content);
+    
+    // Required labels
     target.find("label.required").append( $("<span>").addClass("required").html("*") );
     target.find("input:text, textarea").each(function(){
       if (this.value.trim().length > 0) popup.find("label[for=" + $(this).attr("id") + "]").hide();
     });
+    
+    // Deuglify selects
+    target.find('select').customSelect();
+    
     popup.addClass("visible");
   };
   
@@ -64,7 +65,7 @@ jQuery(function($) {
         perform = false;
         var newFeature = window.map.mapWrap("getNewFeatureMarker"),
             latlng     = newFeature._visible ? newFeature.getLatLng() : window.map.mapWrap("getMap").getCenter(),
-            latLngStr  = latLngToQueryString(latlng);
+            latLngStr  = "latitude=" + latlng.lat + "&longitude=" + latlng.lng;
 
         // $.getJSON([iframeSrc, "/locations/within_region"].join(""), latLngStr, function(data){
         //   if (!data || data.status != "error") { // Location is good
@@ -112,7 +113,6 @@ jQuery(function($) {
     };
   })();
 
-  
   // Throttles vote, and performs request, loads in popup
   var throttledVoteCallback = (function() {
     var perform = true;
@@ -254,17 +254,21 @@ jQuery(function($) {
     },500);
   });
   
+  // Hide / show labels depending on the content of form elements
   $("#popup input:text, #popup textarea").live("input propertychange", function(){
     var label = popup.find("label[for=" + $(this).attr("id") + "]");
     if (this.value.trim().length > 0) label.hide();
     else label.show();
   });
   
+  // Bind listeners to popup forms and links
   $("#new_vote").live("submit", throttledVoteCallback);
   $("#new_feature_point").live("submit", throttledPointCallback);
   $("#new_comment").live("submit", throttledCallback);
   popup.find(".close").live("click", closePopup);
   popup.find("a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
+  
+  // Set up feeds from the map
   
   // Event Feed for events campaigns
   $("#eventfeed").each(function(){
@@ -286,6 +290,17 @@ jQuery(function($) {
         }
       }
     });
+  });
+  
+  // Activity ticker
+  $("#ticker").activityticker({
+    url   : [iframeSrc, "/activity"].join(""),
+    limit : 5, 
+    click : function(e, ui) {
+      e.preventDefault();
+      window.map.mapWrap("viewFeature", ui.featureId);
+      $('html, body').animate({scrollTop:150}, 'slow');
+    }
   });
 
 });
