@@ -4,4 +4,11 @@ class Campaign < ActiveRecord::Base
   has_many :activity_items
   
   validates :name, :presence => true
+  validates :slug, :uniqueness => true
+  
+  before_save :generate_slug
+  
+  def generate_slug
+    self.slug = ActiveSupport::Inflector.transliterate(name).downcase.gsub(/[^a-z0-9]/,'')
+  end
 end
