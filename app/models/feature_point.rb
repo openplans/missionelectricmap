@@ -49,12 +49,14 @@ class FeaturePoint < ActiveRecord::Base
 
   validates :campaign, :presence => true
   validates :name, :presence => true
-  validates :address, :presence => true
   validates :description, :presence => true
-  validates :event_date, :presence => true, :weekend => {:allow_blank => true}
-  validates :event_start_time, :presence => true
-  validates :event_end_time, :presence => true
+
   validates :event_link, :format => {:with => URI::regexp(%w(http https)), :message => "should be a valid URL", :allow_blank => true }
+
+  validates :address, :presence => true, :if => "campaign.enable_events?"
+  validates :event_date, :presence => true, :weekend => {:allow_blank => true}, :if => "campaign.enable_events?"
+  validates :event_start_time, :presence => true, :if => "campaign.enable_events?"
+  validates :event_end_time, :presence => true, :if => "campaign.enable_events?"
   
   validates_with TimeOrderValidator
   
