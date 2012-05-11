@@ -23,7 +23,7 @@ class Vote < ActiveRecord::Base
   validates :supportable, :presence => true
   
   def create_activity_item
-    activity_items.create :subject_parent => supportable, :profile => profile, :user_name => I18n.t("activity.anonymous_voter")
+    activity_items.create :subject_parent => supportable, :profile => profile, :user_name => I18n.t("activity.anonymous_voter"), :campaign => campaign
   end
   
 end

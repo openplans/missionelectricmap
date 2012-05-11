@@ -146,7 +146,7 @@ class FeaturePoint < ActiveRecord::Base
   private
   
   def create_vote
-    votes.create :profile => profile
+    votes.create :profile => profile, :campaign => campaign
   end
 
   def set_visible
