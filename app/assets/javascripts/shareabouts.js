@@ -558,7 +558,7 @@ $.widget("ui.shareabout", (function() {
 
           map.addLayer(shareabout.newFeature);
           // shareabout.newFeature.dragging.enable();
-          // shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
+          shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
         }
       };
 
