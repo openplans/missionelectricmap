@@ -6,8 +6,11 @@ class LocationType < ActiveRecord::Base
   
   has_one  :marker, :inverse_of => :location_type
   has_many :feature_points
+  belongs_to :campaign
   
   has_attached_file :image, :styles => { :small => "32x32>", :icon => "16x16>" }
+  
+  validates :campaign, :presence => true
   
   accepts_nested_attributes_for :marker, :allow_destroy => true
 end

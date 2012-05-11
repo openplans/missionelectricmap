@@ -21,15 +21,16 @@ class FeaturePoint < ActiveRecord::Base
   
   has_attached_file :image, :styles => { :thumb => "120x90#" }
 
+  belongs_to :profile
+  belongs_to :location_type
+  belongs_to :campaign
   has_many :votes, :as => :supportable, :dependent => :destroy
   has_many :comments, :as => :commentable, :dependent => :destroy, :inverse_of => :commentable
   has_many :feature_regions, :as => :feature, :dependent => :destroy
   has_many :regions, :through => :feature_regions
   has_many :activity_items, :as => :subject, :inverse_of => :subject, :dependent => :destroy
   has_many :children_activity_items, :as => :subject_parent, :class_name => "ActivityItem", :dependent => :destroy
-  belongs_to :profile
   has_one :user, :through => :profile
-  belongs_to :location_type
   has_one :marker, :through => :location_type
   
   # deprecated
@@ -45,6 +46,7 @@ class FeaturePoint < ActiveRecord::Base
   
   before_validation :set_event_date_year
 
+  validates :campaign, :presence => true
   validates :name, :presence => true
   validates :address, :presence => true
   validates :description, :presence => true

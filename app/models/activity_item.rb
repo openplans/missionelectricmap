@@ -4,8 +4,10 @@ class ActivityItem < ActiveRecord::Base
   belongs_to :subject, :polymorphic => true, :inverse_of => :activity_items
   belongs_to :subject_parent, :polymorphic => true
   belongs_to :profile
+  belongs_to :campaign
   
   validates :subject_parent, :presence => true
+  validates :campaign, :presence => true
   
   def user
     profile.user if profile.present?
