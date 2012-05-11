@@ -88,8 +88,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_ability
-    # we only distinguish between admin and not admin. guests & users have equal abilities.
-    @current_ability ||= Ability.new(current_admin) 
+    @current_ability ||= Ability.new(current_admin, @campaign, params[:e] == "1") 
   end
   
   def set_cache_buster

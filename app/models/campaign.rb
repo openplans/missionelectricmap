@@ -11,4 +11,8 @@ class Campaign < ActiveRecord::Base
   def generate_slug
     self.slug = ActiveSupport::Inflector.transliterate(name).downcase.gsub(/[^a-z0-9]/,'')
   end
+  
+  def expired?
+    expiry_date.present? && expiry_date < Date.today
+  end
 end

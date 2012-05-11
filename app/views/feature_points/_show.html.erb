@@ -13,12 +13,14 @@
     </div>
     
     <div class="support">
-      <% if vote = vote_for(feature_point) %>
-        <%#= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
-      <% else %>
-        <div id="vote_link">
-          <%= render "votes/new.html", :supportable => feature_point %>
-        </div>
+      <% if can? :create, Vote %>
+        <% if vote = vote_for(feature_point) %>
+          <%#= render "votes/delete.html", :supportable => feature_point, :vote => vote %>
+        <% else %>
+          <div id="vote_link">
+            <%= render "votes/new.html", :supportable => feature_point %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>

@@ -5,7 +5,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, campaign, expired) # campaign and expiry flag are both passed to app via params
     user ||= User.new # guest user (not logged in)
 
     can :read, :all
@@ -20,9 +20,13 @@ class Ability
         cannot :manage, Admin
       end
     else
-      can :create, FeaturePoint
-      can :create, Comment
-      can :create, Vote
+      
+      if !campaign.expired? && !expired
+        can :create, Comment
+        can :create, Vote
+        
+        can :create, FeaturePoint if campaign.enable_events?
+      end
     end
   end
 end
