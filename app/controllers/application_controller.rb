@@ -2,9 +2,14 @@ class ApplicationController < ActionController::Base
   include ValidBrowser
   
   protect_from_forgery
-  before_filter :restrict_browser
+  # before_filter :restrict_browser
+  before_filter :set_campaign
   before_filter :set_locale
   before_filter :set_admin_current_admin
+  
+  def set_campaign
+    @campaign = Campaign.find_by_slug( ActiveSupport::Inflector.transliterate( params[:c] ).downcase.gsub(/[^a-z0-9]/,'') )
+  end
   
   def set_locale
     I18n.locale = env['rack.locale'] || I18n.default_locale

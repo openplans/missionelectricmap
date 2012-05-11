@@ -4,6 +4,22 @@ document.domain = "openplans.org";
 jQuery(function($) {
 
   var popup = $("#popup");
+  
+  var urlParams = {};
+  (function () {
+      var e,
+          a = /\+/g,  // Regex for replacing addition symbol with a space
+          r = /([^&=]+)=?([^&]*)/g,
+          d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+          q = $("iframe[name=map]").attr("src").split("/?")[1];
+
+      while (e = r.exec(q))
+         urlParams[d(e[1])] = d(e[2]);
+  })();
+
+  $.ajaxSetup({
+    data : urlParams
+  });
 
   if(typeof String.prototype.trim !== 'function') {
     String.prototype.trim = function() {
@@ -193,6 +209,7 @@ jQuery(function($) {
     locate_feature.click( function(event) {
       window.map.mapWrap("locateNewFeature", {
         url :  [iframeSrc, "/locations/new"].join(""),
+        data : urlParams,
         success: function(data){
           popupContent(data.view)
         }
