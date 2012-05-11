@@ -51,16 +51,16 @@ class FeaturePointsController < ApplicationController
     @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile, :campaign => @campaign})
     
     @feature_point.location_type = LocationType.for_campaign(@campaign).where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
-    
+        
     if @feature_point.save
       find_and_store_vote @feature_point
       @comment = @feature_point.comments.new :profile => @profile
       
       response = render_to_string( :partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } )
-      render :text => upload_response(response)
+      render upload_response(response)
     else
       response = render_to_string( :partial => "form.html.erb" )
-      render :text => upload_response(response)
+      render upload_response(response)
     end
   end
   
@@ -125,10 +125,14 @@ class FeaturePointsController < ApplicationController
   end
   
   def upload_response(view)
-    <<-HTML
-    <textarea data-type="application/json">
-       {view:"#{escape_json(view)}"}
-    </textarea>
-    HTML
+    if request.headers["CONTENT_TYPE"].match /multipart/
+      {
+        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}'}</textarea>"
+      }
+    else
+      {
+        :json => {:view => view }
+      }
+    end
   end  
 end

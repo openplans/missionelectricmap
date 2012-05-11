@@ -63,11 +63,8 @@ class ApplicationController < ActionController::Base
 
 
   def access_allowed?
-    Rails.logger.info "Attempted access from #{request.env['HTTP_ORIGIN']}"
-    
-    allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
-    
-    return allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
+    # this is only for staging
+    return true
   end
   
   JSON_ESCAPE_MAP = {
