@@ -238,6 +238,8 @@ jQuery(function($) {
     loadFeatureFromParams();
     $("#locate_feature", frames["map"].document).click(locateFeatureClick);
     checkForCountingVotesMode();
+    // Move the WP content up
+    $("#branding").animate({ marginBottom : "360px"} , 1500);
   };
   
   // Calls afterMapLoad when map is ready
