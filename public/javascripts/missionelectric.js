@@ -50,7 +50,7 @@ jQuery(function($) {
     });
     
     // Deuglify selects
-    target.find('select').customSelect();
+    if (target.find('select').customSelect) target.find('select').customSelect();
     
     popup.addClass("visible");
   };
@@ -86,9 +86,8 @@ jQuery(function($) {
               responseJSON= eval('(' + textarea.contents() + ')');
             else            
               responseJSON= eval('(' + data.responseText + ')');
-            
             popupContent(responseJSON.view); // replacing entire popup contents here
-            if (data.responseText.search(/field_with_error/) == -1) {
+            if (responseJSON.status != "error") {
               window.map.mapWrap("finalizeNewFeature");
             }
           }

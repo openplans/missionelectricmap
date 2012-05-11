@@ -63,10 +63,10 @@ class FeaturePointsController < ApplicationController
       response = render_to_string( :partial => "confirm.html", :locals => { 
         :message => I18n.t("feature.comment.after_point_added"), :vote_id => @feature_point.votes.first.id 
       } )
-      render upload_response(response)
+      render upload_response(response, :ok)
     else
       response = render_to_string( :partial => "form.html.erb" )
-      render upload_response(response)
+      render upload_response(response, :error)
     end
   end
   
@@ -130,14 +130,14 @@ class FeaturePointsController < ApplicationController
       params[:feature_point][:feature_location_type_attributes][:location_type_id].blank?
   end
   
-  def upload_response(view)
+  def upload_response(view, status=:ok)
     if request.headers["CONTENT_TYPE"].match /multipart/
       {
-        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}'}</textarea>"
+        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}', status:'#{status}'}</textarea>"
       }
     else
       {
-        :json => {:view => view }
+        :json => {:view => view, :status => status }
       }
     end
   end  

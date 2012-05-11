@@ -7,6 +7,10 @@ $(function() {
       pages            = $("#pages a"),
       Map              = $("#map");
 
+  // Markers that are loaded from the /app/assets/images directory. 
+  // These markers are general to all campaigns.
+  
+  // The default marker, we fall back to if there's no location type marker for the point
   var MarkerIcon = L.Icon.extend({
     iconUrl     : window.shareabouts.urls.marker_icon,
     iconSize    : new L.Point(25, 34),
@@ -15,24 +19,27 @@ $(function() {
     shadowSize  : new L.Point(36, 34),
   });
 
+  // The marker we use to highlight the currently-viewed location
   var FocusedMarkerIcon = L.Icon.extend({
     iconUrl     : window.shareabouts.urls.focused_marker_icon,
-    iconSize    : new L.Point(25, 34),
-    iconAnchor  : new L.Point(12, 34),
+    iconSize    : new L.Point(35, 50),
+    iconAnchor  : new L.Point(17, 49),
     popupAnchor : new L.Point(0, 0),
     shadowSize  : new L.Point(36, 34),
     shadowUrl   : window.shareabouts.urls.shadow_icon
   });
 
+  // The draggable marker for new points
   var NewMarkerIcon = L.Icon.extend({
     iconUrl     : window.shareabouts.urls.new_marker_icon,
-    iconSize    : new L.Point(25, 34),
-    iconAnchor  : new L.Point(12, 34),
+    iconSize    : new L.Point(35, 50),
+    iconAnchor  : new L.Point(17, 49),
     popupAnchor : new L.Point(0, 0),
     shadowSize  : new L.Point(36, 34),
     shadowUrl   : window.shareabouts.urls.shadow_icon
   });
 
+  // Used on touch screen devices instead of a draggable new location marker
   var CrosshairIcon = L.Icon.extend({
     iconUrl     : window.shareabouts.urls.crosshair_icon,
     iconSize    : new L.Point(63, 64),
