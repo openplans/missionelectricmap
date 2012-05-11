@@ -74,7 +74,7 @@ jQuery(function($) {
     
         ajaxOptions = {
           url         : $form.attr("action"),
-          data        : $form.serialize() + latLngStr, 
+          data        : $form.serialize() + "&" + latLngStr, 
           type        : 'POST',
           dataType    : "json",
           crossDomain : true,
