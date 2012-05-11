@@ -113,7 +113,8 @@ jQuery(function($) {
       
       if (perform) {
         perform = false;
-        var $form = $(submitEvent.target).closest("#vote_link").hide();
+        var $form = $(submitEvent.target);
+        $form.closest("#vote_link").hide();
                 
         $.ajax( {
           url         : $form.attr("action"), 
