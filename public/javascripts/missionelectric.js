@@ -199,6 +199,7 @@ jQuery(function($) {
     window.map.mapWrap("resetState");
   };
   
+  // Opens a feature if one is permalinked via the window params
   var loadFeatureFromParams= function(){
     var hrefParts = window.location.href.split("#");
     if (hrefParts.length < 2) return;
@@ -209,22 +210,34 @@ jQuery(function($) {
     window.map.mapWrap("viewFeature", parseInt(locationParts[1], 10));
   };
   
+  // Advances map to locatingNewFeature state, which, among other things, 
+  // loads the new feature form into the popup
+  var locateFeatureClick = function(event) {
+    window.map.mapWrap("locateNewFeature", {
+      url :  [iframeSrc, "/locations/new"].join(""),
+      data : urlParams,
+      success: function(data){
+        popupContent(data.view)
+      }
+    });
+    $(this).hide();
+  };
+  
+  // Checks for winners array in map window. 
+  // If not present, shows counting votes mode.
+  var checkForCountingVotesMode = function(){
+    // Only if #counting-votes mode is present do we check for winners
+    $("#counting-votes").each(function(){
+      if (!window.map.shareabouts.winners) $(this).css("display", "block");
+    })
+  };
+  
   // Callback for when map has loaded
   // Fires place open if location is specified
   var afterMapLoad = function() {
     loadFeatureFromParams();
-    
-    var locate_feature = $("#locate_feature", frames["map"].document);
-    locate_feature.click( function(event) {
-      window.map.mapWrap("locateNewFeature", {
-        url :  [iframeSrc, "/locations/new"].join(""),
-        data : urlParams,
-        success: function(data){
-          popupContent(data.view)
-        }
-      });
-      $(this).hide();    
-    });
+    $("#locate_feature", frames["map"].document).click(locateFeatureClick);
+    checkForCountingVotesMode();
   };
   
   // Calls afterMapLoad when map is ready
@@ -253,7 +266,7 @@ jQuery(function($) {
   popup.find(".close").live("click", closePopup);
   popup.find("a[data-behavior=load_result_in_popup]").live("click", loadLinkInPopup);
   
-  
+  // Event Feed for events campaigns
   $("#eventfeed").each(function(){
     var container = $(this);
     $.ajax( {
@@ -274,6 +287,7 @@ jQuery(function($) {
       }
     });
   });
+
 });
 
 

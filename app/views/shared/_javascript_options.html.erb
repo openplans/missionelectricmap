@@ -38,6 +38,10 @@
     end.map(&:strip).join(",\n") %>
   };
   
+  <% if @winners.present? %>
+    window.shareabouts.winners = [<%= @winners.map(&:id).join ", " %>];
+  <% end %>
+  
   // full paths to things
   window.shareabouts.urls = {
     marker_icon :        '<%= image_url("feature-point.png") %>',
