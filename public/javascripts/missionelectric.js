@@ -113,11 +113,11 @@ jQuery(function($) {
       
       if (perform) {
         perform = false;
-        var $form = $(submitEvent.target).hide();
+        var $form = $(submitEvent.target).closest("#vote_link").hide();
                 
         $.ajax( {
           url         : $form.attr("action"), 
-          data        : $form.serialize(), 
+          data        : $form.serialize()+ "&" + $.param(urlParams), 
           type        : 'POST',
           dataType    : "json",
           crossDomain : true,
@@ -149,7 +149,7 @@ jQuery(function($) {
         
         $.ajax( {
           url         : $form.attr("action"), 
-          data        : $form.serialize(), 
+          data        : $form.serialize()+ "&" + $.param(urlParams),
           type        : 'POST',
           dataType    : "json",
           crossDomain : true,
