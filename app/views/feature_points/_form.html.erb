@@ -48,7 +48,7 @@
         <div class="event_date_time">
           <div class="event_date">
             <%= form.label :event_date, t("feature.form.day_label"), :class => "required"  %>
-            <%= form.date_select :event_date, :discard_year => true, :order => [:day, :month], :prompt => true %>
+            <%= form.date_select :event_date, :discard_year => true, :order => [:month, :day], :prompt => true %>
           </div>
           <div class="event_times">
             <div class="event_start_time">
