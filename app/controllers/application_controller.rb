@@ -58,10 +58,11 @@ class ApplicationController < ActionController::Base
       "\r\n"  => '\n',
       "\n"    => '\n',
       "\r"    => '\n',
-      '"'     => '\\"' }
+      '"'     => '\\"',
+      "'"     => "\\'" }
 
   def escape_json(json)
-    json.gsub(/(\\|<\/|\r\n|[\n\r"])/) { JSON_ESCAPE_MAP[$1] }
+    json.gsub(/(\\|<\/|\r\n|[\n\r'"])/) { JSON_ESCAPE_MAP[$1] }
   end
 
   def current_profile
