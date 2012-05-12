@@ -57,7 +57,7 @@ RailsAdmin.config do |config|
   # config.excluded_models << []
 
   # Add models here if you want to go 'whitelist mode':
-  config.included_models += %w{SiteOption Admin FeaturePoint FeaturePolygon Comment LocationType Page Shapefile Profile Region Vote}
+  config.included_models += %w{SiteOption Admin FeaturePoint FeaturePolygon Comment LocationType Page Shapefile Profile Region Vote Campaign}
 
   # Application wide tried label methods for models' instances
   # config.label_methods << [:description] # Default is [:name, :title]
@@ -82,6 +82,10 @@ RailsAdmin.config do |config|
   #  ==> Model specific configuration
   # Try to override as few things as possible, in the most generic way. Try to avoid setting labels for models and attributes, use ActiveRecord I18n API instead.
   
+  config.model Campaign do
+
+  end
+  
   config.model FeaturePoint do
     object_label_method :display_name     # Name of the method called for pretty printing an *instance* of ModelName
     weight -1                     # Navigation priority. Bigger is higher.
@@ -93,6 +97,7 @@ RailsAdmin.config do |config|
     list do
       items_per_page 100
       fields :visible, :name      
+      field :campaign
       field :location_type do
         searchable
       end
@@ -102,11 +107,11 @@ RailsAdmin.config do |config|
     end
     
     edit do
-      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
+      fields :name, :visible, :campaign, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
     end
     
     show do
-      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
+      fields :name, :visible, :campaign, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :the_geom
       field :support_count
       field :display_the_geom do
         label 'Location'
@@ -122,7 +127,7 @@ RailsAdmin.config do |config|
       field :profile_id do
         label 'Contributer id'
       end
-      fields :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :created_at
+      fields :campaign, :name, :visible, :location_type, :description, :address, :image, :event_link, :event_date, :event_start_time, :event_end_time, :votes, :comments, :created_at
     end
   end
   
@@ -179,6 +184,15 @@ RailsAdmin.config do |config|
 
   config.model Vote do
     parent Profile
+    list do
+      fields :id, :campaign, :supportable, :created_at, :profile, :activity_items
+    end
+    show do
+      fields :id, :campaign, :supportable, :created_at, :profile, :activity_items
+    end
+    export do
+      fields :id, :campaign, :supportable, :created_at, :profile
+    end
   end
   
   config.model Shapefile do
@@ -209,11 +223,13 @@ RailsAdmin.config do |config|
     parent Shapefile
     edit do
       fields :name, :image
+      field :campaign
       field :marker
     end
     
     show do 
       fields :name, :image
+      field :campaign
       field :marker
     end
   end

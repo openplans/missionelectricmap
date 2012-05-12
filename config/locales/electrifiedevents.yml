@@ -1,0 +1,263 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+electrifiedevents:
+  app_name: Mission Electric
+  feature: #
+    form: #
+      description: "Have a festival, concert, sports event, or other spectacular event you want to see electric vehicles at? Tell us more about it, and why other people should vote for it. Remember that events must be public and you won't be able to edit them after submitting, so craft your pitch carefully." #
+      header: Submit an event to electrify! #
+      title_label: Event Name #
+      address_label: Address #
+      description_label: Event Description #
+      event_link_label: Event url (optional) #
+      image_label: Select an image to add to your event (optional) #
+      day_label: When? #
+      start_time_label: Starts #
+      end_time_label: Ends #
+      submit: Add Event #
+    comment: #
+      vote_label: vote #
+      header: Why people voted for this location #
+      label: Comment #
+      name_label: 'Your Name' #
+      email_label: 'Your Email' #
+      comment_label: 'Why should others vote for this location? (optional)' #
+      submit_label: Submit #
+      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
+      after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
+      error: "Please correct the fields below." #
+    sharing: #
+      email: #
+        subject: 'Help me electrify this event!' #
+        body: 'Please support this event so that it will be electrified! %{url}' #
+      twitter: #
+        status: "Help me electrify this event! %{url}." #
+      after_vote: "Awesome! We've counted your vote. Now to complete this mission, share with your friends to make sure your favorite locations win!" #
+      after_point_added: "We'll keep you posted! Now share this mission with your friends so thar your spectacular event wins."#
+  map_controls: #
+    locate_feature: 'Submit your own event' #
+    drag_hint: 'Drag me\! Then click confirm.'
+    drag_hint_long: 'Drag your location to the center of the map'
+  activity: #
+    vote: 'just voted for %{location}' #
+    anonymous_voter: Agent X
+  # Model names and model attribute names
+  activerecord:
+    models:
+      feature_point: point
+      user: Agent X
+      vote: vote
+    attributes:
+      feature_point:
+        the_geom: location
+  # Display formats
+  time:
+    formats:
+      display: "%-m/%-d/%Y"
+      date_long: "%B %-d, %Y"
+      just_time: "%l:%M %p"
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: ! '%{count} days'
+      x_minutes:
+        one: 1 minute
+        other: ! '%{count} minutes'
+      x_months:
+        one: 1 month
+        other: ! '%{count} months'
+      x_seconds:
+        one: 1 second
+        other: ! '%{count} seconds'
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  errors: &errors
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: must be accepted
+      blank: can't be blank
+      confirmation: doesn't match confirmation
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      record_invalid: ! 'Validation failed: %{errors}'
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+    template:
+      body: ! 'There were problems with the following fields:'
+      header:
+        one: 1 error prohibited this %{model} from being saved
+        other: ! '%{count} errors prohibited this %{model} from being saved'
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  number:
+    currency:
+      format:
+        delimiter: ! ','
+        format: ! '%u%n'
+        precision: 2
+        separator: .
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: ! ','
+      precision: 3
+      separator: .
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ', and '
+      two_words_connector: ! ' and '
+      words_connector: ! ', '
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d %b %Y %H:%M:%S %z'
+      long: ! '%B %d, %Y %H:%M'
+      short: ! '%d %b %H:%M'
+    pm: pm
+  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
+  activemodel:
+    errors:
+      <<: *errors
+  activerecord:
+    errors:
+      <<: *errors

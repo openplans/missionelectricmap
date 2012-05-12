@@ -38,6 +38,10 @@
     end.map(&:strip).join(",\n") %>
   };
   
+  <% if @winners.present? %>
+    window.shareabouts.winners = [<%= @winners.map(&:id).join ", " %>];
+  <% end %>
+  
   // full paths to things
   window.shareabouts.urls = {
     marker_icon :        '<%= image_url("feature-point.png") %>',
@@ -45,9 +49,9 @@
     shadow_icon :         '<%= image_url("marker-shadow.png") %>',
     new_marker_icon :     '<%= image_url("marker-plus.png") %>',
     crosshair_icon :      '<%= image_url("crosshair.png") %>',
-    feature_points_url :       '<%= feature_points_url %>',
-    feature_point_url :        '<%= feature_point_url("FEATURE_ID") %>',
-    new_feature_point_url :    '<%= new_feature_point_url %>'
+    feature_points_url :       '<%= feature_points_url campaign_params %>',
+    feature_point_url :        '<%= feature_point_url("FEATURE_ID", campaign_params) %>',
+    new_feature_point_url :    '<%= new_feature_point_url campaign_params %>'
   }
   
 </script>

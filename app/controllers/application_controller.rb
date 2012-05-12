@@ -2,12 +2,23 @@ class ApplicationController < ActionController::Base
   include ValidBrowser
   
   protect_from_forgery
-  before_filter :restrict_browser
+  # before_filter :restrict_browser
+  before_filter :set_campaign
   before_filter :set_locale
   before_filter :set_admin_current_admin
   
+  def set_campaign
+    if  params[:c]
+      @campaign = Campaign.find_by_slug( ActiveSupport::Inflector.transliterate( params[:c] ).downcase.gsub(/[^a-z0-9]/,'') )
+    end
+  end
+  
   def set_locale
-    I18n.locale = env['rack.locale'] || I18n.default_locale
+    I18n.locale = @campaign.present? ? @campaign.slug : I18n.default_locale
+  end
+  
+  def default_url_options(options={})
+    @campaign ? { :c => @campaign.slug, :e => params[:e] } : {}
   end
   
   def authenticate_user!
@@ -30,15 +41,6 @@ class ApplicationController < ActionController::Base
     @profile = current_profile || set_profile_cookie(Profile.create_by_request_fingerprint(request))
   end
   
-  # def authorize_for_domains
-  #   if access_allowed?      
-  #     set_access_control_headers
-  #     head :created
-  #   else
-  #     head :forbidden
-  #   end
-  # end
-  
   def subscribe_to_list(name, email)
     Delayed::Job.enqueue MailChimpJob.new( :action => :subscribe, :name => name, :email => email)
   end
@@ -49,16 +51,6 @@ class ApplicationController < ActionController::Base
   #   headers['Access-Control-Max-Age'] = '1000'
   #   headers['Access-Control-Allow-Headers'] = '*,x-requested-with'
   # end
-
-
-  # def access_allowed?
-  #   Rails.logger.info "Attempted access from #{request.env['HTTP_ORIGIN']}"
-  #   
-  #   allowed_site_regexs = [/missionelectric\.org/, /openplans\.org/] 
-  #   
-  #   return request.env['HTTP_ORIGIN'].nil? || allowed_site_regexs.any? { |regex| request.env['HTTP_ORIGIN'].match regex }
-  # end
-  # 
 
   JSON_ESCAPE_MAP = {
       '\\'    => '\\\\',
@@ -84,8 +76,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_ability
-    # we only distinguish between admin and not admin. guests & users have equal abilities.
-    @current_ability ||= Ability.new(current_admin) 
+    @current_ability ||= Ability.new(current_admin, @campaign, params[:e] == "1") 
   end
   
   def set_cache_buster

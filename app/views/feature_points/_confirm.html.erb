@@ -12,7 +12,7 @@
   </div>
   
   <div id="right" class="column">
-    <%= render "comments/new.html", :message => I18n.t("feature.comment.after_point_added"), :from => :feature_point %>
+    <%= render "comments/new.html", :message => I18n.t("feature.comment.after_point_added"), :from => :feature_point, :vote_id => vote_id %>
   </div>
   
   <div class="close">

@@ -237,27 +237,18 @@ table.regions {
   background-color: transparent;
 }
 .leaflet-control-zoom a {
-  height: 27px;
-  width: 27px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 0;
-     -moz-box-shadow: -2px 2px 0 rgba(85, 85, 85, 0.5);
-  -webkit-box-shadow: -2px 2px 0 rgba(85, 85, 85, 0.5);
-          box-shadow: -2px 2px 0 rgba(85, 85, 85, 0.5);
+  height: 37px;
+  width: 37px;
+
 }
 .leaflet-control-zoom a:active {
-  position: relative;
-  top: 1px;
-  right: 1px;
-     -moz-box-shadow: -1px 1px 0 rgba(85, 85, 85, 0.5);
-  -webkit-box-shadow: -1px 1px 0 rgba(85, 85, 85, 0.5);
-          box-shadow: -1px 1px 0 rgba(85, 85, 85, 0.5);
+
 }
 .leaflet-control-zoom-in {
-  background-image: url(zoom-in.gif);
+  background-image: url(zoom-in.png);
 }
 .leaflet-control-zoom-out {
-  background-image: url(zoom-out.gif);
+  background-image: url(zoom-out.png);
 }
 
 /*

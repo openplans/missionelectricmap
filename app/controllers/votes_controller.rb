@@ -7,7 +7,7 @@ class VotesController < ApplicationController
     authorize! :create, Vote
     # authorize_for_domains
     
-    @vote = @supportable.votes.create :profile => @profile
+    @vote = @supportable.votes.create :profile => @profile, :campaign => @campaign
     store_vote_in_cookie @vote
     
     @comment = @supportable.comments.new :profile => @profile

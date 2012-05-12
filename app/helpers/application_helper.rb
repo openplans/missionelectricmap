@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def campaign_params
+    { :c => params[:c], :e => params[:e] }
+  end
+  
   def path_to_url(path)
     request.protocol + request.host_with_port + path
   end

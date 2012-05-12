@@ -9,12 +9,12 @@ class ActivityController < ApplicationController
       ""
     end
         
-    @activity_items = ActivityItem.where(where)
+    @activity_items = ActivityItem.for_campaign(@campaign).where(where)
       .limit(params[:limit])
       .order('created_at desc')
     
     render :json => {
-      :vote_count => "#{Vote.visible.count} actions",
+      :vote_count => "#{Vote.for_campaign(@campaign).visible.count} actions",
       :view       => render_to_string(:partial => "index.html")
     }.to_json
   end

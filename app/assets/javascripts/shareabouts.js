@@ -154,7 +154,7 @@ $.widget("ui.shareabout", (function() {
       if (fsm.is("viewingFeature")) {
         // Don't reset everything if I'm already showing a feature
         // No state change is triggered.
-        // this._unsetFocusedIcon();
+        this._unsetFocusedIcon();
         this._viewFeature(fId);
       } else {
         // Reset the state
@@ -245,7 +245,7 @@ $.widget("ui.shareabout", (function() {
 
     openPopup : function(content) {
       // Unsfocus the icon if highlighted
-      // this._unsetFocusedIcon();
+      this._unsetFocusedIcon();
 
       // Init the popup
       popup.setContent(content);
@@ -443,9 +443,9 @@ $.widget("ui.shareabout", (function() {
       popup.find("label.required").append( $("<span>").addClass("required").html("*") );
 
       map.panTo( layer.getLatLng() );
-      // if (!nofocus && layer._icon) {
-      //   this._setFocusedIcon(layer);
-      // }
+      if (!nofocus && layer._icon) {
+        this._setFocusedIcon(layer);
+      }
 
       var self = this;
       window.setTimeout(function(){ // the map takes time to pan
@@ -454,18 +454,18 @@ $.widget("ui.shareabout", (function() {
       }, 400);
     },
 
-    // _setFocusedIcon : function(layer) {
-    //   this.focusedMarkerLayer = layer;
-    //   layer.setIcon(this.options.focusedMarkerIcon);
-    // },
-    // 
-    // _unsetFocusedIcon : function() {
-    //   if (this.focusedMarkerLayer) {
-    //     var cacheIndex = this._getCachedFeatureIndex(this.focusedMarkerLayer._id);
-    //     this.focusedMarkerLayer.setIcon( 
-    //       this.iconFor(featurePointsCache[cacheIndex].location_type) );
-    //   }
-    // },
+    _setFocusedIcon : function(layer) {
+      this.focusedMarkerLayer = layer;
+      layer.setIcon(this.options.focusedMarkerIcon);
+    },
+    
+    _unsetFocusedIcon : function() {
+      if (this.focusedMarkerLayer) {
+        var cacheIndex = this._getCachedFeatureIndex(this.focusedMarkerLayer._id);
+        this.focusedMarkerLayer.setIcon( 
+          this.iconFor(featurePointsCache[cacheIndex].location_type) );
+      }
+    },
 
     resetState : function() {
       if (fsm.is("ready")) this.options.callbacks.onready();
@@ -558,7 +558,7 @@ $.widget("ui.shareabout", (function() {
 
           map.addLayer(shareabout.newFeature);
           // shareabout.newFeature.dragging.enable();
-          // shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
+          shareabout.showHint(shareabout.options.dragHint, shareabout.newFeature);
         }
       };
 
@@ -618,16 +618,11 @@ $.widget("ui.shareabout", (function() {
       
       fsm.onfinalizeNewFeature = function(eventName, from, to) {
         shareabout.newFeature.dragging.disable();
-        popup.find(".close").hide();
-      };
-      
-      fsm.onleavefinalizingNewFeature = function(eventName, from, to) {
-        popup.find(".close").show();
       };
 
       fsm.onleaveviewingFeature = function(eventName, from, to) {
         shareabout._removePopup();
-        // shareabout._unsetFocusedIcon();
+        shareabout._unsetFocusedIcon();
       };
 
       fsm.onleavelocatingNewFeature = function(eventName, from, to) {

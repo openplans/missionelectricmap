@@ -3,21 +3,24 @@ class FeaturePointsController < ApplicationController
   before_filter :ignore_feature_location_type_fields_if_empty, :find_or_create_profile, :only => :create  
   before_filter :set_cache_buster, :only => :show # for IE8
   
-  def share
-    # authorize_for_domains
-    
+  def share    
     @feature_point = FeaturePoint.find params[:id]
     
     render :json => {
-      :view => render_to_string(:partial => "shared/share.html", :locals => {:shareable => @feature_point})
+      :view => render_to_string(:partial => "shared/share.html", :locals => {
+        :shareable => @feature_point,
+        :message => I18n.t("feature.sharing.after_vote") # we can only get here directly after voting
+      })
     }
   end
   
   def index
     respond_to do |format|
-      format.html
+      format.html do 
+        @winners = FeaturePoint.for_campaign(@campaign).joins(:location_type).where("location_types.name ILIKE '%winner%'")
+      end
       format.json do
-        @feature_points = FeaturePoint.visible.where [ "id > ?", params[:after].to_i ]
+        @feature_points = FeaturePoint.for_campaign(@campaign).visible.where [ "id > ?", params[:after].to_i ]
         render :json => @feature_points.map(&:as_json)
       end
     end
@@ -26,7 +29,9 @@ class FeaturePointsController < ApplicationController
   def events
     # authorize_for_domains
     
-    @feature_points = FeaturePoint.visible
+    return render :status => :ok unless @campaign.enable_events?
+    
+    @feature_points = FeaturePoint.for_campaign(@campaign).visible
     
     render :json => {
       :view => render_to_string(:partial => "events.html")
@@ -45,19 +50,20 @@ class FeaturePointsController < ApplicationController
     authorize! :create, FeaturePoint
     # authorize_for_domains
 
-    @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile})
-      
-    @feature_point.location_type = LocationType.where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
+    @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile, :campaign => @campaign})
     
+    @feature_point.location_type = LocationType.for_campaign(@campaign).where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
+        
     if @feature_point.save
       find_and_store_vote @feature_point
       @comment = @feature_point.comments.new :profile => @profile
-      
-      response = render_to_string( :partial => "confirm.html", :locals => { :message => I18n.t("feature.comment.after_point_added") } )
-      render :text => upload_response(response)
+      response = render_to_string( :partial => "confirm.html", :locals => { 
+        :message => I18n.t("feature.comment.after_point_added"), :vote_id => @feature_point.votes.first.id 
+      } )
+      render upload_response(response, :ok)
     else
       response = render_to_string( :partial => "form.html.erb" )
-      render :text => upload_response(response)
+      render upload_response(response, :error)
     end
   end
   
@@ -66,7 +72,7 @@ class FeaturePointsController < ApplicationController
   end
   
   def update
-    @feature_point = FeaturePoint.find params[:id]
+    @feature_point = FeaturePoint.for_campaign(@campaign).find params[:id]
     authorize! :update, @feature_point
     
     @feature_point.update_attributes params[:feature_point]
@@ -79,6 +85,7 @@ class FeaturePointsController < ApplicationController
   end
   
   def show
+    # past campaigns?
     @feature_point = FeaturePoint.visible.find params[:id], :include => :comments
     respond_to do |format|
       format.html do
@@ -120,11 +127,21 @@ class FeaturePointsController < ApplicationController
       params[:feature_point][:feature_location_type_attributes][:location_type_id].blank?
   end
   
-  def upload_response(view)
-    <<-HTML
-    <textarea data-type="application/json">
-       {view:"#{escape_json(view)}"}
-    </textarea>
-    HTML
+  # def upload_response(view)
+  #   <<-HTML
+  #   <textarea data-type="application/json">
+  #      {view:"#{escape_json(view)}"}
+  #   </textarea>
+  #   HTML
+  def upload_response(view, status=:ok)
+    if request.headers["CONTENT_TYPE"].match /multipart/
+      {
+        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}', status:'#{status}'}</textarea>"
+      }
+    else
+      {
+        :json => {:view => view, :status => status }
+      }
+    end
   end  
 end
