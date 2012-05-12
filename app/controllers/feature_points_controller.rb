@@ -136,7 +136,7 @@ class FeaturePointsController < ApplicationController
   def upload_response(view, status=:ok)
     if request.headers["CONTENT_TYPE"].match /multipart/
       {
-        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}', status:'#{status}'}</textarea>"
+        :text => "<textarea data-type='application/json'>{view:#{view.to_json}, status:'#{status}'}</textarea>"
       }
     else
       {

@@ -70,62 +70,37 @@ jQuery(function($) {
         var $form = $(submitEvent.target);
     
         ajaxOptions = {
-// <<<<<<< HEAD
-          url         : $form.attr("action"), 
+          url         : $form.attr("action"),
+          data        : $form.serialize() + "&" + latLngStr,
           type        : 'POST',
           dataType    : "json",
-          complete : function(data) { 
+          complete    : function(data) {   
             perform = true; 
-            var responseJSON = eval('(' + data.responseText + ')');
-            
+            var responseJSON;
+            var textarea = $("textarea[data-type]", data.responseText);
+            if (textarea.length > 0)
+              responseJSON= eval('(' + textarea.contents() + ')');
+            else            
+              responseJSON= eval('(' + data.responseText + ')');
             popupContent(responseJSON.view); // replacing entire popup contents here
-            if (data.responseText.search(/field_with_error/) == -1) {
-// =======
-//           url         : $form.attr("action"),
-//           data        : $form.serialize() + "&" + latLngStr, 
-//           type        : 'POST',
-//           dataType    : "json",
-//           crossDomain : true,
-//           complete : function(data) {   
-//             perform = true; 
-//             var responseJSON;
-//             var textarea = $("textarea[data-type]", data.responseText);
-//             if (textarea.length > 0)
-//               responseJSON= eval('(' + textarea.contents() + ')');
-//             else            
-//               responseJSON= eval('(' + data.responseText + ')');
-//             popupContent(responseJSON.view); // replacing entire popup contents here
-//             if (responseJSON.status != "error") {
-// >>>>>>> master
+            if (responseJSON.status != "error") {
               window.map.mapWrap("finalizeNewFeature");
             }
           }
         };
+
+        if ($(":file", $form).val() != ""){
+          var data = $(":text, textarea, select, :hidden", $form).serializeArray();        
+          data.push({name: "latitude", value: latlng.lat})
+          data.push({name: "longitude", value: latlng.lng})
         
-// <<<<<<< HEAD
-        var data = $(":text, textarea, select, :hidden", $form).serializeArray();        
-        data.push({name: "latitude", value: latlng.lat})
-        data.push({name: "longitude", value: latlng.lng})
-        
-        ajaxOptions.iframe=  true;
-        ajaxOptions.processData =false;
-        ajaxOptions.files =$(":file", $form);
-        ajaxOptions.data = data;
-// =======
-//         if ($(":file", $form).val() != ""){
-//           var data = $(":text, textarea, select, :hidden", $form).serializeArray();        
-//           data.push({name: "latitude", value: latlng.lat})
-//           data.push({name: "longitude", value: latlng.lng})
-//         
-//           ajaxOptions.iframe=  true;
-//           ajaxOptions.processData =false;
-//           ajaxOptions.files =$(":file", $form);
-//           ajaxOptions.data = data;
-//         }
-// >>>>>>> master
+          ajaxOptions.iframe=  true;
+          ajaxOptions.processData =false;
+          ajaxOptions.files =$(":file", $form);
+          ajaxOptions.data = data;
+        }
           
         $.ajax(ajaxOptions);
-        
         //   } else window.map.mapWrap("showHint", data.message, newFeature);
         // })
       }

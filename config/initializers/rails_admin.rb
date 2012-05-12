@@ -156,8 +156,7 @@ RailsAdmin.config do |config|
     parent Profile
     
     list do
-      field :comment
-      field :commentable
+      fields :id, :comment, :commentable
       field :display_submitter
       field :profile_id do
         label 'Contributer id'
@@ -172,6 +171,7 @@ RailsAdmin.config do |config|
     
     show do
       field :id
+      field :campaign
       field :comment
       field :submitter_name
       field :profile_id do
@@ -221,6 +221,10 @@ RailsAdmin.config do |config|
   
   config.model LocationType do
     parent Shapefile
+    list do
+      fields :id, :campaign, :name, :image
+    end
+    
     edit do
       fields :name, :image
       field :campaign
@@ -228,9 +232,8 @@ RailsAdmin.config do |config|
     end
     
     show do 
-      fields :name, :image
       field :campaign
-      field :marker
+      fields :name, :image, :marker
     end
   end
   
