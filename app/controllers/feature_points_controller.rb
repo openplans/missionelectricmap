@@ -17,7 +17,7 @@ class FeaturePointsController < ApplicationController
   def index
     respond_to do |format|
       format.html do 
-        @winners = FeaturePoint.for_campaign(@campaign).joins(:location_type).where("location_types.name ILIKE '%winner%'")
+        @winners = FeaturePoint.for_campaign(@campaign).joins(:location_type).where("location_types.name ILIKE '%winner%'") if @campaign
       end
       format.json do
         @feature_points = FeaturePoint.for_campaign(@campaign).visible.where [ "id > ?", params[:after].to_i ]
