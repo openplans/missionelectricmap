@@ -1,7 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-electrifiedevents:
+futurecampaign:
   app_name: Mission Electric
   feature: #
     form: #
@@ -18,7 +18,7 @@ electrifiedevents:
       submit: Add Event #
     comment: #
       vote_label: vote #
-      header: THIS IS A FUTURE CAMPAIGN #
+      header: Why people voted for this location #
       label: Comment #
       name_label: 'Your Name' #
       email_label: 'Your Email' #
@@ -37,8 +37,8 @@ electrifiedevents:
       after_point_added: "We'll keep you posted! Now share this mission with your friends so thar your spectacular event wins."#
   map_controls: #
     locate_feature: 'Submit your own event' #
-    drag_hint: 'Drag me\! Then click confirm.'
-    drag_hint_long: 'Drag your location to the center of the map'
+    drag_hint: 'Drag me\! Then click confirm.' #
+    drag_hint_long: 'Drag your location to the center of the map' #
   activity: #
     vote: 'just voted for %{location}' #
     anonymous_voter: Agent X
@@ -46,7 +46,7 @@ electrifiedevents:
   activerecord:
     models:
       feature_point: point
-      user: Agent X
+      user: Agent X #
       vote: vote
     attributes:
       feature_point:
