@@ -117,10 +117,10 @@ class FeaturePointsController < ApplicationController
   private
   
   def set_location_type
-    @feature_point.location_type = if current_admin.present? && admin_type = LocationType.for_campaign(@campaign).admin.first
+    @feature_point.location_type = if current_admin.present? && admin_type = LocationType.for_campaign(@campaign).admin.not_winner.first
       admin_type
     else
-      LocationType.for_campaign(@campaign).not_admin.first
+      LocationType.for_campaign(@campaign).not_admin.not_winner.first
     end
   end
   
