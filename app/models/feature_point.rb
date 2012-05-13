@@ -81,6 +81,7 @@ class FeaturePoint < ActiveRecord::Base
   end
   
   def display_event_time
+    return "" unless event_date && event_start_time && event_end_time
     "#{event_date.strftime "%A %B %-d, %Y"}, #{event_start_time.strftime "%-l%P"}-#{event_end_time.strftime "%-l%P"}"
   end
 

@@ -29,7 +29,7 @@ class FeaturePointsController < ApplicationController
   def events
     # authorize_for_domains
     
-    return render :status => :ok unless @campaign.enable_events?
+    return render :status => :ok if !@campaign || !@campaign.enable_events?
     
     @feature_points = FeaturePoint.for_campaign(@campaign).visible
     
