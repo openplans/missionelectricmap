@@ -6,6 +6,7 @@ class LocationType < ActiveRecord::Base
   scope :admin, where(:admin => true)
   scope :not_admin, where("admin <> true")
   scope :winner, where(:winner => true)
+  scope :not_winner, where("winner <> true")
   
   has_one  :marker, :inverse_of => :location_type
   has_many :feature_points
@@ -19,6 +20,6 @@ class LocationType < ActiveRecord::Base
   accepts_nested_attributes_for :marker, :allow_destroy => true
   
   def admin_label
-    "#{name}#{"(Admin) " if admin?}#{"(Winner)" if winner?}"
+    "#{name} [#{campaign.name}] #{"(Admin) " if admin?}#{"(Winner)" if winner?}"
   end
 end
