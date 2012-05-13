@@ -22,6 +22,7 @@ class FeaturePoint < ActiveRecord::Base
   
   has_attached_file :image, :styles => { :thumb => "120x90#" }
 
+  belongs_to :admin, :foreign_key => :user_id
   belongs_to :profile
   belongs_to :location_type
   belongs_to :campaign
@@ -150,8 +151,13 @@ class FeaturePoint < ActiveRecord::Base
     votes.create :profile => profile, :campaign => campaign
   end
 
+  # Only set to visible if created by an admin (presense of user_id) or if explicitely set
   def set_visible
-    self.visible = false if !visible
+    if user_id.present?
+      self.visible = true
+    else
+      self.visible = false if !visible
+    end
     true
   end
   

@@ -53,7 +53,12 @@ class FeaturePointsController < ApplicationController
     authorize! :create, FeaturePoint
     authorize_for_domains
 
-    @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile, :campaign => @campaign})
+    @feature_point = FeaturePoint.new params[:feature_point].merge({
+      :the_geom => the_geom_from_params(params), 
+      :profile => @profile, 
+      :campaign => @campaign,
+      :user_id => current_admin.try(:id)
+    })
     
     set_location_type
     
