@@ -220,20 +220,20 @@ RailsAdmin.config do |config|
   end
   
   config.model LocationType do
+    object_label_method :admin_label
     parent Shapefile
     list do
-      fields :id, :campaign, :name, :image
+      fields :id, :name, :campaign, :admin, :winner, :image
     end
     
     edit do
-      fields :name, :image
-      field :campaign
+      fields :name, :campaign, :admin, :winner, :image
       field :marker
     end
     
     show do 
-      field :campaign
-      fields :name, :image, :marker
+      fields :name, :campaign, :admin, :winner, :image
+      field :marker
     end
   end
   

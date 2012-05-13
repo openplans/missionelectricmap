@@ -17,7 +17,7 @@ class FeaturePointsController < ApplicationController
   def index
     respond_to do |format|
       format.html do 
-        @winners = FeaturePoint.for_campaign(@campaign).joins(:location_type).where("location_types.name ILIKE '%winner%'") if @campaign
+        @winners = FeaturePoint.for_campaign(@campaign).joins(:location_type).where("location_types.winner = true") if @campaign
       end
       format.json do
         @feature_points = FeaturePoint.for_campaign(@campaign).visible.where [ "id > ?", params[:after].to_i ]
@@ -52,8 +52,8 @@ class FeaturePointsController < ApplicationController
 
     @feature_point = FeaturePoint.new params[:feature_point].merge({:the_geom => the_geom_from_params(params), :profile => @profile, :campaign => @campaign})
     
-    @feature_point.location_type = LocationType.for_campaign(@campaign).where(:name => (current_admin.present? ? "Mission Electric" : "User-submitted")).first
-        
+    set_location_type
+    
     if @feature_point.save
       find_and_store_vote @feature_point
       @comment = @feature_point.comments.new :profile => @profile
@@ -112,6 +112,14 @@ class FeaturePointsController < ApplicationController
   end
   
   private
+  
+  def set_location_type
+    @feature_point.location_type = if current_admin.present? && admin_type = LocationType.for_campaign(@campaign).admin.first
+      admin_type
+    else
+      LocationType.for_campaign(@campaign).not_admin.first
+    end
+  end
   
   def find_and_store_vote(feature_point)
     vote = @profile.votes.where(:supportable_id => feature_point.id, :supportable_type => feature_point.class.to_s).first
