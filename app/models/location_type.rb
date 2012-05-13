@@ -20,6 +20,6 @@ class LocationType < ActiveRecord::Base
   accepts_nested_attributes_for :marker, :allow_destroy => true
   
   def admin_label
-    "#{name} [#{campaign.name}] #{"(Admin) " if admin?}#{"(Winner)" if winner?}"
+    new_record? ? "New Location Type" : "#{name} [#{campaign.try(:name)}] #{"(Admin) " if admin?}#{"(Winner)" if winner?}"
   end
 end
