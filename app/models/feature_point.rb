@@ -50,6 +50,7 @@ class FeaturePoint < ActiveRecord::Base
   validates :campaign, :presence => true
   validates :name, :presence => true
   validates :description, :presence => true
+  validates :location_type, :presence => true
 
   validates :event_link, :format => {:with => URI::regexp(%w(http https)), :message => "should be a valid URL", :allow_blank => true }
 
