@@ -21,7 +21,7 @@ Shareabouts::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
-
+  
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
 
@@ -48,8 +48,8 @@ Shareabouts::Application.configure do
   # config.assets.precompile += %w( search.js )
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.raise_delivery_errors = false
+  
   # Enable threaded mode
   # config.threadsafe!
 
@@ -60,3 +60,16 @@ Shareabouts::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 end
+
+require 'tlsmail'
+Net::SMTP.enable_tls( OpenSSL::SSL::VERIFY_NONE)
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => 'gmail.com', #PROBABLY MISSIONELECTRIC.ORG
+  :user_name            => 'missionelectricexample', #FULL EMAIL ADDRESS HERE if NOT GMAIL, JUST USERNAME IF GMAIL
+  :password             => 'm1$$10nc0ntr0l', #PUT PASSWORD HERE
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  }

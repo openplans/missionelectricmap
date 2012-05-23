@@ -16,7 +16,7 @@ gem "twitter"
 gem 'jquery-rails'
 gem "useragent"
 
-gem 'exception_notification'
+# gem 'exception_notification'
 gem 'tlsmail'
 
 gem 'pg'

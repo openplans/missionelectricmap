@@ -14,7 +14,8 @@ Shareabouts::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -28,3 +29,16 @@ Shareabouts::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 end
+
+require 'tlsmail'
+Net::SMTP.enable_tls( OpenSSL::SSL::VERIFY_NONE)
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => 'gmail.com', #PROBABLY MISSIONELECTRIC.ORG
+  :user_name            => 'missionelectricexample', #FULL EMAIL ADDRESS HERE if NOT GMAIL, JUST USERNAME IF GMAIL
+  :password             => 'm1$$10nc0ntr0l', #PUT PASSWORD HERE
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  }

@@ -3,6 +3,11 @@
 
 electrifiedevents:
   app_name: Mission Electric
+  config:
+    email:
+      message: "Thanks, %{name}!\n\nWe'll keep you posted on the results and let you know if you've won the [insert bigger incentive].\n\n-Your Friends at Mission Electric" #
+      subject: "Thanks for your vote!" #
+      from: "Mission Electric <thanks@missionelectric.org>" # this should be the same as whats in config/environments/production.rb, best to be the same for every config.
   feature: #
     form: #
       description: "Have a festival, concert, sports event, or other spectacular event you want to see electric vehicles at? Tell us more about it, and why other people should vote for it. Remember that events must be public and you won't be able to edit them after submitting, so craft your pitch carefully." #

@@ -3,6 +3,11 @@
 
 shareelectric:
   app_name: Mission Electric
+  config:
+    email:
+      message: "Thanks, %{name}!\nWe'll keep you posted on the results and let you know if you've won the [insert bigger incentive].\n-Your Friends at Mission Electric" #
+      subject: "Thanks for your vote!" #
+      from: "Mission Electric <thanks@missionelectric.org>" # this should be the same as whats in config/environments/production.rb, best to be the same for every config.
   feature: #
     form: #
       description: "Share Electric description"
