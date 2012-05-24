@@ -257,7 +257,10 @@ table.regions {
 .leaflet-control-zoom-out {
   background-image: url(zoom-out.png);
 }
-
+/* Only used for tile attribution */
+.leaflet-bottom {
+  top: 152px !important;
+}
 /*
  *
  * Feature Popup
