@@ -237,12 +237,19 @@ table.regions {
   background-color: transparent;
 }
 .leaflet-control-zoom a {
-  height: 37px;
-  width: 37px;
+  height: 42px;
+  width: 43px;
+  background-position: 0px 0px;
+  border-radius: 0;
+  background-color: transparent;
+}
 
+.leaflet-control-zoom a:hover {
+  background-position: 0px -42px;
+  background-color: transparent;
 }
 .leaflet-control-zoom a:active {
-
+  background-position: 0px -41px;
 }
 .leaflet-control-zoom-in {
   background-image: url(zoom-in.png);
