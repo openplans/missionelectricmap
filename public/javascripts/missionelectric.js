@@ -49,9 +49,9 @@ jQuery(function($) {
     // Deuglify selects
     if (target.find('select').customSelect) target.find('select').customSelect();
     
-    // Apply label remover, IE doesnt like live and propertychange i guess
+    // Apply label remover, IE doesnt like live input propertychange
     // Hide / show labels depending on the content of form elements
-    target.find("input:text, textarea").bind($.browser.msie ? 'propertychange' : 'input', function(){
+    target.find("input:text, textarea").bind('input propertychange', function(){
       var label = popup.find("label[for=" + $(this).attr("id") + "]");
       if (this.value.trim().length > 0) label.hide();
       else label.show();
