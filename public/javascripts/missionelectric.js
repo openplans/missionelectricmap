@@ -251,7 +251,7 @@ jQuery(function($) {
   });
   
   // Hide / show labels depending on the content of form elements
-  $("#popup input:text, #popup textarea").live("input propertychange", function(){
+  $("#popup input:text, #popup textarea").live($.browser.msie ? 'propertychange' : 'input', function(){
     var label = popup.find("label[for=" + $(this).attr("id") + "]");
     if (this.value.trim().length > 0) label.hide();
     else label.show();
