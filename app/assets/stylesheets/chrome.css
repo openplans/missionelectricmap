@@ -260,6 +260,7 @@ table.regions {
 /* Only used for tile attribution */
 .leaflet-bottom {
   top: 152px !important;
+  bottom: auto !important;
 }
 /*
  *
