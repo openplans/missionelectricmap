@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
   # We're using the comment object as a container to handle the user name submissions
   def create
     authorize! :create, Comment
-    authorize_for_domains
+    # authorize_for_domains
      
     @comment = @commentable.comments.new params[:comment].merge(:profile_id => @profile.id)    
 
@@ -56,7 +56,16 @@ class CommentsController < ApplicationController
   private
   
   def subscribe_commenter
-    subscribe_to_list(@comment.submitter_name, @comment.submitter_email)
+    email_recipient = EmailRecipient.create :email => @comment.submitter_email, 
+      :name => @comment.submitter_name, 
+      :feature_point => @comment.commentable,
+      :campaign => @comment.commentable.campaign,
+      :creator => params[:from].to_sym == :feature_point
+    
+    AutoMailer.thanks_email(I18n.t("config.email.message", :name => email_recipient.name), 
+      :to => email_recipient.email_with_name,
+      :subject => I18n.t("config.email.subject"), 
+      :from => I18n.t("config.email.from")).deliver    
   end
   
   def update_activity_item

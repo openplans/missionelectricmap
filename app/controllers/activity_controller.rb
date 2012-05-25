@@ -1,7 +1,7 @@
 class ActivityController < ApplicationController
 
   def index
-    authorize_for_domains
+    # authorize_for_domains
 
     where = if params[:after].present?
       ["id > ?", params[:after]]

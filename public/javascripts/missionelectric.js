@@ -1,6 +1,3 @@
-// subdomain XSF workaround
-document.domain = "openplans.org";
-
 jQuery(function($) {
 
   var popup = $("#popup");
@@ -52,6 +49,14 @@ jQuery(function($) {
     // Deuglify selects
     if (target.find('select').customSelect) target.find('select').customSelect();
     
+    // Apply label remover, IE doesnt like live input propertychange
+    // Hide / show labels depending on the content of form elements
+    target.find("input:text, textarea").bind('input propertychange', function(){
+      var label = popup.find("label[for=" + $(this).attr("id") + "]");
+      if (this.value.trim().length > 0) label.hide();
+      else label.show();
+    });
+    
     popup.addClass("visible");
   };
   
@@ -74,11 +79,10 @@ jQuery(function($) {
     
         ajaxOptions = {
           url         : $form.attr("action"),
-          data        : $form.serialize() + "&" + latLngStr, 
+          data        : $form.serialize() + "&" + latLngStr,
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
-          complete : function(data) {   
+          complete    : function(data) {   
             perform = true; 
             var responseJSON;
             var textarea = $("textarea[data-type]", data.responseText);
@@ -92,7 +96,7 @@ jQuery(function($) {
             }
           }
         };
-        
+
         if ($(":file", $form).val() != ""){
           var data = $(":text, textarea, select, :hidden", $form).serializeArray();        
           data.push({name: "latitude", value: latlng.lat})
@@ -105,7 +109,6 @@ jQuery(function($) {
         }
           
         $.ajax(ajaxOptions);
-        
         //   } else window.map.mapWrap("showHint", data.message, newFeature);
         // })
       }
@@ -128,7 +131,7 @@ jQuery(function($) {
           data        : $form.serialize()+ "&" + $.param(urlParams), 
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
+          // crossDomain : true,
           success : function(data) {   
             perform = true; 
             
@@ -160,7 +163,7 @@ jQuery(function($) {
           data        : $form.serialize()+ "&" + $.param(urlParams),
           type        : 'POST',
           dataType    : "json",
-          crossDomain : true,
+          // crossDomain : true,
           success : function(data) {   
             perform = true; 
             popupContent(data.view, "#right");
@@ -183,7 +186,7 @@ jQuery(function($) {
       url         : $(clickEvent.target).attr("href"), 
       type        : 'GET',
       dataType    : "json",
-      crossDomain : true,
+      // crossDomain : true,
       success : function(data) {   
         perform = true; 
         popupContent(data.view, "#right");
@@ -255,13 +258,6 @@ jQuery(function($) {
     },500);
   });
   
-  // Hide / show labels depending on the content of form elements
-  $("#popup input:text, #popup textarea").live("input propertychange", function(){
-    var label = popup.find("label[for=" + $(this).attr("id") + "]");
-    if (this.value.trim().length > 0) label.hide();
-    else label.show();
-  });
-  
   // Bind listeners to popup forms and links
   $("#new_vote").live("submit", throttledVoteCallback);
   $("#new_feature_point").live("submit", throttledPointCallback);
@@ -278,7 +274,7 @@ jQuery(function($) {
       url         : [iframeSrc, "/locations/events"].join(""), 
       type        : 'GET',
       dataType    : "json",
-      crossDomain : true,
+      // crossDomain : true,
       success : function(data) {
         if (data.view) {
           container.append( $("<h5>").html("Event List"));

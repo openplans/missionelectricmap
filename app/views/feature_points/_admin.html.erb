@@ -1,7 +1,1 @@
-<%= link_to "Edit point / Moderate comments", rails_admin.edit_path("feature_point", feature_point.id), :target => "_new" %>
-Point is <%= "in" unless feature_point.visible? -%>visible.
-<%= form_for feature_point, :remote => true, :html => { "data-behavior" => "load_result_in_popup" } do |form| %>
-  <%= form.label :visible, "Visible?" %>
-  <%= form.check_box :visible %>
-  <%= form.submit %>
-<% end %>
+<%= link_to "Edit point / Moderate comments", path_to_url(rails_admin.edit_path("feature_point", feature_point.id, :c => nil)), :target => "_new" %>

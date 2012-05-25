@@ -3,10 +3,7 @@ class FeaturePointsController < ApplicationController
   before_filter :ignore_feature_location_type_fields_if_empty, :find_or_create_profile, :only => :create  
   before_filter :set_cache_buster, :only => :show # for IE8
   
-  def share
-    # past campaigns?
-    authorize_for_domains
-    
+  def share    
     @feature_point = FeaturePoint.find params[:id]
     
     render :json => {
@@ -30,9 +27,9 @@ class FeaturePointsController < ApplicationController
   end
   
   def events
-    authorize_for_domains
+    # authorize_for_domains
     
-    return render :status => :ok unless @campaign.enable_events?
+    return render :status => :ok if !@campaign || !@campaign.enable_events?
     
     @feature_points = FeaturePoint.for_campaign(@campaign).visible
     
@@ -51,7 +48,7 @@ class FeaturePointsController < ApplicationController
   
   def create
     authorize! :create, FeaturePoint
-    authorize_for_domains
+    # authorize_for_domains
 
     @feature_point = FeaturePoint.new params[:feature_point].merge({
       :the_geom => the_geom_from_params(params), 
@@ -143,10 +140,16 @@ class FeaturePointsController < ApplicationController
       params[:feature_point][:feature_location_type_attributes][:location_type_id].blank?
   end
   
+  # def upload_response(view)
+  #   <<-HTML
+  #   <textarea data-type="application/json">
+  #      {view:"#{escape_json(view)}"}
+  #   </textarea>
+  #   HTML
   def upload_response(view, status=:ok)
     if request.headers["CONTENT_TYPE"].match /multipart/
       {
-        :text => "<textarea data-type='application/json'>{view:'#{escape_json(view)}', status:'#{status}'}</textarea>"
+        :text => "<textarea data-type='application/json'>{view:'#{escape_json view}', status:'#{status}'}</textarea>"
       }
     else
       {

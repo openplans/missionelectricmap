@@ -27,7 +27,7 @@
     <%= Marker.all.map(&:location_type).map do |location_type|
       <<-js
       #{location_type.name.parameterize.underscore} : L.Icon.extend({
-        iconUrl     : '#{ location_type.image.url(:original) }',
+        iconUrl     : '#{ path_to_url location_type.image.url(:original) }',
       	iconSize    : new L.Point(#{location_type.marker.icon_width}, #{location_type.marker.icon_height}),
       	iconAnchor  : new L.Point(#{location_type.marker.icon_anchor_x}, #{location_type.marker.icon_anchor_y}),
       	popupAnchor : new L.Point(#{location_type.marker.popup_anchor_x}, #{location_type.marker.popup_anchor_y}),

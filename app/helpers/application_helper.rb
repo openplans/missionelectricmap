@@ -5,7 +5,7 @@ module ApplicationHelper
   end
   
   def path_to_url(path)
-    request.protocol + request.host_with_port + path
+    request.protocol + request.host_with_port + request.env["SCRIPT_NAME"] + path
   end
 
   def vote_for(supportable)

@@ -41,42 +41,24 @@ class ApplicationController < ActionController::Base
     @profile = current_profile || set_profile_cookie(Profile.create_by_request_fingerprint(request))
   end
   
-  def authorize_for_domains
-    if access_allowed?      
-      set_access_control_headers
-      head :created
-    else
-      head :forbidden
-    end
-  end
-  
-  def subscribe_to_list(name, email)
-    Delayed::Job.enqueue MailChimpJob.new( :action => :subscribe, :name => name, :email => email)
-  end
-  
-  def set_access_control_headers 
-    headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    headers['Access-Control-Max-Age'] = '1000'
-    headers['Access-Control-Allow-Headers'] = '*,x-requested-with'
-  end
+  # def set_access_control_headers 
+  #   headers['Access-Control-Allow-Origin'] = request.env['HTTP_ORIGIN']
+  #   headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  #   headers['Access-Control-Max-Age'] = '1000'
+  #   headers['Access-Control-Allow-Headers'] = '*,x-requested-with'
+  # end
 
-
-  def access_allowed?
-    # this is only for staging
-    return true
-  end
-  
   JSON_ESCAPE_MAP = {
       '\\'    => '\\\\',
       '</'    => '<\/',
       "\r\n"  => '\n',
       "\n"    => '\n',
       "\r"    => '\n',
-      '"'     => '\\"' }
+      '"'     => '\\"',
+      "'"     => "\\'" }
 
   def escape_json(json)
-    json.gsub(/(\\|<\/|\r\n|[\n\r"])/) { JSON_ESCAPE_MAP[$1] }
+    json.gsub(/(\\|<\/|\r\n|[\n\r'"])/) { JSON_ESCAPE_MAP[$1] }
   end
 
   def current_profile

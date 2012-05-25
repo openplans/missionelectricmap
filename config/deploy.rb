@@ -7,9 +7,11 @@ set :rvm_ruby_string, '1.9.2-p320'
 require 'bundler/capistrano'
 
 # multistage deployment
-set :stages, %w(staging production nyc boston philadelphia)
+set :stages, %w(nyc boston philadelphia nyc-staging boston-staging philadelphia-staging)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
+
+set :keep_releases, 2
 
 require 'delayed/recipes'
 
@@ -92,4 +94,5 @@ end
 after "deploy:finalize_update", "config:symlink"
 after 'deploy:update_code', "assets:precompile"
 after "deploy:update_code", "deploy:write_tag_file"
+after "deploy:update", "deploy:cleanup" 
 after "deploy:restart", "delayed_job:restart"

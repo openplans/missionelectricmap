@@ -57,7 +57,7 @@ RailsAdmin.config do |config|
   # config.excluded_models << []
 
   # Add models here if you want to go 'whitelist mode':
-  config.included_models += %w{SiteOption Admin FeaturePoint FeaturePolygon Comment LocationType Page Shapefile Profile Region Vote Campaign}
+  config.included_models += %w{SiteOption Admin FeaturePoint FeaturePolygon Comment LocationType Page Shapefile Profile Region Vote Campaign EmailRecipient}
 
   # Application wide tried label methods for models' instances
   # config.label_methods << [:description] # Default is [:name, :title]
@@ -156,8 +156,7 @@ RailsAdmin.config do |config|
     parent Profile
     
     list do
-      field :comment
-      field :commentable
+      fields :id, :comment, :commentable
       field :display_submitter
       field :profile_id do
         label 'Contributer id'
@@ -172,6 +171,7 @@ RailsAdmin.config do |config|
     
     show do
       field :id
+      field :campaign
       field :comment
       field :submitter_name
       field :profile_id do
