@@ -15,7 +15,7 @@ electrifiedevents:
       title_label: Event Name #
       address_label: Address #
       description_label: Event Description #
-      event_link_label: Event url (optional) #
+      event_link_label: "Event url (optional, e.g. http://www.event.com)" #
       image_label: Select an image to add to your event (optional) #
       day_label: When? #
       start_time_label: Starts #
