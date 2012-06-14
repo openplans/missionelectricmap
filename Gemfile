@@ -1,8 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.4'
-gem 'rvm-capistrano'
-gem 'capistrano-ext'
 
 gem 'hominid'
 
@@ -49,6 +47,8 @@ group :development, :test do
   gem "rspec-rails", ">= 2.2.0"
   gem 'cover_me', '>= 1.2.0'
   gem 'shoulda-matchers'
+  gem 'rvm-capistrano'
+  gem 'capistrano-ext'
 end
 
 group :production do
