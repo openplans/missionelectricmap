@@ -1,7 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-shareelectric:
+etruckchallenge:
   app_name: Mission Electric
   config:
     email:
@@ -10,7 +10,7 @@ shareelectric:
       from: "Mission Electric <thanks@missionelectric.org>" # this should be the same as whats in config/environments/production.rb, best to be the same for every config.
   feature: #
     form: #
-      description: "Share Electric description"
+      description: "Etruck Challenge description"
       header: Submit an event to electrify! #
       title_label: Event Name #
       address_label: Address #
