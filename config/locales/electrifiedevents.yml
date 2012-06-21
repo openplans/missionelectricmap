@@ -29,7 +29,7 @@ electrifiedevents:
       email_label: 'Your Email' #
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
-      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
+      after_vote: 'Mission accomplished! Sign up to be notified of the results and a chance to win some exciting prize.' #
       after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
       error: "Please correct the fields below." #
     sharing: #
