@@ -1,5 +1,10 @@
 # RVM bootstrap
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+
+# Multi-user install. rvm_type :user doesn't work unless the production server
+# is set up the same way, and it's not.
+set :rvm_type, :system
+
+#$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'rvm/capistrano'
 set :rvm_ruby_string, '1.9.2-p320'
 
