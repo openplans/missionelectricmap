@@ -5,7 +5,7 @@ etruckchallenge:
   app_name: Mission Electric
   config:
     email:
-      message: "Thanks, %{name}!\nWe'll keep you posted on the results and let you know if you've won the [insert bigger incentive].\n-Your Friends at Mission Electric" #
+      message: "Mission Accomplished! Sign up to be notified of the results, and get a chance to win Duane Reade green gift baskets and gift cards\n - Your Friends at Mission Electric" #
       subject: "Thanks for your vote!" #
       from: "Mission Electric <thanks@missionelectric.org>" # this should be the same as whats in config/environments/production.rb, best to be the same for every config.
   feature: #
@@ -29,15 +29,15 @@ etruckchallenge:
       email_label: 'Your Email' #
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
-      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
+      after_vote: 'Mission Accomplished! Sign up to be notified of the results, and get a chance to win Duane Reade green gift baskets and gift cards.' #
       after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
       error: "Please correct the fields below." #
     sharing: #
       email: #
-        subject: 'Help me electrify this event!' #
+        subject: 'Help me electrify this Duane Reade!' #
         body: 'Please support this event so that it will be electrified! %{url}' #
       twitter: #
-        status: "Help me electrify this event! %{url}." #
+        status: "Help me electrify this Duane Reade! %{url}." #
       after_vote: "Awesome! We've counted your vote. Now to complete this mission, share with your friends to make sure your favorite locations win!" #
       after_point_added: "We'll keep you posted! Now share this mission with your friends so thar your spectacular event wins."#
   map_controls: #
