@@ -5,7 +5,7 @@ shareelectric:
   app_name: Mission Electric
   config:
     email:
-      message: "Thanks, %{name}!\nWe'll keep you posted on the results and let you know if you've won the [insert bigger incentive].\n-Your Friends at Mission Electric" #
+      message: "Thanks, %{name}!\nWe'll keep you posted on the results and let you know if you've won a free day of driving.\n-Your Friends at Mission Electric" #
       subject: "Thanks for your vote!" #
       from: "Mission Electric <thanks@missionelectric.org>" # this should be the same as whats in config/environments/production.rb, best to be the same for every config.
   feature: #
@@ -29,7 +29,7 @@ shareelectric:
       email_label: 'Your Email' #
       comment_label: 'Why should others vote for this location? (optional)' #
       submit_label: Submit #
-      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a [insert bigger incentive].' #
+      after_vote: 'Mission accomplished! Sign up to be notified of the results, and get a change to win a free day of driving.' #
       after_point_added: "Rock on! You've added your event. To finalize your submission and be notified of the results, enter your information." #
       error: "Please correct the fields below." #
     sharing: #
